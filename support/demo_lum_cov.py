@@ -8,6 +8,7 @@ from temporary import *
 from image_range_sensor import *
 from textured_raytracer import *
 from numpy import deg2rad
+import time
 
 world = create_random_world(radius=10)
 
@@ -24,10 +25,12 @@ tr = TexturedRaytracer()
 tr.set_map(world)
 tr.set_sensor(sensor_def)
 
+t0 = time.time(); ntrials=100
+for i in range(ntrials):
+    answer = tr.query({"class":"query","position": [0,0], "orientation": 0})
+    answer = sensor.process_raw_data(answer)
+T = time.time() - t0
+print "Average time:", T / ntrials
 
-answer = tr.query({"class":"query","position": [-15,0], "orientation": 0})
-print answer 
-
-answer = sensor.process_raw_data(answer)
 
 print answer

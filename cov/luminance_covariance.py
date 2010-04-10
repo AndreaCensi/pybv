@@ -24,6 +24,7 @@ class LuminanceCovariance:
         self.num_samples += 1
         
     def final_computation(self):
+        # no final computation defined for this one
         pass
         
     def parallel_merge(self, that):

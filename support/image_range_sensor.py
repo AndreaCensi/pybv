@@ -1,10 +1,23 @@
 from numpy import ceil, rad2deg, linspace, array
+from textured_raytracer import *
 
-class ImageRangeSensor:
-    def __init__(self):
+class ImageRangeSensor(TexturedRaytracer):
+    def __init__(self, world=None):
+        TexturedRaytracer.__init__(self)
         self.directions = []
         self.spatial_sigma = []
         self.sigma = []
+        if world is not None:
+            self.set_map(world)
+            
+        self.compiled = False
+            
+        
+    def make_sure_compiled(self):
+        """ We finished composing the sensor """
+        if not self.compiled:
+            self.set_sensor(self.get_raw_sensor())
+            self.compiled = True
         
     def add_photoreceptors(self, directions, spatial_sigma, sigma):
         n = len(directions)
@@ -36,7 +49,7 @@ class ImageRangeSensor:
         for i, direction in enumerate(self.directions):
             spatial_sigma = self.spatial_sigma[i] 
             
-            num_aux = max(ceil(rad2deg(spatial_sigma/aux_per_deg)), min_num_aux) 
+            num_aux = int(max(ceil(rad2deg(spatial_sigma/aux_per_deg)), min_num_aux)) 
             # enforce odd to have a centered ray
             if num_aux % 2 == 0: 
                 num_aux += 1
@@ -68,6 +81,17 @@ class ImageRangeSensor:
             proc_data[attribute] = values
         
         proc_data['valid'] = valid
+        return proc_data
+        
+    def render(self, object_state):
+        self.make_sure_compiled()
+        position = object_state.get_2d_position()
+        orientation = object_state.get_2d_orientation()
+        query = {"class":"query",
+            "position": [position[0,0], position[1,0]], 
+            "orientation": orientation}
+        raw_data = self.query(query)
+        proc_data = self.process_raw_data(raw_data)
         return proc_data
         
         

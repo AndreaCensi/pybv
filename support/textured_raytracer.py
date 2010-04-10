@@ -9,9 +9,7 @@ class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
         self.p = Popen(raytracer, stdout=PIPE, stdin=PIPE)
         # XXX check errors
-
         self.child_stream = JSONStream(self.p.stdout)
-
         self.surface2texture = {}
         
     def set_map(self, map_object):

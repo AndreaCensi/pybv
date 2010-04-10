@@ -35,3 +35,25 @@ The data object has everything the config has, plus the following:
 
 
 	
+Map format::
+
+	{ 
+		"class": "map", 
+
+		"objects": [
+			{ 
+				"class": "polyline", 
+				"surface_id": 0,  
+				"points": [ [-1, -1], [-1, 1], [1, 1], [1, -1], [-1, -1] ], 
+				"texture":  "lambda x: sign(sin(x))"
+			},
+			
+			{ 
+				"class": "circle", 
+				"surface_id": 1,  
+				"radius": 10, 
+				"center": [0,0],
+				"texture": "lambda x: 1" 
+			}
+		]
+	}

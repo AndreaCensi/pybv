@@ -24,7 +24,7 @@ class TexturedRaytracer:
             surface = object['surface']
             self.surface2texture[surface] = texture
         
-        sys.stderr.write("Textures: %s\n" % self.surface2texture)
+#        sys.stderr.write("Textures: %s\n" % self.surface2texture)
 #        print map_object
         simplejson.dump(map_object, self.p.stdin)
         self.p.stdin.write('\n') 

@@ -1,5 +1,5 @@
 from numpy import ceil, rad2deg, linspace, array
-from textured_raytracer import *
+from textured_raytracer import TexturedRaytracer
 
 class ImageRangeSensor(TexturedRaytracer):
     def __init__(self, world=None):
@@ -11,7 +11,6 @@ class ImageRangeSensor(TexturedRaytracer):
             self.set_map(world)
             
         self.compiled = False
-            
         
     def make_sure_compiled(self):
         """ We finished composing the sensor """

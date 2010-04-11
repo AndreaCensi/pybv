@@ -1,5 +1,5 @@
 from temporary import create_random_world
-from image_range_sensor import ImageRangeSensor
+from pybv.sensors import ImageRangeSensor
 from numpy import deg2rad, linspace, pi
 from time import time
 from rigid_body_state import RigidBodyState

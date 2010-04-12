@@ -1,8 +1,9 @@
-from temporary import create_random_world
+from pybv.worlds import create_random_world
 from pybv.sensors import ImageRangeSensor
+from pybv.utils import RigidBodyState
+
 from numpy import deg2rad, linspace, pi
 from time import time
-from rigid_body_state import RigidBodyState
 
 world = create_random_world(radius=10)
 

@@ -7,6 +7,7 @@ class ImageRangeSensor(TexturedRaytracer):
         self.directions = []
         self.spatial_sigma = []
         self.sigma = []
+        self.num_photoreceptors = 0
         if world is not None:
             self.set_map(world)
             
@@ -24,7 +25,7 @@ class ImageRangeSensor(TexturedRaytracer):
         if not isinstance(spatial_sigma, list):
             spatial_sigma = [spatial_sigma] * n
         if not isinstance(sigma, list):
-            sigma =   [sigma] * n
+            sigma = [sigma] * n
         
         self.directions.extend(directions)
         self.spatial_sigma.extend(spatial_sigma)
@@ -38,6 +39,11 @@ class ImageRangeSensor(TexturedRaytracer):
         self.directions    = [self.directions[i]    for i in self.indices]
         self.spatial_sigma = [self.spatial_sigma[i] for i in self.indices]
         self.sigma         = [self.sigma[i]         for i in self.indices]
+        
+        self.num_photoreceptors = len(self.directions)
+        # force reconfiguration of raw sensor
+        self.compiled = False
+        
         
     def get_raw_sensor(self):
         min_num_aux = 3
@@ -66,7 +72,12 @@ class ImageRangeSensor(TexturedRaytracer):
         valid = []
         for attribute in ['luminance', 'readings']:
             values = []
-            aux_values = array(data[attribute])
+            try:
+                aux_values = array(data[attribute])
+            except ValueError, e:
+                print attribute, data[attribute]
+                raise e
+                
             for i, indices in enumerate(self.aux_indices):
                 valid_indices = [ k for k in indices if aux_valid[k] ]
                 if len(valid_indices) == 0:
@@ -86,10 +97,7 @@ class ImageRangeSensor(TexturedRaytracer):
         self.make_sure_compiled()
         position = object_state.get_2d_position()
         orientation = object_state.get_2d_orientation()
-        query = {"class":"query",
-            "position": [position[0,0], position[1,0]], 
-            "orientation": orientation}
-        raw_data = self.query(query)
+        raw_data = self.query_sensor(position, orientation)
         proc_data = self.process_raw_data(raw_data)
         return proc_data
         

@@ -1,5 +1,5 @@
 from numpy import zeros, eye, dot, array
-from math import atan2
+from math import atan2, sin, cos
 
 class RigidBodyState:
     def __init__(self):
@@ -22,5 +22,16 @@ class RigidBodyState:
         angle = atan2( rotated[1,0], rotated[0,0])
         return float(angle)
         
+    def set_2d_orientation(self, theta):
+        self.attitude = array([ 
+            [ cos(theta), -sin(theta), 0], 
+            [ sin(theta), cos(theta), 0], 
+            [0,0,1]] ) 
+        
+    def set_2d_position(self, position):
+        position = position.flatten() # XXX generalize?
+        self.position[0] = position[0]
+        self.position[1] = position[1]
+        self.position[2] = 0
         
         

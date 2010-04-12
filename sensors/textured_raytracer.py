@@ -4,6 +4,7 @@ from jsonstream import JSONStream
 from subprocess import Popen, PIPE
 # Mainly because we want to use user-defined textures
 from numpy import *
+from pybv.utils import aslist, asscalar
 
 class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
@@ -29,7 +30,12 @@ class TexturedRaytracer:
         simplejson.dump(map_object, self.p.stdin)
         self.p.stdin.write('\n') 
         
-    def query(self, query_object):
+    def query_sensor(self, position, orientation):
+        position = aslist(position)
+        orientation = asscalar(orientation)
+        query_object = {"class": "query_sensor",
+            "position": [position[0], position[1]], 
+            "orientation": orientation}
         simplejson.dump(query_object, self.p.stdin)
         self.p.stdin.write('\n')
         
@@ -42,7 +48,7 @@ class TexturedRaytracer:
             if answer['valid'][i]:
                 texture = self.surface2texture[surface_id]
                 coord = answer['curvilinear_coordinate'][i]
-                luminance.append( texture(coord)  )
+                luminance.append( asscalar(texture(coord))  )
             else:
                 luminance.append( float('nan')  )
 
@@ -54,7 +60,27 @@ class TexturedRaytracer:
         simplejson.dump(sensor_object, self.p.stdin)
         self.p.stdin.write('\n') 
         
+    def query_circle(self, center, radius):
+        center = aslist(center)
+        radius = asscalar(radius)
+        """ Returns tuple (hit, surface_id) """
+        query_object = {"class": "query_circle",
+            "center": [ center[0], center[1] ], 
+            "radius": radius}    
+        simplejson.dump(query_object, self.p.stdin)
+        self.p.stdin.write('\n')
         
+        answer = self.child_stream.read_next()
+        if answer is None:
+                raise Exception, "Could not communicate with child"
+        assert( answer['class'] == "query_circle_response" )
+        
+        hit = answer['intersects']
+        surface = answer['surface']
+        
+        return hit, surface
+        
+    
     def filter_json_streams(self, input, output):
         sr = JSONStream(input)
         while True:
@@ -67,6 +93,7 @@ class TexturedRaytracer:
             elif jo['class'] == 'sensor':
                 self.set_sensor(jo)  
             elif jo['class'] == 'query':
+                ### FIXME this is broken
                 answer = self.query(jo)
                 simplejson.dump(answer, output)
                 output.write('\n')
@@ -76,6 +103,7 @@ class TexturedRaytracer:
 
     
 if __name__ == '__main__':
-    tr = TexturedRaytracer('./raytracer2')
+    tr = TexturedRaytracer('raytracer2')
+    ### FIXME this is broken (see filter_json_streams )
     tr.filter_json_streams(sys.stdin, sys.stderr)
     

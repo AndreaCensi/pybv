@@ -1,6 +1,3 @@
-
-
-
 Data signatures
 ===============
 
@@ -8,14 +5,14 @@ The config object:
 
   config.sensors = []
 
-  config.optic_sensor[i].type = 'optic'
-  config.optic_sensor[i].id = 'id'
+  config.optics[i].type = 'optic'
+  config.optics[i].id = 'id'
 
-  config.optic_sensor[i].num_photoreceptors
-  config.optic_sensor[i].directions
-  config.optic_sensor[i].image_representation
-  config.optic_sensor[i].image_sub_mask
-  config.optic_sensor[i].image_sup_mask
+  config.optics[i].num_photoreceptors
+  config.optics[i].directions
+  config.optics[i].image_representation
+  config.optics[i].image_sub_mask
+  config.optics[i].image_sup_mask
 
   config.range_sensor[i].type = 'range'
   config.range_sensor[i].id   = 'id'
@@ -25,12 +22,19 @@ The config object:
   config.pixel2sensor[j] is 
 
 
+	config.dynamics.commands[a].id
+	config.dynamics.commands[a].range 
+	config.dynamics.commands[a].rest 
+	config.dynamics.id 
+
 
 The data object has everything the config has, plus the following:
 
-	data.timestamp
+	# data.timestamp
 
-	data.raw_pixels
+	data.optics[i].luminance
+	data.optics[i].luminance_deriv
+	
 	
 
 

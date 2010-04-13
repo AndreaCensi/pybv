@@ -14,9 +14,12 @@ The config object:
   config.optics[i].image_sub_mask
   config.optics[i].image_sup_mask
 
-  config.range_sensor[i].type = 'range'
-  config.range_sensor[i].id   = 'id'
-  config.range_sensor[i].directions  
+  config.rangefinder[i].type = 'range'
+  config.rangefinder[i].id   = 'id'
+  config.rangefinder[i].directions  
+  config.rangefinder[i].num_readings
+
+  config.num_sensels
 
   config.num_raw_pixels
   config.pixel2sensor[j] is 
@@ -35,9 +38,9 @@ The data object has everything the config has, plus the following:
 	data.optics[i].luminance
 	data.optics[i].luminance_deriv
 	
-	
+	data.rangefinder[i].readings
 
-
+	data.sensels
 	
 Map format::
 

@@ -8,12 +8,25 @@ from pybv.utils import aslist, asscalar
 
 class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
-        self.p = Popen(raytracer, stdout=PIPE, stdin=PIPE)
-        # XXX check errors
-        self.child_stream = JSONStream(self.p.stdout)
+        self.init_connection(raytracer)
         self.surface2texture = {}
+        self.map = None
+
+    def init_connection(self, raytracer):
+        self.raytracer = raytracer
+        self.p = Popen(raytracer, stdout=PIPE, stdin=PIPE)
+        self.child_stream = JSONStream(self.p.stdout)
+
+    # picklink 
+    def __getstate__(self):
+        return {'map': self.map, 'raytracer': self.raytracer}
+    def __setstate__(self, d):
+        self.surface2texture={}
+        self.init_connection(d['raytracer'])
+        self.set_map(d['map'])
         
     def set_map(self, map_object):
+        self.map = map_object
         for object in map_object['objects']:
             if object.has_key('texture'):
                 texture = object.get('texture')
@@ -21,7 +34,8 @@ class TexturedRaytracer:
             else:
                 texture = lambda x: 0.5
             if isinstance(texture, str):
-                texture = eval( texture)
+                texture = eval( texture) 
+                
             surface = object['surface']
             self.surface2texture[surface] = texture
         
@@ -36,6 +50,8 @@ class TexturedRaytracer:
         query_object = {"class": "query_sensor",
             "position": [position[0], position[1]], 
             "orientation": orientation}
+        
+        
         simplejson.dump(query_object, self.p.stdin)
         self.p.stdin.write('\n')
         

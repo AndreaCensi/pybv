@@ -12,6 +12,7 @@ def get_safe_pose(raytracer, world_radius, safe_zone, num_tries=100):
         if norm(position) > world_radius:
             continue
         orientation = random.rand(1) * 2 * pi
+
         intersect, surface = raytracer.query_circle(center=position,radius=safe_zone)
         if intersect:
             continue

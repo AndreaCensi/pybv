@@ -1,6 +1,7 @@
 from numpy import zeros, eye, dot, array
 from math import atan2, sin, cos
 
+
 class RigidBodyState:
     def __init__(self):
         self.position = zeros((3,1))
@@ -34,4 +35,6 @@ class RigidBodyState:
         self.position[1] = position[1]
         self.position[2] = 0
         
+    def __str__(self):
+        return '<RigidBody position=%s orientation=%s' % ((self.get_2d_position()), (self.get_2d_orientation()))
         

@@ -41,6 +41,8 @@ class ImageRangeSensor(TexturedRaytracer):
         self.sigma         = [self.sigma[i]         for i in self.indices]
         
         self.num_photoreceptors = len(self.directions)
+        self.num_readings = len(self.directions)
+        
         # force reconfiguration of raw sensor
         self.compiled = False
         

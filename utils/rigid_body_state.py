@@ -1,6 +1,6 @@
 from numpy import zeros, eye, dot, array
 from math import atan2, sin, cos
-
+from misc  import aslist
 
 class RigidBodyState:
     def __init__(self):
@@ -30,7 +30,7 @@ class RigidBodyState:
             [0,0,1]] ) 
         
     def set_2d_position(self, position):
-        position = position.flatten() # XXX generalize?
+        position = aslist(position)
         self.position[0] = position[0]
         self.position[1] = position[1]
         self.position[2] = 0

@@ -1,10 +1,11 @@
-import sys
+import sys, errno
 import simplejson
 from jsonstream import JSONStream
 from subprocess import Popen, PIPE
 # Mainly because we want to use user-defined textures
 from numpy import *
 from pybv.utils import aslist, asscalar
+from pybv import BVException
 
 class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
@@ -14,8 +15,14 @@ class TexturedRaytracer:
 
     def init_connection(self, raytracer):
         self.raytracer = raytracer
-        self.p = Popen(raytracer, stdout=PIPE, stdin=PIPE)
-        self.child_stream = JSONStream(self.p.stdout)
+        try:
+            self.p = Popen(raytracer, stdout=PIPE, stdin=PIPE)
+            self.child_stream = JSONStream(self.p.stdout)
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                raise BVException('Could not open connection to raytracer ("%s"). Reason: %s.' % (raytracer, e.strerror))
+            raise e
+            
 
     # picklink 
     def __getstate__(self):
@@ -50,7 +57,6 @@ class TexturedRaytracer:
         query_object = {"class": "query_sensor",
             "position": [position[0], position[1]], 
             "orientation": orientation}
-        
         
         simplejson.dump(query_object, self.p.stdin)
         self.p.stdin.write('\n')

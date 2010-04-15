@@ -30,18 +30,28 @@ The config object:
 	config.dynamics.commands[a].rest 
 	config.dynamics.id 
 
-
 The data object has everything the config has, plus the following:
 
 	# data.timestamp
 
 	data.optics[i].luminance
-	data.optics[i].luminance_deriv
-	
 	data.rangefinder[i].readings
-
 	data.sensels
 	
+All of these fields are 1-dimensional numpy arrays. You may assume
+they are never NAN. Moreover, sensels is normalized between 0 and 1 (FIXME: make this happen)
+
+If derivatives are computed, you also have available:
+
+	data.optics[i].luminance_dot
+	data.rangefinder[i].readings_dot
+	data.sensels_dot 
+	data.commands
+	
+
+Raytracing
+----------
+
 Map format::
 
 	{ 

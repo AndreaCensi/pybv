@@ -1,3 +1,6 @@
+from numpy import multiply
+
+outer = multiply.outer
 
 
 def weighted_average(A,Aweight,B,Bweight=1):

@@ -33,6 +33,8 @@ class Vehicle:
         self.config.controller = controller
         
     def set_state(self, state):
+        if not isinstance(state, RigidBodyState):
+            raise TypeError('Expected RigidBodyState instead of %s' % type(state))
         self.state = state
 
     def compute_observations(self, state=None):

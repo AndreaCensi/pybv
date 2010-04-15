@@ -43,7 +43,7 @@ class WorldInterpretation(unittest.TestCase):
     
     def testArgChecking(self):
         """ Trying some invalid inputs """
-        self.assertRaises(ValueError, self.raytracer.set_map, None)
+        self.assertRaises(TypeError, self.raytracer.set_map, None)
         self.assertRaises(BVException, self.raytracer.set_map, {})
         
         

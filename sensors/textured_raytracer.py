@@ -33,6 +33,11 @@ class TexturedRaytracer:
         self.set_map(d['map'])
         
     def set_map(self, map_object):
+        if not isinstance(map_object, dict):
+            raise TypeError('Expected dict instead of %s' % type(map_object))
+        if not 'objects' in map_object:
+            raise BVException('Expected map_object["objects"]; available keys are %s' % map_object.keys())
+        
         self.map = map_object
         for object in map_object['objects']:
             if object.has_key('texture'):

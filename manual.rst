@@ -1,5 +1,9 @@
 
-PIL
+
+dependencies
+
+jsonstream
+simplejson
 
 Data signatures
 ===============

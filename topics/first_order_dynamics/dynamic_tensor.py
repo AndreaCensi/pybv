@@ -14,7 +14,6 @@ class DynamicTensor:
         y_dot = data.optics[0].luminance_dot 
         u     = data.commands 
         
-        print y_dot
 
         T     = outer( u, outer(y, y_dot) )
 

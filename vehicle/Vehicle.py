@@ -91,15 +91,19 @@ class Vehicle:
         data1 = self.compute_observations(state1)
         data2 = self.compute_observations(state2)
         
+#        print state1,state2
+#        print "data1", data1.sensels[0:5]
+#        print "data2", data2.sensels[0:5]
+        
         for i, data in enumerate(data1.optics):
             average    = (data1.optics[i].luminance + data2.optics[i].luminance)/2
-            derivative = (data2.optics[i].luminance - data2.optics[i].luminance)/dt
+            derivative = (data2.optics[i].luminance - data1.optics[i].luminance)/dt
             data1.optics[i].luminance = average
             data1.optics[i].luminance_dot = derivative
             
         for i, data in enumerate(data1.rangefinder):
             average    = (data1.rangefinder[i].readings + data2.rangefinder[i].readings)/2
-            derivative = (data2.rangefinder[i].readings - data2.rangefinder[i].readings)/dt
+            derivative = (data2.rangefinder[i].readings - data1.rangefinder[i].readings)/dt
             data1.rangefinder[i].readings = average
             data1.rangefinder[i].readings_dot = derivative
 
@@ -108,6 +112,9 @@ class Vehicle:
         derivative = (data2.sensels - data1.sensels)/dt
         data1.sensels = average
         data1.sensels_dot = derivative
+        
+#        print "data1.dot", data1.sensels_dot
+        
         return data1
         
         

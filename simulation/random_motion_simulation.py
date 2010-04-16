@@ -51,6 +51,8 @@ def random_motion_simulation(
         data = vehicle.compute_observations_and_derivatives(state1,state2,dt)
         data.commands =  array(commands)
         
+#        print "\n", data.optics[0].luminance_dot
+        
         state.result.process_data(data)
 
         state.current_iteration += 1

@@ -1,4 +1,5 @@
 import sys, errno
+from copy import deepcopy
 import simplejson
 from jsonstream import JSONStream
 from subprocess import Popen, PIPE
@@ -36,15 +37,19 @@ class TexturedRaytracer:
             raise TypeError('Expected dict instead of %s' % type(map_object))
         if not 'objects' in map_object:
             raise BVException('Expected map_object["objects"]; available keys are %s' % map_object.keys())
-        
+            
+        # get a copy (because later we remove 'texture')
+        map_object = deepcopy(map_object)
+
         self.map = map_object
         for object in map_object['objects']:
             if object.has_key('texture'):
                 texture = object.get('texture')
-                del object['texture']
+                # del object['texture']
             else:
                 # FIXME make this configurable
-                texture = lambda x: 0.5
+                raise ValueError('texture not provided for object %s' % object)
+#                texture = lambda x: 0.5
             if isinstance(texture, str):
                 texture = eval( texture) 
                 

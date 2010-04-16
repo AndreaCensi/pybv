@@ -5,7 +5,7 @@ def create_random_world(radius):
     objects = []
     
     # create arena
-    texture = 'lambda x: sin(x)'
+    texture = 'lambda x: cos(x)'
     
     objects.append( 
         { "class": "circle", "surface": 0, "radius": radius, "center": [0.0,0.0], "texture": texture, "solid_inside": 0}
@@ -21,7 +21,7 @@ def create_random_world(radius):
         diff = 3 * length * numpy.random.randn(2)
         p2 = p1 + diff
         col = 0.3 + numpy.random.rand(1) * 0.5
-        texture = lambda x: col
+        texture = "lambda x: %f" % col
         objects.append( { "class": "polyline", "surface": x+10, "points": [list(p1), list(p2)], "texture": texture})
 
     

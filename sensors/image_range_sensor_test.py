@@ -15,7 +15,7 @@ example_world = {
 		},
 		{
 		 	"class": "circle", "surface": 1,  "radius": 10, "center": [0,0], 
-			"solid_inside": 0
+			"solid_inside": 0, "texture": "lambda x: 0"
 		}
 	]
 }
@@ -42,7 +42,7 @@ class ExampleCircle(unittest.TestCase):
         	"class": "map", 
         	"objects": [
         		{
-        		 	"class": "circle", "surface": 1,  "radius": radius, "center": center, 
+        		 	"class": "circle", "surface": 1,  "radius": radius, "center": center, "texture": "lambda x: 0",
         			"solid_inside": 0
         		}
         	]
@@ -104,7 +104,7 @@ class ExampleCircle(unittest.TestCase):
         			"texture":  "lambda x: sign(sin(x))"
         		},
         		{
-        		 	"class": "circle", "surface": 1,  "radius": 10, "center": [0,0], 
+        		 	"class": "circle", "surface": 1,  "radius": 10, "center": [0,0],  "texture": "lambda x: 0",
         			"solid_inside": 0
         		}
         	]

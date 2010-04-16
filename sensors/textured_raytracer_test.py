@@ -26,7 +26,7 @@ class WorldInterpretation(unittest.TestCase):
         			"texture":  "lambda x: sign(sin(x))"
         		},
         		{
-        		 	"class": "circle", "surface": 1,  "radius": 10, "center": [0,0], 
+        		 	"class": "circle", "surface": 1,  "radius": 10, "center": [0,0],  "texture": 0,
         			"solid_inside": 0
         		}
         	]

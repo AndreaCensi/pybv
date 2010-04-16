@@ -88,7 +88,9 @@ class ImageRangeSensor(TexturedRaytracer):
         
     def process_raw_data(self, data):
         # example {"luminance": [1.0, -1.0, -1.0, -1.0, 1.0], "normal": [1.5707960000000001, 3.1415929999999999, 0.0, 3.1415929999999999, 4.7123889999999999], "region": [0, 0, 0, 0, 0], "surface": [0, 0, 0, 0, 0], "readings": [1.0, 1.406641, 1.0, 1.406641, 1.0], "valid": [1, 1, 1, 1, 1], "curvilinear_coordinate": [6.9992039999999998, 5.9892620000000001, 5.0, 4.0107379999999999, 3.0007959999999998]}
-        proc_data = {}
+        proc_data = data.copy()
+        proc_data['original'] = proc_data['luminance']
+#        proc_data = {} # if you want to be clean
         aux_valid = data['valid']
         valid = []
         for attribute in ['luminance', 'readings']:

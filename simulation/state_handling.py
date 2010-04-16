@@ -1,5 +1,6 @@
 import os, sys
 import pickle
+from pybv import BVException
 
 def filename_for_job(job_id):
     """ Returns the pickle storage filename corresponding to the job id """
@@ -23,7 +24,8 @@ def save_state(job_id, state):
 
 def load_state(job_id):
     """ load the state  """
-    assert(is_state_available(job_id))
+    if not is_state_available(job_id):
+        raise BVException('Could not find job %s' % job_id)
     filename = filename_for_job(job_id)
     file = open(filename, 'r')
     state = pickle.load(file)

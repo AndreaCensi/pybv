@@ -1,5 +1,6 @@
 import sys, os
-from numpy import random, array
+from numpy import random, array, isnan
+from pybv import BVException
 from pybv.worlds import  get_safe_pose
 from pybv.utils import RigidBodyState, OpenStruct
 from pybv.sensors import TexturedRaytracer       
@@ -22,7 +23,9 @@ def random_motion_simulation(
     raytracer.set_map(world)
         
     # FIXME check whether the computation is the same or parameters changed
-    if is_state_available(job_id):
+    force_recompute = any([x == 'recompute' for x in sys.argv])
+    
+    if (not force_recompute) and is_state_available(job_id):
         state = load_state(job_id)
         if state.current_iteration >= state.total_iterations:
             print "%s: using cached results." % job_id
@@ -45,11 +48,20 @@ def random_motion_simulation(
         commands = random_commands_gen(state.current_iteration, vehicle)
 
         state1 = random_pose_gen(state.current_iteration)
+        
+        if state1 is None:
+            raise BVException('Could not generate a random pose.')
+            
         dt = 0.1
         state2 = vehicle.dynamics.evolve_state(state1, commands, dt)
         
         data = vehicle.compute_observations_and_derivatives(state1,state2,dt)
         data.commands =  array(commands)
+ 
+        if any(isnan(data.sensels)):
+            print "pose1", state1
+            print "pose2", state2
+            raise BVException('Some sensels were NaN. %s' % str(data.sensels))
         
 #        print "\n", data.optics[0].luminance_dot
         

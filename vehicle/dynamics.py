@@ -1,4 +1,5 @@
 from pybv.utils import RigidBodyState, aslist, OpenStruct
+from numpy import cos, sin
 
 class Command:
     def __init__(self, id, desc, min, max, rest):
@@ -53,10 +54,16 @@ class OmnidirectionalKinematics(Dynamics):
         x = start_state.get_2d_position()[0]
         y = start_state.get_2d_position()[1]
         theta = start_state.get_2d_orientation()
+        vx = commands.vx
+        vy = commands.vy
         
         # XXX Simple Euler for now; change later
-        x1 = x + commands.vx  * dt
-        y1 = y + commands.vy  * dt
+        # FIXME
+        c = cos(theta)
+        s = sin(theta)
+        
+        x1 = x + (vx * c + vy  * (-s)) * dt
+        y1 = y + (vx * s + vy  * c ) * dt
         theta1 = theta + commands.omega  * dt
         
         result = RigidBodyState()

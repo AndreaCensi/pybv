@@ -37,10 +37,10 @@ class Vehicle:
             raise TypeError('Expected RigidBodyState instead of %s' % type(state))
         self.state = state
 
-    def compute_observations(self, state=None):
+    def compute_observations(self, vehicle_state=None):
         """ Computes the sensor observations at a certain state """
-        if state is None:
-            state = self.state
+        if vehicle_state is None:
+            vehicle_state = self.state
             
         data = OpenStruct()
         data.sensels = []
@@ -48,7 +48,7 @@ class Vehicle:
         data.optics = []
         for i, sensor in enumerate(self.config.optics):
             # FIXME add translation from base pose
-            sensor_pose = state
+            sensor_pose = vehicle_state
             sensor_data = sensor.render(sensor_pose)
             sensor_data = OpenStruct(**sensor_data)
             sensor_data.luminance = array( sensor_data.luminance )
@@ -59,7 +59,7 @@ class Vehicle:
         data.rangefinder = []
         for i, sensor in enumerate(self.config.rangefinder):
             # FIXME add translation
-            sensor_pose = state
+            sensor_pose = vehicle_state
             sensor_data = sensor.render(sensor_pose)
             sensor_data = OpenStruct(**sensor_data)
             sensor_data.readings = array(sensor_data.readings)
@@ -87,7 +87,7 @@ class Vehicle:
                 but with some members added (``luminance_dot``, ``readings_dot``, 
                 ``sensels_dot``).
                 
-        """
+        """        
         data1 = self.compute_observations(state1)
         data2 = self.compute_observations(state2)
         
@@ -96,12 +96,13 @@ class Vehicle:
             derivative = (data2.optics[i].luminance - data2.optics[i].luminance)/dt
             data1.optics[i].luminance = average
             data1.optics[i].luminance_dot = derivative
-
+            
         for i, data in enumerate(data1.rangefinder):
             average    = (data1.rangefinder[i].readings + data2.rangefinder[i].readings)/2
             derivative = (data2.rangefinder[i].readings - data2.rangefinder[i].readings)/dt
-            data1.rangefinder[i].readings = readings
-            data1.rangefinder[i].readings_dot = readings
+            data1.rangefinder[i].readings = average
+            data1.rangefinder[i].readings_dot = derivative
+
         
         average = (data1.sensels + data2.sensels)/2
         derivative = (data2.sensels - data1.sensels)/dt

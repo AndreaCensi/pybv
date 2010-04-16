@@ -22,9 +22,8 @@ class TexturedRaytracer:
             if e.errno == errno.ENOENT:
                 raise BVException('Could not open connection to raytracer ("%s"). Reason: %s.' % (raytracer, e.strerror))
             raise e
-            
 
-    # picklink 
+    # pickling
     def __getstate__(self):
         return {'map': self.map, 'raytracer': self.raytracer}
     def __setstate__(self, d):
@@ -44,6 +43,7 @@ class TexturedRaytracer:
                 texture = object.get('texture')
                 del object['texture']
             else:
+                # FIXME make this configurable
                 texture = lambda x: 0.5
             if isinstance(texture, str):
                 texture = eval( texture) 
@@ -57,6 +57,9 @@ class TexturedRaytracer:
         self.p.stdin.write('\n') 
         
     def query_sensor(self, position, orientation):
+        if self.map is None:
+            raise BVException('Sensor queried before map was defined.')
+            
         position = aslist(position)
         orientation = asscalar(orientation)
         query_object = {"class": "query_sensor",
@@ -78,7 +81,7 @@ class TexturedRaytracer:
                 luminance.append( asscalar(texture(coord))  )
             else:
                 luminance.append( float('nan')  )
-
+        
         answer['luminance'] = luminance
         
         return answer
@@ -105,32 +108,31 @@ class TexturedRaytracer:
         hit = answer['intersects']
         surface = answer['surface']
         
-        return hit, surface
-        
+        return hit, surface    
     
-    def filter_json_streams(self, input, output):
-        sr = JSONStream(input)
-        while True:
-            jo = sr.read_next()
-            if jo is None:
-                break
-
-            if jo['class'] == 'map':
-                self.set_map(jo)  
-            elif jo['class'] == 'sensor':
-                self.set_sensor(jo)  
-            elif jo['class'] == 'query':
-                ### FIXME this is broken
-                answer = self.query(jo)
-                simplejson.dump(answer, output)
-                output.write('\n')
-            else:
-                raise Exception, "Uknown format: %s" % jo
-
+    # def filter_json_streams(self, input, output):
+    #      sr = JSONStream(input)
+    #      while True:
+    #          jo = sr.read_next()
+    #          if jo is None:
+    #              break
+    # 
+    #          if jo['class'] == 'map':
+    #              self.set_map(jo)  
+    #          elif jo['class'] == 'sensor':
+    #              self.set_sensor(jo)  
+    #          elif jo['class'] == 'query':
+    #              ### FIXME this is broken
+    #              answer = self.query(jo)
+    #              simplejson.dump(answer, output)
+    #              output.write('\n')
+    #          else:
+    #              raise Exception, "Uknown format: %s" % jo
+ 
 
     
 if __name__ == '__main__':
     tr = TexturedRaytracer('raytracer2')
     ### FIXME this is broken (see filter_json_streams )
-    tr.filter_json_streams(sys.stdin, sys.stderr)
+#    tr.filter_json_streams(sys.stdin, sys.stderr)
     

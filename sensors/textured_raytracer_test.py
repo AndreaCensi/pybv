@@ -14,7 +14,6 @@ class Setup(unittest.TestCase):
         
         
 class WorldInterpretation(unittest.TestCase):
-    
             
     def setUp(self):
         self.raytracer = TexturedRaytracer()
@@ -34,17 +33,10 @@ class WorldInterpretation(unittest.TestCase):
         }
     
     def testWorldInterpretation(self):
-        """ Trying to load an example map """
+        """ Trying to load a canonical example map """
         self.assert_(self.raytracer.set_map, self.example_world)
 
-    def testWorldInterpretation(self):
-        """ Trying to load an example map """
-        self.assert_(self.raytracer.set_map, self.example_world)
-    
     def testArgChecking(self):
         """ Trying some invalid inputs """
         self.assertRaises(TypeError, self.raytracer.set_map, None)
         self.assertRaises(BVException, self.raytracer.set_map, {})
-        
-        
-    

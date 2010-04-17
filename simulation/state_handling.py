@@ -31,9 +31,9 @@ def is_state_available(job_id):
 def save_state(job_id, state):
     """ Save the state  """
     filename = filename_for_job(job_id)
-    dirname = dirname(filename)
-    if not exists(dirname):
-        os.makedirs(dirname)
+    directory = dirname(filename)
+    if not exists(directory):
+        os.makedirs(directory)
     
     file = open(filename, 'w')
     pickle.dump(state, file, pickle.HIGHEST_PROTOCOL)

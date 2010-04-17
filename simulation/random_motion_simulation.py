@@ -29,8 +29,7 @@ def random_motion_simulation(
     
     if (not force_recompute) and is_state_available(job_id):
         state = load_state(job_id)
-        if (not add_iterations) and 
-           (state.current_iteration >= state.total_iterations):
+        if (not add_iterations) and (state.current_iteration >= state.total_iterations):
             print "%s: using cached results." % job_id
             return state.result
         

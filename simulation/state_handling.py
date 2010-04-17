@@ -2,9 +2,19 @@ import os, sys
 import pickle
 from pybv import BVException
 
+basepath = '~/svn/cds/pri/bv/src/pybv_experiments_results'
+
+
 def filename_for_job(job_id):
     """ Returns the pickle storage filename corresponding to the job id """
-    return os.path.join(os.path.dirname(sys.argv[0]), 'computation', str(job_id) + '.pickle')
+    #os.path.join(os.path.dirname(sys.argv[0])
+    filename =  os.path.join(basepath, 'computation', str(job_id) + '.pickle')
+    filename = os.path.expanduser(filename)
+    dirname = os.path.dirname(filename)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+    return filename
+    
 
 def is_state_available(job_id):
     """ Returns true if there is a previous instance saved """

@@ -6,6 +6,7 @@ from pybv.utils import RigidBodyState, OpenStruct
 from pybv.sensors import TexturedRaytracer       
 from state_handling import is_state_available, save_state, load_state
 from utils import create_progress_bar
+from time import time
       
 def random_motion_simulation(
     job_id, world, vehicle, 
@@ -43,6 +44,7 @@ def random_motion_simulation(
     while state.current_iteration < state.total_iterations:
         
         if state.current_iteration % save_every == 0:
+            state.timestamp = time()
             save_state(job_id, state)
         
         commands = random_commands_gen(state.current_iteration, vehicle)
@@ -71,6 +73,7 @@ def random_motion_simulation(
         pbar.update(state.current_iteration)
 
     pbar.update(state.current_iteration)
+    state.timestamp = time()
     save_state(job_id, state)
     
     return state.result

@@ -4,6 +4,7 @@ from pybv.utils import RigidBodyState, assert_type, assert_has_key, ascolumn
 # This is necessary to allow arbitrary functions for source strength 
 import math, numpy
 
+
 class OlfactionSensor:
     def __init__(self):
         self.num_photoreceptors = 0
@@ -31,6 +32,9 @@ class OlfactionSensor:
             assert_type(components, dict)
             for chemical, value in components.items():
                 assert_type(chemical, str)
+                if isinstance(value, str):
+                    value = eval(value)
+                    components[chemical] = value
                 assert_type(value, [int, float, type(lambda x:0) ])
                 self.all_chemicals.add(chemical)
             if len(components.keys()) == 0:
@@ -74,7 +78,6 @@ class OlfactionSensor:
             smell[chemical] = 0
         
         for source_position, components in self.sources:
-            print position, source_position
             distance = linalg.norm( ascolumn(position) - ascolumn(source_position) )
             for chemical, effect_function in components.items():
                 effect = evaluate_effect(effect_function, distance)
@@ -86,7 +89,6 @@ class OlfactionSensor:
         # iterate over receptors
         for receptor_pose, sensitivity in self.receptors:
             pose = vehicle_pose.oplus(receptor_pose)
-            print receptor_pose.position, vehicle_pose.position, pose.position
             # compute all the contributions at this position
             smell = self.compute_smell(pose.position)
             total_value = 0

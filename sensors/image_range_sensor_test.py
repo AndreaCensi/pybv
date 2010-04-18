@@ -88,11 +88,16 @@ class ExampleCircle(unittest.TestCase):
             distance_to_center = linalg.norm( points[:, i] - center_world )
             self.assertAlmostEqual(distance_to_center, radius, 5)
         
-    def testRaytracing(self):
-        
+    def testCircleRaytracing(self):
+        """ Testing circle raytracing """
         self.try_with(center=[10,10], radius=10, position=[15,10], orientation=20)
         self.try_with(center=[10,10], radius=10, position=[25,10], orientation=0)
 
+    def testLineRaytracing(self):
+    	""" Testing segments raytracing """
+        # TODO: write this test
+        pass
+       
     def setUp(self):
         self.raytracer = ImageRangeSensor()
         self.example_world = { 

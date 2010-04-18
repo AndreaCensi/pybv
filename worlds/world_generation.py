@@ -11,7 +11,6 @@ def create_random_world(radius):
         { "class": "circle", "surface": 0, "radius": radius, "center": [0.0,0.0], "texture": texture, "solid_inside": 0}
     )
     
-    world = {"class": "map", "objects": objects}
     
     num_lines = 10
     length = radius / 30.0
@@ -24,13 +23,16 @@ def create_random_world(radius):
         texture = "lambda x: %f" % col
         objects.append( { "class": "polyline", "surface": x+10, "points": [list(p1), list(p2)], "texture": texture})
 
+
+    olfaction_sources = []    
     num_sources = 10
     for x in range(num_sources):
-        p1 = radius * 2 * (numpy.random.rand(2)-0.5)
-        intensity = numpy.random.rand(radius)
-        dist_func = "lambda dist: exp(- dist / %f ) " % scale
-        objects.append( { "class": "polyline", "surface": x+10, "points": [list(p1), list(p2)], "texture": texture})
-
-    
+        position = list(radius * 2 * (numpy.random.rand(2)-0.5))
+        position.append(1)
+        scale = numpy.random.rand(1) * radius
+        dist_func = "lambda dist: math.exp(- dist / %f ) " % scale
+        olfaction_sources.append( {  "position": position, 'components': { 'food': dist_func } })
+        
+    world = {"class": "map", "objects": object, "olfaction_sources": olfaction_sources}
     
     return world 

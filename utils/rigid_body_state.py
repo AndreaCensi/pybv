@@ -53,9 +53,7 @@ class RigidBodyState:
         # TODO: check that attitude is indeed a rotation matrix
         
         self.position = position 
-        self.attitude = attitude
-     #   self.linear_velocity_body = zeros((3,1))
-     #   self.angular_velocity_body = zeros((3,1))
+        self.attitude = attitude 
         
     def get_2d_position(self):
         """ Get 2-vector corresponding to x,y components """
@@ -70,10 +68,12 @@ class RigidBodyState:
         rotated = dot( self.attitude, forward)
         angle = atan2( rotated[1,0], rotated[0,0])
         return float(angle)
-        
+    
+    # TODO: remove, make immutable
     def set_2d_orientation(self, theta):
         self.attitude = rotz(theta)
-        
+    
+    # TODO: remove, make immutable    
     def set_2d_position(self, position):
         position = aslist(position)
         self.position[0] = position[0]
@@ -113,7 +113,7 @@ class RigidBodyState:
         """ Returns a tuple containing the distance in (m, rad) between two configurations """
         T = dot(self.attitude.transpose(), other.attitude ).trace() 
         C = (T - 1) / 2
-        # make sure that |C| <= 1 (compensate numerical errors)
+        # make sure that |C| <= 1 (compensate numerical errors), otherwise arccos(1+eps) = nan
         if C > 1: 
             C = 1
         if C < -1:

@@ -5,8 +5,10 @@ from jsonstream import JSONStream
 from subprocess import Popen, PIPE
 # Mainly because we want to use user-defined textures
 from numpy import *
-from pybv.utils import aslist, asscalar
+
+from pybv.utils import aslist, asscalar, assert_type, assert_has_key
 from pybv import BVException
+
 
 class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
@@ -42,7 +44,12 @@ class TexturedRaytracer:
         map_object = deepcopy(map_object)
 
         self.map = map_object
-        for object in map_object['objects']:
+
+        assert_has_key(map_object, 'objects')
+        objects = map_object['objects']
+        assert_type(objects, list)
+        for object in objects:
+            assert_type(object, dict)
             if object.has_key('texture'):
                 texture = object.get('texture')
                 # del object['texture']

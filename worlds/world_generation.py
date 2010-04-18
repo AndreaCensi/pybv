@@ -33,6 +33,6 @@ def create_random_world(radius):
         dist_func = "lambda dist: math.exp(- dist / %f ) " % scale
         olfaction_sources.append( {  "position": position, 'components': { 'food': dist_func } })
         
-    world = {"class": "map", "objects": object, "olfaction_sources": olfaction_sources}
+    world = {"class": "map", "objects": objects, "olfaction_sources": olfaction_sources}
     
     return world 

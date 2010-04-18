@@ -20,6 +20,7 @@ def aslist(v):
         raise TypeError, "aslist() does not support type %s " % type(v)
     
 def asscalar(v):
+    """ Tries to convert something to a scalar float """
     if isinstance(v, float):
         return v
     elif isinstance(v, int):
@@ -41,8 +42,9 @@ def ascolumn(v):
     return v.reshape((n,1))
     
     
-    
+# TODO: move this somewhere else
 def cov2corr(M):
+    """ Converts a covariance matrix to a correlation matrix. """
     if (not isinstance(M, numpy.ndarray)) or (not (len(M.shape) == 2)) or (not(M.shape[0]==M.shape[1])):
         raise ValueError('cov2corr expects a square ndarray, got %s' % M)
 
@@ -77,4 +79,29 @@ def assert_has_key(d, key):
         raise ValueError('I expected dictionary has key "%s", found %s' % (key, d.keys()) )
 
 
+import pickle
+from  StringIO import StringIO
+
+def make_sure_pickable(obj):
+    """ Function used in the unit tests. Makes sure that something 
+        is pickable by dumping and loading.
+        
+        Args:
+            obj:  any object which is supposedly pickable
+            
+        Returns:
+            the object reloaded after pickling
+         """ 
+    sio_out = StringIO()
+    pickle.dump(obj, sio_out)
+    sio_in = StringIO(sio_out.getvalue())
+    return pickle.load(sio_in)
+     
+import simplejson   
+def make_sure_json_encodable(obj):
+    """ Function used in the unit tests. Makes sure that something 
+        can be written as json. """
+    sio_out = StringIO()
+    simplejson.dump(obj, sio_out)
+    
     

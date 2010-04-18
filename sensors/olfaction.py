@@ -3,17 +3,35 @@ from pybv.utils import RigidBodyState, assert_type, assert_has_key, ascolumn
 
 # This is necessary to allow arbitrary functions for source strength 
 import math, numpy
+from copy import deepcopy
+
 
 
 class OlfactionSensor:
     def __init__(self):
-        self.num_photoreceptors = 0
+        self.num_receptors = 0
         self.receptors = []
         
-        self.sources = []
-        self.all_chemicals = set()
+        self.map = None
+    
+    # pickling: we do not want the lambdas
+    def __getstate__(self):
+        return {'map': self.map, 'receptors': self.receptors}
+    def __setstate__(self, d):
+        self.receptors=d['receptors']
+        self.num_receptors = len(self.receptors)
+        if d['map'] is not None:
+            self.set_map(d['map'])
     
     def set_map(self, map):
+        # we will modify "map" throughout
+        map = deepcopy(map)
+        # also we make a copy for pickling
+        self.map = deepcopy(map)
+
+        self.all_chemicals = set()
+        self.sources = []
+
         assert_type(map, dict)        
         sources_key = 'olfaction_sources'
         assert_has_key(map, sources_key)
@@ -58,6 +76,7 @@ class OlfactionSensor:
            assert_type(value, [int, float, type(lambda x:0) ])
     
         self.receptors.append( (pose, sensitivity) )
+        self.num_receptors += 1
     
     def compute_smell(self, position):
         """ Compute the smell at a certain position.
@@ -93,7 +112,8 @@ class OlfactionSensor:
             smell = self.compute_smell(pose.position)
             total_value = 0
             for chemical, coefficient in sensitivity.items():
-                total_value += coefficient * smell[chemical]
+                if smell.has_key(chemical):
+                    total_value += coefficient * smell[chemical]
             response.append(total_value) 
     
         return { 'response' : response }

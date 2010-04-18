@@ -1,9 +1,12 @@
-from pybv.sensors import ImageRangeSensor
-from pybv.utils import RigidBodyState
-from pybv import BVException
 import unittest
 from numpy import *
 import numpy
+
+from pybv import BVException
+from pybv.sensors import ImageRangeSensor
+from pybv.utils import RigidBodyState
+from pybv.worlds import create_random_world
+
 
 example_world = { 
 	"class": "map", 
@@ -34,8 +37,7 @@ class ExampleNotset(unittest.TestCase):
         raytracer.set_map(example_world)
         self.assertRaises( BVException, raytracer.render, RigidBodyState() )
         
-
-
+        
 class ExampleCircle(unittest.TestCase):
     def try_with(self, center, radius, position, orientation):
         world = { 
@@ -115,3 +117,10 @@ class ExampleCircle(unittest.TestCase):
         	]
         }
         self.raytracer.set_map(self.example_world)
+        
+        
+class WorldGeneration2(unittest.TestCase):
+	def testWorldGeneration(self):
+		""" Testing if we can parse the output of world generation utils """
+		sensor = ImageRangeSensor()
+		sensor.set_map(create_random_world(10))

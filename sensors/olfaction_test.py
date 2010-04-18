@@ -1,9 +1,11 @@
 import unittest
+import math
+import numpy
+from copy import deepcopy
 
 from pybv.sensors import OlfactionSensor
-from pybv.utils import RigidBodyState
+from pybv.utils import RigidBodyState, make_sure_pickable
 from pybv.worlds import create_random_world
-import math, numpy
 
 
 class ParsingTest(unittest.TestCase):
@@ -64,12 +66,31 @@ class ParsingTest(unittest.TestCase):
         os = self.createSimpleOlfactionSensor()
         os.set_map(world)
         os.compute_observations(RigidBodyState())
-        
-        
+           
     def createSimpleOlfactionSensor(self):
         os = OlfactionSensor()
         os.add_receptor(RigidBodyState(position=[0.3,0]), { 'food': 1 } )
         return os
+        
+    def testPickling(self):
+        """ Make sure we can pickle this sensor """
+        make_sure_pickable( self.createSimpleOlfactionSensor() )
+    
+    def testPickling2(self):
+        """ Pickling after map loading """
+        os = self.createSimpleOlfactionSensor() 
+        os.set_map(create_random_world(10))
+        make_sure_pickable(os)
+    
+    def testIntegrity(self):
+        """ Make sure that this sensor does not modify the map object """
+        os = self.createSimpleOlfactionSensor()
+        map =  create_random_world(10)
+        map_original = deepcopy(map)
+        os.set_map(map)
+        self.assertEqual(map, map_original)
+
+
         
         
         

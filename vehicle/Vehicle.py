@@ -1,5 +1,6 @@
-from pybv.utils import OpenStruct, RigidBodyState
 from numpy import array
+
+from pybv.utils import OpenStruct, RigidBodyState
 
 class Vehicle:
     def __init__(self):
@@ -14,21 +15,22 @@ class Vehicle:
         self.dynamics = None
         self.state = RigidBodyState()
         
-        
     def add_olfaction_sensor(self, sensor, mountpoint=None):
         if mountpoint is None:
             mountpoint = RigidBodyState()
         self.config.olfaction.append(sensor)
         self.config.num_sensels += sensor.num_receptors
             
-    def add_optic_sensor(self, sensor, mountpoint):
+    def add_optic_sensor(self, sensor, mountpoint=None):
         if mountpoint is None:
             mountpoint = RigidBodyState()
         # FIXME add mountpoint 
         self.config.optics.append(sensor)
         self.config.num_sensels += sensor.num_photoreceptors
     
-    def add_rangefinder(self, sensor, mountpoint=RigidBodyState()):
+    def add_rangefinder(self, sensor, mountpoint=None):
+        if mountpoint is None:
+            mountpoint = RigidBodyState()
         # FIXME add mountpoint 
         self.config.rangefinder.append(sensor)
         self.config.num_sensels += sensor.num_readings
@@ -80,7 +82,7 @@ class Vehicle:
         for i, sensor in enumerate(self.config.olfaction):
             # FIXME add translation from base pose
             sensor_pose = vehicle_state
-            sensor_data = sensor.render(sensor_pose)
+            sensor_data = sensor.compute_observations(sensor_pose)
             sensor_data = OpenStruct(**sensor_data)
             sensor_data.response = array( sensor_data.response )
             data.optics.append( sensor_data )
@@ -112,10 +114,6 @@ class Vehicle:
         data1 = self.compute_observations(state1)
         data2 = self.compute_observations(state2)
         
-#        print state1,state2
-#        print "data1", data1.sensels[0:5]
-#        print "data2", data2.sensels[0:5]
-        
         for i, data in enumerate(data1.optics):
             average    = (data1.optics[i].luminance + data2.optics[i].luminance)/2
             derivative = (data2.optics[i].luminance - data1.optics[i].luminance)/dt
@@ -137,9 +135,7 @@ class Vehicle:
         average = (data1.sensels + data2.sensels)/2
         derivative = (data2.sensels - data1.sensels)/dt
         data1.sensels = average
-        data1.sensels_dot = derivative
-        
-#        print "data1.dot", data1.sensels_dot
+        data1.sensels_dot = derivative 
         
         return data1
         

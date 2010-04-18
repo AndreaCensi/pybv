@@ -1,13 +1,57 @@
-from numpy import zeros, eye, dot, array, linalg, deg2rad, arccos
+from numpy import zeros, eye, dot, array, linalg, deg2rad, arccos, ndarray
 from math import atan2, sin, cos
-from misc  import aslist
+from misc  import aslist, ascolumn
 
+
+def rotz(theta):
+    return array([ 
+            [ cos(theta), -sin(theta), 0], 
+            [ sin(theta), cos(theta), 0], 
+            [0,0,1]] ) 
+    
 class RigidBodyState:
     def __init__(self, position = None, attitude = None):
+        """ Initialize the object.
+        
+            Position can be:
+            * None (-> [0,0,0] )
+            * a list or vector (row or column) with 2 or 3 elements
+            
+            Attitude can be:
+            * None (-> identity)
+            * a float (2d orientation, interpreted as angle around z axis)
+            * a (3,3) ndarray 
+            
+            Other values will raise ValueError or TypeError.
+        
+            After initialization:
+                 self.position is a (3,1) vector
+                 self.attitude is a (3,3) vector 
+        """
         if position == None:
             position = zeros((3,1))
         if attitude == None:
             attitude = eye(3)
+            
+        if not ( isinstance(position, list) or isinstance(position, ndarray) ):
+            raise TypeError('Wrong type %s for position' % type(position) )
+        position = ascolumn(position)
+        if not ( 2 <= len(position) <= 3 ):
+            raise ValueError('Wrong value %s for position' % position)
+        if len(position) == 2:
+            position = ascolumn([position[0,0],position[1,0],0])
+        
+        if not ( isinstance(attitude, float) or isinstance(attitude, int) or \
+                     isinstance(attitude, ndarray) ):
+            raise TypeError('Wrong type %s for attitude' % type(attitude) )
+        
+        if isinstance(attitude, float) or isinstance(attitude, int):
+            attitude = rotz(attitude)
+        if isinstance(attitude, ndarray):
+            if not attitude.shape == (3,3):
+                raise ValueError('Bad shape for attitude: %s' % attitude.shape) 
+        # TODO: check that attitude is indeed a rotation matrix
+        
         self.position = position 
         self.attitude = attitude
      #   self.linear_velocity_body = zeros((3,1))
@@ -28,10 +72,7 @@ class RigidBodyState:
         return float(angle)
         
     def set_2d_orientation(self, theta):
-        self.attitude = array([ 
-            [ cos(theta), -sin(theta), 0], 
-            [ sin(theta), cos(theta), 0], 
-            [0,0,1]] ) 
+        self.attitude = rotz(theta)
         
     def set_2d_position(self, position):
         position = aslist(position)

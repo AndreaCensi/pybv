@@ -6,13 +6,24 @@ class Vehicle:
         self.config = OpenStruct()
         self.config.optics = []
         self.config.rangefinder = []
+        self.config.olfaction = []
+        
         self.config.num_sensels = 0 
         self.config.num_commands = 0 
         
         self.dynamics = None
         self.state = RigidBodyState()
         
-    def add_optic_sensor(self, sensor, mountpoint=RigidBodyState()):
+        
+    def add_olfaction_sensor(self, sensor, mountpoint=None):
+        if mountpoint is None:
+            mountpoint = RigidBodyState()
+        self.config.olfaction.append(sensor)
+        self.config.num_sensels += sensor.num_receptors
+            
+    def add_optic_sensor(self, sensor, mountpoint):
+        if mountpoint is None:
+            mountpoint = RigidBodyState()
         # FIXME add mountpoint 
         self.config.optics.append(sensor)
         self.config.num_sensels += sensor.num_photoreceptors
@@ -66,6 +77,16 @@ class Vehicle:
             data.rangefinder.append( sensor_data )
             data.sensels.extend( sensor_data.readings )
 
+        for i, sensor in enumerate(self.config.olfaction):
+            # FIXME add translation from base pose
+            sensor_pose = vehicle_state
+            sensor_data = sensor.render(sensor_pose)
+            sensor_data = OpenStruct(**sensor_data)
+            sensor_data.response = array( sensor_data.response )
+            data.optics.append( sensor_data )
+            # FIXME Look for NAN
+            data.sensels.extend(sensor_data.response)
+
         data.sensels = array(data.sensels)
         
         return data
@@ -107,7 +128,12 @@ class Vehicle:
             data1.rangefinder[i].readings = average
             data1.rangefinder[i].readings_dot = derivative
 
-        
+        for i, data in enumerate(data1.olfaction):
+            average    = (data1.olfaction[i].response + data2.olfaction[i].response)/2
+            derivative = (data2.olfaction[i].response - data1.olfaction[i].response)/dt
+            data1.rangefinder[i].response = average
+            data1.rangefinder[i].response_dot = derivative
+
         average = (data1.sensels + data2.sensels)/2
         derivative = (data2.sensels - data1.sensels)/dt
         data1.sensels = average

@@ -1,7 +1,7 @@
 
 from pybv.utils import RigidBodyState
 import unittest
-from numpy import random, pi, array
+from numpy import random, pi, array, ndarray
 from numpy.testing import *
 
 class CompositionTests(unittest.TestCase):
@@ -25,6 +25,15 @@ class CompositionTests(unittest.TestCase):
         identity = RigidBodyState()
         assert_almost_equal( identity.position, array([[0],[0],[0]]) )
         assert_almost_equal( identity.attitude, array([[1,0,0],[0,1,0],[0,0,1]]) )
+        
+        self.assertRaises( (TypeError, ValueError), RigidBodyState, position=1)
+        self.assertRaises( (TypeError, ValueError), RigidBodyState, position=[1,2,3,4])
+        self.assertRaises( (TypeError, ValueError), RigidBodyState, attitude=[1,2,3,4])
+
+        self.assertTrue( isinstance(RigidBodyState(position=[0,0]).position, ndarray ))
+        self.assertEqual( RigidBodyState(position=[0,0]).position.shape, (3,1) )
+        self.assertEqual( RigidBodyState(attitude=0).attitude.shape, (3,3) )
+        
   
     def testIdentity(self):
         """ Test that identity is neutral element """

@@ -24,5 +24,13 @@ def create_random_world(radius):
         texture = "lambda x: %f" % col
         objects.append( { "class": "polyline", "surface": x+10, "points": [list(p1), list(p2)], "texture": texture})
 
+    num_sources = 10
+    for x in range(num_sources):
+        p1 = radius * 2 * (numpy.random.rand(2)-0.5)
+        intensity = numpy.random.rand(radius)
+        dist_func = "lambda dist: exp(- dist / %f ) " % scale
+        objects.append( { "class": "polyline", "surface": x+10, "points": [list(p1), list(p2)], "texture": texture})
+
+    
     
     return world 

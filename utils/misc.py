@@ -63,4 +63,18 @@ def cov2corr(M):
         
     return R
     
+
+def assert_type(x, t):
+    if isinstance(t, list):
+        if not any([isinstance(x,tt) for tt in t]):
+            raise TypeError('Expected %s, got a %s', t, type(x))
+    else:
+        if not isinstance(x, t):
+            raise TypeError('Expected a %s, got a %s', t, type(x))
+    
+def assert_has_key(d, key):
+    if not d.has_key(key):
+        raise ValueError('I expected dictionary has key "%s", found %s' % (key, d.keys()) )
+
+
     

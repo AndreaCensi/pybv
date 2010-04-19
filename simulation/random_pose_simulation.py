@@ -27,12 +27,17 @@ def random_pose_simulation(
     raytracer.set_map(world)
         
     force_recompute = any([x == 'recompute' for x in sys.argv])
-    
+    add_iterations = any([x == 'more' for x in sys.argv])
+
     if (not force_recompute) and is_state_available(job_id):
         state = load_state(job_id)
-        if state.current_iteration >= state.total_iterations:
+        if (not add_iterations) and (state.current_iteration >= state.total_iterations):
             print "%s: using cached results." % job_id
             return state.result
+        
+        if add_iterations:
+            state.total_iterations += num_iterations
+      
     else:
         state = OpenStruct()
         state.current_iteration = 0

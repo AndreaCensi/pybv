@@ -20,6 +20,9 @@ def random_pose_simulation(
     random_pose_gen:  lambda iteration -> RigidBodyState
     processing_class
     """
+    # sets the map for all sensors
+    vehicle.set_map(world)
+    
     raytracer = TexturedRaytracer()
     raytracer.set_map(world)
         

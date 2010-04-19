@@ -3,7 +3,7 @@ from numpy import *
 import numpy
 
 from pybv import BVException
-from pybv.sensors import ImageRangeSensor
+from pybv.sensors import ImageRangeSensor, Rangefinder, Optics
 from pybv.utils import RigidBodyState
 from pybv.worlds import create_random_world
 
@@ -27,13 +27,13 @@ class ExampleNotset(unittest.TestCase):
 
     def testInitWorld(self):
         """ Make sure that there is an expection if world not passed """
-        raytracer = ImageRangeSensor()
+        raytracer = Rangefinder()
         raytracer.add_photoreceptors([0],0.01,0.01)
         self.assertRaises( BVException, raytracer.render, RigidBodyState() )
         
     def testInitSensor(self):
         """ Make sure that there is an expection if photoreceptors not defined """
-        raytracer = ImageRangeSensor()
+        raytracer = Rangefinder()
         raytracer.set_map(example_world)
         self.assertRaises( BVException, raytracer.render, RigidBodyState() )
         
@@ -50,7 +50,7 @@ class ExampleCircle(unittest.TestCase):
         	]
         }
         
-        raytracer = ImageRangeSensor(min_num_aux=1)
+        raytracer = Rangefinder(min_num_aux=1)
         raytracer.set_map(world)
         raytracer.add_photoreceptors( linspace(-deg2rad(170), deg2rad(170), 180), 
             spatial_sigma=deg2rad(0.5), sigma = 0.01 )
@@ -101,7 +101,7 @@ class ExampleCircle(unittest.TestCase):
         pass
        
     def setUp(self):
-        self.raytracer = ImageRangeSensor()
+        self.raytracer = Rangefinder()
         self.example_world = { 
         	"class": "map", 
         	"objects": [
@@ -122,5 +122,5 @@ class ExampleCircle(unittest.TestCase):
 class WorldGeneration2(unittest.TestCase):
 	def testWorldGeneration(self):
 		""" Testing if we can parse the output of world generation utils """
-		sensor = ImageRangeSensor()
+		sensor = Rangefinder()
 		sensor.set_map(create_random_world(10))

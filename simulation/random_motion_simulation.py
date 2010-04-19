@@ -20,6 +20,10 @@ def random_motion_simulation(
     random_commands_gen:  lambda iteration, vehicle -> castable to float list
     processing_class
     """
+    
+    # sets the map for all sensors
+    vehicle.set_map(world)
+    
     raytracer = TexturedRaytracer()
     raytracer.set_map(world)
         

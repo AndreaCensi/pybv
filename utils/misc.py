@@ -73,11 +73,18 @@ def assert_type(x, t):
     else:
         if not isinstance(x, t):
             raise TypeError('Expected a %s, got a %s' % (t, type(x)) )
-    
+    return True
+
 def assert_has_key(d, key):
     if not d.has_key(key):
         raise ValueError('I expected dictionary has key "%s", found %s' % (key, d.keys()) )
+    return True
 
+def assert_1d_ndarray(x):
+    assert_type(x, ndarray)
+    if len(x.shape) > 1:
+        raise ValueError('Expected a 1d ndarray, but got shape = %s' % str(x.shape))
+    return True
 
 import pickle
 from  StringIO import StringIO

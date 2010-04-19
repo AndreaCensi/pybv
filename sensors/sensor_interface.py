@@ -8,7 +8,11 @@ class Sensor:
         """ Each sensor has friendly 'sensor_type' string ('rangefinder','polarizer','optics',...) """
         raise TypeError('Sensor class %s must implement sensor_type_string()' % type(self) ) 
 
-    def obtain_observations(self, sensor_pose_world):
+    def num_sensels(self):
+        """ Returns the number of sensels for the sensor. """
+        raise TypeError('Sensor class %s must implement num_sensels()' % type(self) )
+ 
+    def compute_observations(self, sensor_pose_world):
         """ Computes the observations for this vehicle         
         Args: 
             sensor_pose_world (RigidBodyState): pose/velocity of the sensor in a
@@ -30,4 +34,5 @@ class Sensor:
         """ Sensors can be passed a map of the environment. See the documentation
             for the format of this object. """
         pass
+    
     

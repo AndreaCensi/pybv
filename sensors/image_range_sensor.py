@@ -4,9 +4,24 @@ from pybv import BVException
 
 # FIXME: ImageRangeSensor is not pickable. Make Raytracer a member instead of parent?
  
+
 class ImageRangeSensor(TexturedRaytracer):
+    """ This class implements both a rangefinder and a vision sensor
+        (much of the code is the same). 
+        
+        Vehicle wants to  know which sensor_type a sensor is. To choose whether
+        this acts as a rangefinder or as a vision sensor,
+        pass the necessary parameter to the constructor.
+    """
+    
+    RangeFinder = 'rangefinder'
+    Optics = 'optics'
+    
     def __init__(self, raytracer='raytracer2', world=None, 
                 min_num_aux=1, aux_per_deg=1):
+        """ 
+        sensor_type:   choose between ImageRangeSensor.RangeFinder, Optics
+        """
         TexturedRaytracer.__init__(self,raytracer=raytracer)
         self.directions = []
         self.spatial_sigma = []
@@ -22,6 +37,9 @@ class ImageRangeSensor(TexturedRaytracer):
         self.compiled = False
         self.aux_directions = None
         self.aux_indices = None
+    
+    def num_sensels(self):
+        return self.num_photoreceptors
     
     def render(self, object_state):
         self.make_sure_compiled()
@@ -118,5 +136,36 @@ class ImageRangeSensor(TexturedRaytracer):
         proc_data['valid'] = valid
         return proc_data
         
+        
+class Rangefinder(ImageRangeSensor):
+    """ This is a very shallow wrap around ImageRangeSensor """
+    #def __init__(self, raytracer='raytracer2', world=None, 
+    #            min_num_aux=1, aux_per_deg=1):
+    #    ImageRangeSensor.__init__(self, ImageRangeSensor.RangeFinder, raytracer=raytracer, 
+    #           min_num_aux=min_num_aux, aux_per_deg=aux_per_deg)
+ 
+    def sensor_type_string(self):
+        return 'rangefinder'
+    
+    def compute_observations(self, sensor_pose):
+        data = self.render(sensor_pose)
+        data['sensels'] = data['readings']
+        return data
+    
+class Optics(ImageRangeSensor):
+    """ This is a very shallow wrap around ImageRangeSensor """
+  #  def __init__(self, raytracer='raytracer2', world=None, 
+  #              min_num_aux=1, aux_per_deg=1):
+  #      ImageRangeSensor.__init__(self,ImageRangeSensor.Optics, raytracer=raytracer, 
+  #              min_num_aux=min_num_aux, aux_per_deg=aux_per_deg)
+ 
+    def sensor_type_string(self):
+        return 'optics'
+    
+    def compute_observations(self, sensor_pose):
+        data = self.render(sensor_pose)
+        data['sensels'] = data['luminance']
+        return data
+    
         
         

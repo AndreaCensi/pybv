@@ -6,13 +6,17 @@ import math, numpy
 from copy import deepcopy
 
 
-
 class OlfactionSensor:
     def __init__(self):
         self.num_receptors = 0
         self.receptors = []
-        
         self.map = None
+        
+    def sensor_type_string(self):
+        return 'olfaction'
+    
+    def num_sensels(self):
+        return self.num_receptors
     
     # pickling: we do not want the lambdas
     def __getstate__(self):
@@ -116,7 +120,7 @@ class OlfactionSensor:
                     total_value += coefficient * smell[chemical]
             response.append(total_value) 
     
-        return { 'response' : response }
+        return { 'response' : response, 'sensels': response }
         
         
     

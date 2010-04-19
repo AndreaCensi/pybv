@@ -29,7 +29,7 @@ def create_random_world(radius):
     for x in range(num_sources):
         position = list(radius * 2 * (numpy.random.rand(2)-0.5))
         position.append(1)
-        scale = numpy.random.rand(1) * radius
+        scale = numpy.random.rand(1) * 1
         dist_func = "lambda dist: math.exp(- dist / %f ) " % scale
         olfaction_sources.append( {  "position": position, 'components': { 'food': dist_func } })
         

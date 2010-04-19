@@ -2,8 +2,11 @@ from numpy import ceil, rad2deg, linspace, array
 from textured_raytracer import TexturedRaytracer
 from pybv import BVException
 
+# FIXME: ImageRangeSensor is not pickable. Make Raytracer a member instead of parent?
+ 
 class ImageRangeSensor(TexturedRaytracer):
-    def __init__(self, raytracer='raytracer2', world=None, min_num_aux=1, aux_per_deg=1):
+    def __init__(self, raytracer='raytracer2', world=None, 
+                min_num_aux=1, aux_per_deg=1):
         TexturedRaytracer.__init__(self,raytracer=raytracer)
         self.directions = []
         self.spatial_sigma = []
@@ -19,7 +22,6 @@ class ImageRangeSensor(TexturedRaytracer):
         self.compiled = False
         self.aux_directions = None
         self.aux_indices = None
-        
     
     def render(self, object_state):
         self.make_sure_compiled()

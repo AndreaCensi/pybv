@@ -61,4 +61,46 @@ class WorldInterpretation(unittest.TestCase):
         self.raytracer.set_map(map)
         self.assertEqual(map, map_original)
 
+example_sensor = { 
+    "class": "sensor", 
+    "directions": [-1.57, -0.78, 0, 0.78, 1.57]
+}
+
+example_world = {
+            "class": "map", 
+            "objects": [
+                { 
+                    "class": "polyline", "surface": 0,  
+                    "points": [ [-1, -1], [-1, 1], [1, 1], [1, -1], [-1, -1] ],
+                    "texture":  "lambda x: sign(sin(x))"
+                },
+                {
+                     "class": "circle", "surface": 1,  "radius": 10, "center": [0,0],  "texture": 0,
+                    "solid_inside": 0
+                }
+            ]
+        }
+
+class SensorSpec(unittest.TestCase):
+    
+    def testSensorSpec0(self):
+        """ Making sure that an exception is thrown if sensor is not specified """
+        raytracer = TexturedRaytracer()
+        raytracer.set_map(example_world)
+        self.assertRaises(BVException, raytracer.query_sensor, [0,0], 0 )
+    
+    def testSensorSpec1(self):
+        """ Making sure that the sensor spec survives the pickling """
+        raytracer = TexturedRaytracer()
+        raytracer.set_map(example_world)
+        raytracer.set_sensor(example_sensor)
+        data1 = raytracer.query_sensor([0,0], 0)
+        raytracer2 = make_sure_pickable(raytracer)
+        data2 = raytracer2.query_sensor([0,0], 0)
+        self.assertEqual(data1['readings'], data2['readings'])
+
+    def testQueryCircle(self):
+        raytracer = TexturedRaytracer()
+        self.assertRaises(BVException, raytracer.query_circle, center=[0,0], radius=1)    
+    
         

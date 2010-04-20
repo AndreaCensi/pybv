@@ -47,9 +47,11 @@ class RigidBodyState:
         
         if isinstance(attitude, float) or isinstance(attitude, int):
             attitude = rotz(attitude)
-        if isinstance(attitude, ndarray):
-            if not attitude.shape == (3,3):
-                raise ValueError('Bad shape for attitude: %s' % attitude.shape) 
+        elif isinstance(attitude, ndarray):
+            if len(attitude) == 1:
+                attitude = rotz(attitude.flatten()[0])
+            elif not attitude.shape == (3,3):
+                raise ValueError('Bad shape for attitude: %s' % str(attitude.shape) ) 
         # TODO: check that attitude is indeed a rotation matrix
         
         self.position = position 
@@ -69,16 +71,6 @@ class RigidBodyState:
         angle = atan2( rotated[1,0], rotated[0,0])
         return float(angle)
     
-    # TODO: remove, make immutable
-    def set_2d_orientation(self, theta):
-        self.attitude = rotz(theta)
-    
-    # TODO: remove, make immutable    
-    def set_2d_position(self, position):
-        position = aslist(position)
-        self.position[0] = position[0]
-        self.position[1] = position[1]
-        self.position[2] = 0
         
     def oplus(self, that):
         """ Composition of two transformations. 

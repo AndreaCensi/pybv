@@ -17,9 +17,6 @@ def get_safe_pose(raytracer, world_radius, safe_zone, num_tries=100):
         if intersect:
             continue
         
-        rbs = RigidBodyState()
-        rbs.set_2d_position(position)
-        rbs.set_2d_orientation(orientation)
-        return rbs
+        return RigidBodyState(position,orientation)
         
     return None

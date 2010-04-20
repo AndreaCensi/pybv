@@ -7,10 +7,7 @@ from numpy.testing import *
 class CompositionTests(unittest.TestCase):
     
     def getRandom(self):
-        rbs = RigidBodyState()
-        rbs.set_2d_position( random.randn(2) )
-        rbs.set_2d_orientation( random.rand(1) * pi )
-        return rbs
+        return RigidBodyState(position=random.randn(2), attitude =random.rand(1) * pi )
         
     def testInterface(self):
         """ Testing some basic facts """
@@ -33,6 +30,10 @@ class CompositionTests(unittest.TestCase):
         self.assertTrue( isinstance(RigidBodyState(position=[0,0]).position, ndarray ))
         self.assertEqual( RigidBodyState(position=[0,0]).position.shape, (3,1) )
         self.assertEqual( RigidBodyState(attitude=0).attitude.shape, (3,3) )
+
+    def testInit2(self):
+        """ attitude can be initialized with 1d array """
+        RigidBodyState([0,0], array([0]) )
         
   
     def testIdentity(self):

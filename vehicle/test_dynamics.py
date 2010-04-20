@@ -41,11 +41,9 @@ class OmniTest(unittest.TestCase):
         ]
         
         for initial, commands, final in tests:
+            position, attitude = initial
+            start_state = RigidBodyState(position, attitude)
             
-            start_state = RigidBodyState()
-            start_state.set_2d_position( initial[0])
-            start_state.set_2d_orientation( initial[1])
-
             actual = ok.evolve_state(start_state, commands, dt)  
             
             msg = "Transition  %s ->{%s}-> %s , received %s %s " % (initial, commands, final, actual.get_2d_position().flatten(),     actual.get_2d_orientation())

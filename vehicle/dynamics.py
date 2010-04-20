@@ -43,7 +43,7 @@ class Dynamics:
         raise Exception, 'Please implement this method'
         
         
-    
+        
 class OmnidirectionalKinematics(Dynamics):
     def __init__(self, max_linear_velocity=1, max_angular_velocity=1):
         Dynamics.__init__(self)
@@ -53,9 +53,7 @@ class OmnidirectionalKinematics(Dynamics):
         self.add_command(Command(id='omega',desc='angular velocity', min=-max_angular_velocity, max=+max_angular_velocity, rest=0))
         
     def integrate(self, start_state, commands, dt):
-        print commands
-        x = start_state.get_2d_position()[0]
-        y = start_state.get_2d_position()[1]
+        x, y = start_state.get_2d_position()
         theta = start_state.get_2d_orientation()
         vx = commands.vx
         vy = commands.vy
@@ -68,10 +66,7 @@ class OmnidirectionalKinematics(Dynamics):
         y1 = y + (vx * s + vy  * c ) * dt
         theta1 = theta + commands.omega  * dt
         
-        result = RigidBodyState()
-        result.set_2d_position([x1,y1])
-        result.set_2d_orientation(theta1)
-        return result
+        return RigidBodyState(position=[x1,y1], attitude=theta1)
         
         
         

@@ -5,7 +5,7 @@ from pybv import BVException
 # FIXME: ImageRangeSensor is not pickable. Make Raytracer a member instead of parent?
  
 
-class ImageRangeSensor(TexturedRaytracer):
+class ImageRangeSensor:
     """ This class implements both a rangefinder and a vision sensor
         (much of the code is the same). 
         
@@ -22,7 +22,7 @@ class ImageRangeSensor(TexturedRaytracer):
         """ 
         sensor_type:   choose between ImageRangeSensor.RangeFinder, Optics
         """
-        TexturedRaytracer.__init__(self,raytracer=raytracer)
+        self.raytracer = TexturedRaytracer(raytracer=raytracer)
         self.directions = []
         self.spatial_sigma = []
         self.sigma = []
@@ -45,7 +45,7 @@ class ImageRangeSensor(TexturedRaytracer):
         self.make_sure_compiled()
         position = object_state.get_2d_position()
         orientation = object_state.get_2d_orientation()
-        raw_data = self.query_sensor(position, orientation)
+        raw_data = self.raytracer.query_sensor(position, orientation)
         proc_data = self.process_raw_data(raw_data)
         return proc_data
   
@@ -81,7 +81,7 @@ class ImageRangeSensor(TexturedRaytracer):
         if not self.compiled:
             if len(self.directions) == 0:
                 raise BVException('You did not specify any receptors for the sensor.')
-            self.set_sensor(self.get_raw_sensor())
+            self.raytracer.set_sensor(self.get_raw_sensor())
             self.compiled = True
         
     def get_raw_sensor(self):
@@ -112,6 +112,10 @@ class ImageRangeSensor(TexturedRaytracer):
         proc_data['original'] = proc_data['luminance']
 #        proc_data = {} # if you want to be clean
         aux_valid = data['valid']
+        
+        assert( len(proc_data['luminance']) == len(self.aux_directions) )
+        assert( len(proc_data['valid']) == len(self.aux_directions) )
+        
         valid = []
         for attribute in ['luminance', 'readings']:
             values = []
@@ -136,6 +140,8 @@ class ImageRangeSensor(TexturedRaytracer):
         proc_data['valid'] = valid
         return proc_data
         
+    def set_map(self, world):
+        self.raytracer.set_map(world)
         
 class Rangefinder(ImageRangeSensor):
     """ This is a very shallow wrap around ImageRangeSensor """

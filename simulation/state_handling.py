@@ -5,13 +5,11 @@ from glob import glob
 from os import makedirs
 from os.path import expanduser, dirname, join, expandvars, splitext, exists, basename
 
-# TODO: make this configurable
 
 def get_computations_root():
+    # TODO: make this configurable 
     basepath = '~/svn/cds/pri/bv/src/pybv_experiments_results/computation'
-    
     basepath = expandvars(expanduser(basepath))
-    
     return basepath
 
 def filename_for_job(job_id):

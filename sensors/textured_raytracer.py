@@ -15,6 +15,7 @@ class TexturedRaytracer:
         self.init_connection(raytracer)
         self.surface2texture = {}
         self.map = None
+        self.sensor_desc = None
 
     def init_connection(self, raytracer):
         self.raytracer = raytracer
@@ -28,11 +29,16 @@ class TexturedRaytracer:
 
     # pickling
     def __getstate__(self):
-        return {'map': self.map, 'raytracer': self.raytracer}
+        return {'map': self.map, 
+                'raytracer': self.raytracer, 
+                'sensor_desc':self.sensor_desc}
     def __setstate__(self, d):
         self.surface2texture={}
         self.init_connection(d['raytracer'])
-        self.set_map(d['map'])
+        if d['map'] is not None:
+            self.set_map(d['map'])
+        if d['sensor_desc'] is not None:
+            self.set_sensor(d['sensor_desc'])
         
     def set_map(self, map_object):
         if not isinstance(map_object, dict):
@@ -71,6 +77,8 @@ class TexturedRaytracer:
     def query_sensor(self, position, orientation):
         if self.map is None:
             raise BVException('Sensor queried before map was defined.')
+        if self.sensor_desc is None:
+            raise BVException('Sensor queried before sensor was defined.')
             
         position = aslist(position)
         orientation = asscalar(orientation)
@@ -98,11 +106,15 @@ class TexturedRaytracer:
         
         return answer
         
-    def set_sensor(self, sensor_object):
-        simplejson.dump(sensor_object, self.p.stdin)
+    def set_sensor(self, sensor_desc):
+        self.sensor_desc = sensor_desc
+        simplejson.dump(sensor_desc, self.p.stdin)
         self.p.stdin.write('\n') 
         
     def query_circle(self, center, radius):
+        if self.map is None:
+            raise BVException('query_circle called before map was defined.')
+        
         center = aslist(center)
         radius = asscalar(radius)
         """ Returns tuple (hit, surface_id) """
@@ -114,7 +126,7 @@ class TexturedRaytracer:
         
         answer = self.child_stream.read_next()
         if answer is None:
-                raise Exception, "Could not communicate with child"
+                raise BVException, "Could not communicate with child"
         assert( answer['class'] == "query_circle_response" )
         
         hit = answer['intersects']
@@ -143,8 +155,8 @@ class TexturedRaytracer:
  
 
     
-if __name__ == '__main__':
-    tr = TexturedRaytracer('raytracer2')
+#if __name__ == '__main__':
+ #   tr = TexturedRaytracer('raytracer2')
     ### FIXME this is broken (see filter_json_streams )
 #    tr.filter_json_streams(sys.stdin, sys.stderr)
     

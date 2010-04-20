@@ -4,7 +4,7 @@ import numpy
 
 from pybv import BVException
 from pybv.sensors import ImageRangeSensor, Rangefinder, Optics
-from pybv.utils import RigidBodyState
+from pybv.utils import RigidBodyState, make_sure_pickable
 from pybv.worlds import create_random_world
 
 
@@ -39,11 +39,14 @@ class ExampleNotset(unittest.TestCase):
         
         
 class SensorPickling(unittest.TestCase):
-	def testPickling(self):
+    def testPickling(self):
+    	""" Testing that we can render() even after a pickling """
         raytracer = Rangefinder(min_num_aux=1)
-        raytracer.set_map(world)
+        raytracer.set_map(example_world)
         raytracer.add_photoreceptors( linspace(-deg2rad(170), deg2rad(170), 180),
 									spatial_sigma=deg2rad(0.5), sigma = 0.01 )
+
+        raytracer.render(RigidBodyState())
 
         raytracer2 = make_sure_pickable( raytracer )
         raytracer2.render(RigidBodyState())
@@ -66,10 +69,7 @@ class ExampleCircle(unittest.TestCase):
         raytracer.add_photoreceptors( linspace(-deg2rad(170), deg2rad(170), 180), 
             spatial_sigma=deg2rad(0.5), sigma = 0.01 )
         
-        rbs = RigidBodyState()
-        rbs.set_2d_position(position)
-        rbs.set_2d_orientation(orientation)
-        
+        rbs = RigidBodyState(position, orientation)
         data = raytracer.render(rbs)
 
         # given min_num_aux and spatial_sigma < 1, we expect

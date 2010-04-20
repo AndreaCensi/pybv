@@ -49,7 +49,7 @@ class Vehicle:
         """ Computes the sensor observations at a certain state.
         
         OK, you might think this function is kind of mysterious
-        because of all the reflection we use. However, a little
+        because of all the introspection we use. However, a little
         black magic here helps in making the client interface
         clear and intuitive.
         

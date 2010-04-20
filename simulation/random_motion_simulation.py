@@ -42,9 +42,12 @@ def random_motion_simulation(
             
     else:
         state = OpenStruct()
+        state.job_id = job_id
         state.current_iteration = 0
         state.total_iterations = num_iterations
         state.result = processing_class(vehicle.config)
+        state.world = world
+        state.vehicle = vehicle
 
     pbar = create_progress_bar(job_id, state.total_iterations)
 
@@ -68,13 +71,9 @@ def random_motion_simulation(
         data = vehicle.compute_observations_and_derivatives(state1,state2,dt)
         data.commands =  array(commands)
  
-        if any(isnan(data.sensels)):
-            print "pose1", state1
-            print "pose2", state2
+        if any(isnan(data.sensels)): 
             raise BVException('Some sensels were NaN. %s' % str(data.sensels))
-        
-#        print "\n", data.optics[0].luminance_dot
-        
+                
         state.result.process_data(data)
 
         state.current_iteration += 1

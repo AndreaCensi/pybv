@@ -40,14 +40,16 @@ def random_pose_simulation(
       
     else:
         state = OpenStruct()
+        state.job_id = job_id
         state.current_iteration = 0
         state.total_iterations = num_iterations
         state.result = processing_class(vehicle.config)
         state.vehicle = vehicle
+        state.world = world
 
     pbar = create_progress_bar(job_id, state.total_iterations)
 
-    save_every = 10
+    save_every = 20
     while state.current_iteration < state.total_iterations:
         
         if state.current_iteration % save_every == 0:
@@ -55,10 +57,7 @@ def random_pose_simulation(
             save_state(job_id, state)
         
         state1 = random_pose_gen(state.current_iteration)
-        
         data = vehicle.compute_observations(state1)
-        
-        
         state.result.process_data(data)
 
         state.current_iteration += 1

@@ -38,6 +38,17 @@ class ExampleNotset(unittest.TestCase):
         self.assertRaises( BVException, raytracer.render, RigidBodyState() )
         
         
+class SensorPickling(unittest.TestCase):
+	def testPickling(self):
+        raytracer = Rangefinder(min_num_aux=1)
+        raytracer.set_map(world)
+        raytracer.add_photoreceptors( linspace(-deg2rad(170), deg2rad(170), 180),
+									spatial_sigma=deg2rad(0.5), sigma = 0.01 )
+
+        raytracer2 = make_sure_pickable( raytracer )
+        raytracer2.render(RigidBodyState())
+
+    
 class ExampleCircle(unittest.TestCase):
     def try_with(self, center, radius, position, orientation):
         world = { 

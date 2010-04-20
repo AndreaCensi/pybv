@@ -17,9 +17,9 @@ class OmniTest(unittest.TestCase):
         zero = RigidBodyState()
         dt = 0.1
         
-        Z = 0.5
-        M = 1
-        m = 0
+        M = 1  # max
+        Z = 0  # zero 
+        m = -1 # min
         
         tests = [
             # format   (  (start_xy, start_theta),  commands, (final_xy, final_theta))

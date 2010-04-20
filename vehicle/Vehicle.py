@@ -11,11 +11,13 @@ class Vehicle:
         self.config.num_commands = 0 
         self.dynamics = None
         self.state = RigidBodyState()
+        # keep track of the mountpoint for each sensor
+        self.sensor2mountpoint = {}
     
     def add_sensor(self, sensor, mountpoint=None):
         if mountpoint is None:
             mountpoint = RigidBodyState()
-        setattr(sensor, 'mountpoint', mountpoint)
+        self.sensor2mountpoint[sensor] = mountpoint
         self.config.sensors.append(sensor)
         sensor_type = sensor.sensor_type_string()
         if not sensor_type in self.config.sensor_types:
@@ -64,8 +66,8 @@ class Vehicle:
             setattr(data, sensor_type, [])
         
         for i, sensor in enumerate(self.config.sensors):
-            # FIXME add translation from base pose
-            sensor_pose = vehicle_state.oplus(sensor.mountpoint)
+            mountpoint = self.sensor2mountpoint[sensor]
+            sensor_pose = vehicle_state.oplus(mountpoint)
             sensor_data = sensor.compute_observations(sensor_pose)
             
             if not 'sensels' in sensor_data:

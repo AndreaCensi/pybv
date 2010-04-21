@@ -51,6 +51,14 @@ class SensorPickling(unittest.TestCase):
         raytracer2 = make_sure_pickable( raytracer )
         raytracer2.render(RigidBodyState())
 
+    	make_sure_pickable(raytracer2)
+    	
+    def testPickling2(self):
+    	""" Pickling twice, no map  """
+    	raytracer = Rangefinder(min_num_aux=1)
+    	raytracer2 = make_sure_pickable(raytracer)
+    	make_sure_pickable(raytracer2)
+    	
     
 class ExampleCircle(unittest.TestCase):
     def try_with(self, center, radius, position, orientation):

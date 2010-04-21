@@ -37,8 +37,12 @@ class TexturedRaytracer:
         self.init_connection(d['raytracer'])
         if d['map'] is not None:
             self.set_map(d['map'])
+        else:
+            self.map = None
         if d['sensor_desc'] is not None:
             self.set_sensor(d['sensor_desc'])
+        else:
+            self.sensor_desc = None
         
     def set_map(self, map_object):
         if not isinstance(map_object, dict):

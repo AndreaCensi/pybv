@@ -21,11 +21,14 @@ class OlfactionSensor:
     # pickling: we do not want the lambdas
     def __getstate__(self):
         return {'map': self.map, 'receptors': self.receptors}
+    
     def __setstate__(self, d):
         self.receptors=d['receptors']
         self.num_receptors = len(self.receptors)
         if d['map'] is not None:
             self.set_map(d['map'])
+        else:
+            self.map = None
     
     def set_map(self, map):
         # we will modify "map" throughout

@@ -48,6 +48,11 @@ class WorldInterpretation(unittest.TestCase):
     def testPickling(self):
         """ Make sure we can pickle this sensor """
         make_sure_pickable( self.raytracer )
+
+    def testPickling(self):
+        """ Make sure we can pickle this sensor twice """
+        r2 = make_sure_pickable( self.raytracer )
+        make_sure_pickable( r2 )
     
     def testPickling(self):
         """ Pickling after map loading """

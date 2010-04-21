@@ -46,8 +46,12 @@ def load_state(job_id):
     state = pickle.load(file)
     file.close()
     return state
-    
-    
+
+def remove_state(job_id):
+    filename = filename_for_job(job_id)
+    assert(os.path.exists(filename))
+    os.remove(filename)
+
 def list_available_states():
     filename = filename_for_job('*')
     basenames = [ splitext(basename(x))[0] for x in glob(filename)]

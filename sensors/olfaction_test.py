@@ -74,13 +74,16 @@ class ParsingTest(unittest.TestCase):
         
     def testPickling(self):
         """ Make sure we can pickle this sensor """
-        make_sure_pickable( self.createSimpleOlfactionSensor() )
-    
+        ob = make_sure_pickable( self.createSimpleOlfactionSensor() )
+        make_sure_pickable(ob)
+        
     def testPickling2(self):
         """ Pickling after map loading """
         os = self.createSimpleOlfactionSensor() 
         os.set_map(create_random_world(10))
-        make_sure_pickable(os)
+        os2 = make_sure_pickable(os)
+        make_sure_pickable(os2)
+        
     
     def testIntegrity(self):
         """ Make sure that this sensor does not modify the map object """

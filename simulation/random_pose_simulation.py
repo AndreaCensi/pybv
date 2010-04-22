@@ -1,5 +1,5 @@
 import sys, os
-from numpy import random, array
+from numpy import random, array, sqrt
 from pybv.worlds import  get_safe_pose
 from pybv.utils import RigidBodyState, OpenStruct
 from pybv.sensors import TexturedRaytracer       
@@ -26,7 +26,10 @@ def random_pose_simulation(
         
     if previous_result is not None:
         state = previous_result
-        state.total_iterations += num_iterations    
+        # if we are called again, it means we need more iteration
+        if state.num_iterations == state.total_iterations:
+            ratio = 0.5 * (1 + sqrt(5) )
+            state.total_iterations *= ratio     
     else:
         state = OpenStruct()
         state.current_iteration = 0

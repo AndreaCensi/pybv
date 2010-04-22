@@ -5,7 +5,6 @@ from glob import glob
 from os import makedirs
 from os.path import expanduser, dirname, join, expandvars, splitext, exists, basename
 
-
 def get_computations_root():
     # TODO: make this configurable 
     basepath = '~/parsim_storage/computation'

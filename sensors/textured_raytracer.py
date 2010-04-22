@@ -1,5 +1,6 @@
 import sys, errno
 from copy import deepcopy
+from StringIO import StringIO
 import simplejson
 from jsonstream import JSONStream
 from subprocess import Popen, PIPE

@@ -22,11 +22,22 @@ class TexturedRaytracer:
         try:
             self.p = Popen(raytracer, stdout=PIPE, stdin=PIPE)
             self.child_stream = JSONStream(self.p.stdout)
+        #    print "Opened pipe %s, %s" % (self.p.stdin,self.p.stdout) 
         except OSError as e:
             if e.errno == errno.ENOENT:
                 raise BVException('Could not open connection to raytracer ("%s"). Reason: %s.' % (raytracer, e.strerror))
             raise e
 
+    def __del__(self):
+        self.p.stdin.close()
+        try:
+            self.p.terminate()
+        #print "Closing pipe %s, %s" % (self.p.stdin,self.p.stdout)
+            self.p.wait()
+        except OSError:
+            pass
+        #print " Closed pipe %s, %s" % (self.p.stdin,self.p.stdout)
+        
     # pickling
     def __getstate__(self):
         return {'map': self.map, 

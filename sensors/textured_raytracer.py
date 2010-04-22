@@ -42,9 +42,10 @@ class TexturedRaytracer:
         if self.p is not None:
             self.p.stdin.close()
             try:
-                self.p.terminate()
+        #        self.p.terminate()
         #print "Closing pipe %s, %s" % (self.p.stdin,self.p.stdout)
-                self.p.wait()
+         #       self.p.wait()
+                pass
             except OSError:
                 pass
         #print " Closed pipe %s, %s" % (self.p.stdin,self.p.stdout)

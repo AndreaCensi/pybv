@@ -8,7 +8,7 @@ from os.path import expanduser, dirname, join, expandvars, splitext, exists, bas
 
 def get_computations_root():
     # TODO: make this configurable 
-    basepath = '~/svn/cds/pri/bv/src/pybv_experiments_results/computation'
+    basepath = '~/parsim_storage/computation'
     basepath = expandvars(expanduser(basepath))
     return basepath
 

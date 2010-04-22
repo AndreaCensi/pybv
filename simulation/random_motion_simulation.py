@@ -28,7 +28,7 @@ def random_motion_simulation(
     if previous_result is not None:
         state = previous_result
         # if we are called again, it means we need more iteration
-        if state.num_iterations == state.total_iterations:
+        if state.current_iteration == state.total_iterations:
             ratio = 0.5 * (1 + sqrt(5) )
             state.total_iterations *= ratio     
     else:

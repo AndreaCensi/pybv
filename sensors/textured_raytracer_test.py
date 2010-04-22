@@ -58,7 +58,8 @@ class WorldInterpretation(unittest.TestCase):
     def testWrongcommand(self):
         """ Check an exception is raised if wrong raytracer exec is passed """
         raytracer = TexturedRaytracer('raytracer_not')
-        self.assertRaises( BVException, raytracer.set_map, self.example_world )
+        raytracer.set_map(self.example_world)
+        self.assertRaises( BVException, raytracer.query_circle, center=[0,0], radius=1)
 
     def testIntegrity(self):
         """ Make sure that this sensor does not modify the map object """

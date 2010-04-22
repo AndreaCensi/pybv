@@ -28,6 +28,7 @@ class TexturedRaytracer:
             if e.errno == errno.ENOENT:
                 raise BVException('Could not open connection to raytracer ("%s"). Reason: %s.' % (raytracer, e.strerror))
             raise e
+
         
     def write_to_connection(self, object):
         if self.p is None:
@@ -106,9 +107,16 @@ class TexturedRaytracer:
         
 #        sys.stderr.write("Textures: %s\n" % self.surface2texture)
 #        print map_object
-        self.write_to_connection(map_object)
         
+    def make_sure_raytracer_configured(self):
+        if self.map:
+            self.write_to_connection(self.map)
+        if self.sensor_desc:
+            self.write_to_connection(self.sensor_desc)
+    
     def query_sensor(self, position, orientation):
+        self.make_sure_raytracer_configured()
+        
         if self.map is None:
             raise BVException('Sensor queried before map was defined.')
         if self.sensor_desc is None:
@@ -141,9 +149,10 @@ class TexturedRaytracer:
         
     def set_sensor(self, sensor_desc):
         self.sensor_desc = sensor_desc
-        self.write_to_connection(sensor_desc)
                 
     def query_circle(self, center, radius):
+        self.make_sure_raytracer_configured()
+
         if self.map is None:
             raise BVException('query_circle called before map was defined.')
         

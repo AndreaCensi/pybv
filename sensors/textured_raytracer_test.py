@@ -11,10 +11,6 @@ class Setup(unittest.TestCase):
         """ Check we can connect to default executable """
         self.assert_( TexturedRaytracer )
         
-    def testWrongcommand(self):
-        """ Check an exception is raised if wrong raytracer exec is passed """
-        self.assertRaises( BVException, TexturedRaytracer, 'raytracer_not')
-        
         
 class WorldInterpretation(unittest.TestCase):
             
@@ -58,7 +54,12 @@ class WorldInterpretation(unittest.TestCase):
         """ Pickling after map loading """
         self.raytracer.set_map(create_random_world(10))
         make_sure_pickable(self.raytracer)
-        
+            
+    def testWrongcommand(self):
+        """ Check an exception is raised if wrong raytracer exec is passed """
+        raytracer = TexturedRaytracer('raytracer_not')
+        self.assertRaises( BVException, raytracer.set_map, self.example_world )
+
     def testIntegrity(self):
         """ Make sure that this sensor does not modify the map object """
         map =  create_random_world(10)

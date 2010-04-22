@@ -12,13 +12,13 @@ from pybv import BVException
 
 class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
-        self.init_connection(raytracer)
+        self.raytracer = raytracer
+        self.p = None
         self.surface2texture = {}
         self.map = None
         self.sensor_desc = None
 
     def init_connection(self, raytracer):
-        self.raytracer = raytracer
         try:
             self.p = Popen(raytracer, stdout=PIPE, stdin=PIPE)
             self.child_stream = JSONStream(self.p.stdout)
@@ -27,15 +27,26 @@ class TexturedRaytracer:
             if e.errno == errno.ENOENT:
                 raise BVException('Could not open connection to raytracer ("%s"). Reason: %s.' % (raytracer, e.strerror))
             raise e
+        
+    def write_to_connection(self, object):
+        if self.p is None:
+            self.init_connection(self.raytracer)
+        
+        simplejson.dump(object, self.p.stdin)
+        self.p.stdin.write('\n') 
+        self.p.stdin.flush()
+        
+        
 
     def __del__(self):
-        self.p.stdin.close()
-        try:
-            self.p.terminate()
+        if self.p is not None:
+            self.p.stdin.close()
+            try:
+                self.p.terminate()
         #print "Closing pipe %s, %s" % (self.p.stdin,self.p.stdout)
-            self.p.wait()
-        except OSError:
-            pass
+                self.p.wait()
+            except OSError:
+                pass
         #print " Closed pipe %s, %s" % (self.p.stdin,self.p.stdout)
         
     # pickling
@@ -44,8 +55,9 @@ class TexturedRaytracer:
                 'raytracer': self.raytracer, 
                 'sensor_desc':self.sensor_desc}
     def __setstate__(self, d):
+        self.p = None
         self.surface2texture={}
-        self.init_connection(d['raytracer'])
+        self.raytracer = d['raytracer']
         if d['map'] is not None:
             self.set_map(d['map'])
         else:
@@ -86,8 +98,7 @@ class TexturedRaytracer:
         
 #        sys.stderr.write("Textures: %s\n" % self.surface2texture)
 #        print map_object
-        simplejson.dump(map_object, self.p.stdin)
-        self.p.stdin.write('\n') 
+        self.write_to_connection(map_object)
         
     def query_sensor(self, position, orientation):
         if self.map is None:
@@ -101,9 +112,8 @@ class TexturedRaytracer:
             "position": [position[0], position[1]], 
             "orientation": orientation}
         
-        simplejson.dump(query_object, self.p.stdin)
-        self.p.stdin.write('\n')
-        
+        self.write_to_connection(query_object)
+
         answer = self.child_stream.read_next()
         if answer is None:
             raise Exception, "Could not communicate with child"
@@ -123,9 +133,8 @@ class TexturedRaytracer:
         
     def set_sensor(self, sensor_desc):
         self.sensor_desc = sensor_desc
-        simplejson.dump(sensor_desc, self.p.stdin)
-        self.p.stdin.write('\n') 
-        
+        self.write_to_connection(sensor_desc)
+                
     def query_circle(self, center, radius):
         if self.map is None:
             raise BVException('query_circle called before map was defined.')
@@ -136,9 +145,7 @@ class TexturedRaytracer:
         query_object = {"class": "query_circle",
             "center": [ center[0], center[1] ], 
             "radius": radius}    
-        simplejson.dump(query_object, self.p.stdin)
-        self.p.stdin.write('\n')
-        
+        self.write_to_connection(query_object)
         answer = self.child_stream.read_next()
         if answer is None:
                 raise BVException, "Could not communicate with child"
@@ -148,30 +155,4 @@ class TexturedRaytracer:
         surface = answer['surface']
         
         return hit, surface    
-    
-    # def filter_json_streams(self, input, output):
-    #      sr = JSONStream(input)
-    #      while True:
-    #          jo = sr.read_next()
-    #          if jo is None:
-    #              break
-    # 
-    #          if jo['class'] == 'map':
-    #              self.set_map(jo)  
-    #          elif jo['class'] == 'sensor':
-    #              self.set_sensor(jo)  
-    #          elif jo['class'] == 'query':
-    #              ### FIXME this is broken
-    #              answer = self.query(jo)
-    #              simplejson.dump(answer, output)
-    #              output.write('\n')
-    #          else:
-    #              raise Exception, "Uknown format: %s" % jo
- 
-
-    
-#if __name__ == '__main__':
- #   tr = TexturedRaytracer('raytracer2')
-    ### FIXME this is broken (see filter_json_streams )
-#    tr.filter_json_streams(sys.stdin, sys.stderr)
     

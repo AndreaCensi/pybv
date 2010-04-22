@@ -32,7 +32,13 @@ class TexturedRaytracer:
         if self.p is None:
             self.init_connection(self.raytracer)
         
-        simplejson.dump(object, self.p.stdin)
+        # Make sure that we are sending good json
+        sio = StringIO()
+        simplejson.dump(object, sio)
+        s = sio.getvalue()
+        sio2 = StringIO(s)
+        simplejson.load(sio2)
+        self.p.stdin.write(s)
         self.p.stdin.write('\n') 
         self.p.stdin.flush()
         

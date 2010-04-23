@@ -2,9 +2,6 @@ from numpy import ceil, rad2deg, linspace, array
 from textured_raytracer import TexturedRaytracer
 from pybv import BVException
 
-# FIXME: ImageRangeSensor is not pickable. Make Raytracer a member instead of parent?
- 
-
 class ImageRangeSensor:
     """ This class implements both a rangefinder and a vision sensor
         (much of the code is the same). 
@@ -145,11 +142,6 @@ class ImageRangeSensor:
         
 class Rangefinder(ImageRangeSensor):
     """ This is a very shallow wrap around ImageRangeSensor """
-    #def __init__(self, raytracer='raytracer2', world=None, 
-    #            min_num_aux=1, aux_per_deg=1):
-    #    ImageRangeSensor.__init__(self, ImageRangeSensor.RangeFinder, raytracer=raytracer, 
-    #           min_num_aux=min_num_aux, aux_per_deg=aux_per_deg)
- 
     def sensor_type_string(self):
         return 'rangefinder'
     
@@ -160,11 +152,6 @@ class Rangefinder(ImageRangeSensor):
     
 class Optics(ImageRangeSensor):
     """ This is a very shallow wrap around ImageRangeSensor """
-  #  def __init__(self, raytracer='raytracer2', world=None, 
-  #              min_num_aux=1, aux_per_deg=1):
-  #      ImageRangeSensor.__init__(self,ImageRangeSensor.Optics, raytracer=raytracer, 
-  #              min_num_aux=min_num_aux, aux_per_deg=aux_per_deg)
- 
     def sensor_type_string(self):
         return 'optics'
     

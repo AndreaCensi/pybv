@@ -1,10 +1,7 @@
-import sys, os
-from numpy import random, array, isnan, ceil
+from numpy import  array, isnan, sqrt
 from pybv import BVException
-from pybv.worlds import  get_safe_pose
-from pybv.utils import RigidBodyState, OpenStruct
+from pybv.utils import  OpenStruct
 from pybv.sensors import TexturedRaytracer       
-from time import time
       
 def random_motion_simulation(
     world, vehicle, 
@@ -31,6 +28,7 @@ def random_motion_simulation(
         if state.current_iteration == state.total_iterations:
             ratio = 0.5 * (1 + sqrt(5) )
             state.total_iterations = int( ratio *  state.total_iterations)   
+            print "Increasing to %d iterations" % state.total_iterations
     else:
         state = OpenStruct()
         state.current_iteration = 0

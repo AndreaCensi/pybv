@@ -1,11 +1,9 @@
 import numpy
-from numpy import *
-
 def create_random_world(radius):
     objects = []
     
     # create arena
-    texture = 'lambda x: cos(x)'
+    texture = 'lambda x: numpy.cos(x)'
     
     objects.append(
         { "class": "circle", "surface": 0, "radius": radius, "center": [0.0, 0.0], "texture": texture, "solid_inside": 0}

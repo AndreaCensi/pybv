@@ -8,7 +8,7 @@ class OpenStruct:
         else:
             raise AttributeError, i
             
-    def __setattr__(self,i,v):
+    def __setattr__(self, i, v):
         if i in self.__dict__:
             self.__dict__[i] = v
         else:

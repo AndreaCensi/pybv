@@ -14,7 +14,7 @@ class ImageRangeSensor:
     RangeFinder = 'rangefinder'
     Optics = 'optics'
     
-    def __init__(self, raytracer='raytracer2', world=None, 
+    def __init__(self, raytracer='raytracer2', world=None,
                 min_num_aux=1, aux_per_deg=1):
         """ 
         sensor_type:   choose between ImageRangeSensor.RangeFinder, Optics
@@ -60,12 +60,12 @@ class ImageRangeSensor:
         
         # re-order everything according to direction
         def permutation_indices(data):
-             return sorted(range(len(data)), key = data.__getitem__)
+            return sorted(range(len(data)), key=data.__getitem__)
         
         self.indices = permutation_indices(self.directions)
-        self.directions    = [self.directions[i]    for i in self.indices]
+        self.directions = [self.directions[i]    for i in self.indices]
         self.spatial_sigma = [self.spatial_sigma[i] for i in self.indices]
-        self.sigma         = [self.sigma[i]         for i in self.indices]
+        self.sigma = [self.sigma[i]         for i in self.indices]
         
         self.num_photoreceptors = len(self.directions)
         self.num_readings = len(self.directions)
@@ -88,7 +88,7 @@ class ImageRangeSensor:
         for i, direction in enumerate(self.directions):
             spatial_sigma = self.spatial_sigma[i] 
             
-            num_aux = int(max(ceil(rad2deg(spatial_sigma/self.aux_per_deg)), self.min_num_aux)) 
+            num_aux = int(max(ceil(rad2deg(spatial_sigma / self.aux_per_deg)), self.min_num_aux)) 
             # enforce odd to have a centered ray
             if num_aux % 2 == 0: 
                 num_aux += 1
@@ -96,10 +96,10 @@ class ImageRangeSensor:
                 aux_dirs = [direction]
                 # special case: linspace(a,b,1) == a
             else:
-                aux_dirs = linspace( -spatial_sigma + direction, +spatial_sigma + direction, num_aux)
+                aux_dirs = linspace(-spatial_sigma + direction, +spatial_sigma + direction, num_aux)
             num_so_far = len(self.aux_directions)
             self.aux_directions.extend(aux_dirs)
-            self.aux_indices.append(range(num_so_far, num_so_far+num_aux))
+            self.aux_indices.append(range(num_so_far, num_so_far + num_aux))
         
         return {'class': 'sensor', 'directions': self.aux_directions }
         
@@ -110,8 +110,8 @@ class ImageRangeSensor:
 #        proc_data = {} # if you want to be clean
         aux_valid = data['valid']
         
-        assert( len(proc_data['luminance']) == len(self.aux_directions) )
-        assert( len(proc_data['valid']) == len(self.aux_directions) )
+        assert(len(proc_data['luminance']) == len(self.aux_directions))
+        assert(len(proc_data['valid']) == len(self.aux_directions))
         
         valid = []
         for attribute in ['luminance', 'readings']:
@@ -122,7 +122,7 @@ class ImageRangeSensor:
                 print attribute, data[attribute]
                 raise e
                 
-            for i, indices in enumerate(self.aux_indices):
+            for indices in self.aux_indices:
                 valid_indices = [ k for k in indices if aux_valid[k] ]
                 if len(valid_indices) == 0:
                     values.append(float('nan'))

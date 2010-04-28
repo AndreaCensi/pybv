@@ -1,14 +1,10 @@
-import sys, os
-from numpy import random, array, sqrt
-from pybv.worlds import  get_safe_pose
-from pybv.utils import RigidBodyState, OpenStruct
+from numpy import  sqrt  
+from pybv.utils import  OpenStruct
 from pybv.sensors import TexturedRaytracer       
-from state_handling import is_state_available, save_state, load_state
-from utils import create_progress_bar
 
 
 def random_pose_simulation(
-    world, vehicle, 
+    world, vehicle,
     random_pose_gen, num_iterations,
     processing_class, previous_result=None):
     """
@@ -28,8 +24,8 @@ def random_pose_simulation(
         state = previous_result
         # if we are called again, it means we need more iteration
         if state.current_iteration == state.total_iterations:
-            ratio = 0.5 * (1 + sqrt(5) )
-            state.total_iterations = int( ratio *  state.total_iterations)     
+            ratio = 0.5 * (1 + sqrt(5))
+            state.total_iterations = int(ratio * state.total_iterations)     
     else:
         state = OpenStruct()
         state.current_iteration = 0

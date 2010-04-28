@@ -1,4 +1,4 @@
-import os, sys
+import os
 import pickle
 from pybv import BVException
 from glob import glob
@@ -14,7 +14,7 @@ def get_computations_root():
 def filename_for_job(job_id):
     """ Returns the pickle storage filename corresponding to the job id """
     #join(dirname(sys.argv[0])
-    filename =  join(get_computations_root(), str(job_id) + '.pickle')
+    filename = join(get_computations_root(), str(job_id) + '.pickle')
     directory = dirname(filename)
     if not exists(directory):
         makedirs(directory)

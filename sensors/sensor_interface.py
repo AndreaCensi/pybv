@@ -6,11 +6,11 @@ class Sensor:
     """
     def sensor_type_string(self):
         """ Each sensor has friendly 'sensor_type' string ('rangefinder','polarizer','optics',...) """
-        raise TypeError('Sensor class %s must implement sensor_type_string()' % type(self) ) 
+        raise TypeError('Sensor class %s must implement sensor_type_string()' % type(self)) 
 
     def num_sensels(self):
         """ Returns the number of sensels for the sensor. """
-        raise TypeError('Sensor class %s must implement num_sensels()' % type(self) )
+        raise TypeError('Sensor class %s must implement num_sensels()' % type(self))
  
     def compute_observations(self, sensor_pose_world):
         """ Computes the observations for this vehicle         
@@ -28,7 +28,7 @@ class Sensor:
               No NANs allowed.
             * data['normalized_sensels'] is a mapping of the sensels to [-1, +1]. 
         """
-        raise TypeError('Sensor class %s must implement compute_observations()' % type(self) )
+        raise TypeError('Sensor class %s must implement compute_observations()' % type(self))
     
     def set_map(self, map_object):
         """ Sensors can be passed a map of the environment. See the documentation

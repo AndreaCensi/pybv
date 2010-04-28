@@ -4,8 +4,8 @@ from pybv.utils import  OpenStruct
 from pybv.sensors import TexturedRaytracer       
       
 def random_motion_simulation(
-    world, vehicle, 
-    random_pose_gen, num_iterations, random_commands_gen, 
+    world, vehicle,
+    random_pose_gen, num_iterations, random_commands_gen,
     processing_class, previous_result=None):
     """
     
@@ -26,8 +26,8 @@ def random_motion_simulation(
         state = previous_result
         # if we are called again, it means we need more iteration
         if state.current_iteration == state.total_iterations:
-            ratio = 0.5 * (1 + sqrt(5) )
-            state.total_iterations = int( ratio *  state.total_iterations)   
+            ratio = 0.5 * (1 + sqrt(5))
+            state.total_iterations = int(ratio * state.total_iterations)   
             print "Increasing to %d iterations" % state.total_iterations
     else:
         state = OpenStruct()
@@ -53,8 +53,8 @@ def random_motion_simulation(
         dt = 0.1 # TODO make parameter
         state2 = vehicle.dynamics.evolve_state(state1, commands, dt)
         
-        data = vehicle.compute_observations_and_derivatives(state1,state2,dt)
-        data.commands =  array(commands)
+        data = vehicle.compute_observations_and_derivatives(state1, state2, dt)
+        data.commands = array(commands)
  
         if any(isnan(data.sensels)): 
             raise BVException('Some sensels were NaN. %s' % str(data.sensels))

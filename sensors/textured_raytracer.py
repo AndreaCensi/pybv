@@ -1,15 +1,14 @@
-import sys, errno
+import errno
 from copy import deepcopy
 from StringIO import StringIO
-import simplejson
-from jsonstream import JSONStream
-from subprocess import Popen, PIPE
-# Mainly because we want to use user-defined textures
-from numpy import *
+import simplejson #@UnresolvedImport TODO
+from subprocess import Popen, PIPE 
 
+from jsonstream import JSONStream #@UnresolvedImport TODO
 from pybv.utils import aslist, asscalar, assert_type, assert_has_key
 from pybv import BVException
 
+import numpy # used for evaluating functions @UnusedImport
 
 class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
@@ -52,7 +51,7 @@ class TexturedRaytracer:
             try:
         #        self.p.terminate()
         #print "Closing pipe %s, %s" % (self.p.stdin,self.p.stdout)
-         #       self.p.wait()
+        #       self.p.wait()
                 pass
             except OSError:
                 pass
@@ -60,12 +59,12 @@ class TexturedRaytracer:
         
     # pickling
     def __getstate__(self):
-        return {'map': self.map, 
-                'raytracer': self.raytracer, 
+        return {'map': self.map,
+                'raytracer': self.raytracer,
                 'sensor_desc':self.sensor_desc}
     def __setstate__(self, d):
         self.p = None
-        self.surface2texture={}
+        self.surface2texture = {}
         self.raytracer = d['raytracer']
         if d['map'] is not None:
             self.set_map(d['map'])
@@ -100,7 +99,7 @@ class TexturedRaytracer:
                 raise ValueError('texture not provided for object %s' % object)
 #                texture = lambda x: 0.5
             if isinstance(texture, str):
-                texture = eval( texture) 
+                texture = eval(texture) 
                 
             surface = object['surface']
             self.surface2texture[surface] = texture
@@ -125,7 +124,7 @@ class TexturedRaytracer:
         position = aslist(position)
         orientation = asscalar(orientation)
         query_object = {"class": "query_sensor",
-            "position": [position[0], position[1]], 
+            "position": [position[0], position[1]],
             "orientation": orientation}
         
         self.write_to_connection(query_object)
@@ -139,9 +138,9 @@ class TexturedRaytracer:
             if answer['valid'][i]:
                 texture = self.surface2texture[surface_id]
                 coord = answer['curvilinear_coordinate'][i]
-                luminance.append( asscalar(texture(coord))  )
+                luminance.append(asscalar(texture(coord)))
             else:
-                luminance.append( float('nan')  )
+                luminance.append(float('nan'))
         
         answer['luminance'] = luminance
         
@@ -160,13 +159,13 @@ class TexturedRaytracer:
         radius = asscalar(radius)
         """ Returns tuple (hit, surface_id) """
         query_object = {"class": "query_circle",
-            "center": [ center[0], center[1] ], 
+            "center": [ center[0], center[1] ],
             "radius": radius}    
         self.write_to_connection(query_object)
         answer = self.child_stream.read_next()
         if answer is None:
                 raise BVException, "Could not communicate with child"
-        assert( answer['class'] == "query_circle_response" )
+        assert(answer['class'] == "query_circle_response")
         
         hit = answer['intersects']
         surface = answer['surface']

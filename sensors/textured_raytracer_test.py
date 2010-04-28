@@ -9,7 +9,7 @@ class Setup(unittest.TestCase):
     
     def testInstantiation(self):
         """ Check we can connect to default executable """
-        self.assert_( TexturedRaytracer )
+        self.assert_(TexturedRaytracer)
         
         
 class WorldInterpretation(unittest.TestCase):
@@ -17,15 +17,15 @@ class WorldInterpretation(unittest.TestCase):
     def setUp(self):
         self.raytracer = TexturedRaytracer()
         self.example_world = { 
-        	"class": "map", 
+        	"class": "map",
         	"objects": [
         		{ 
-        			"class": "polyline", "surface": 0,  
+        			"class": "polyline", "surface": 0,
         			"points": [ [-1, -1], [-1, 1], [1, 1], [1, -1], [-1, -1] ],
-        			"texture":  "lambda x: sign(sin(x))"
+        			"texture":  "lambda x: numpy.sign(numpy.sin(x))"
         		},
         		{
-        		 	"class": "circle", "surface": 1,  "radius": 10, "center": [0,0],  "texture": 0,
+        		 	"class": "circle", "surface": 1, "radius": 10, "center": [0, 0], "texture": 0,
         			"solid_inside": 0
         		}
         	]
@@ -43,14 +43,14 @@ class WorldInterpretation(unittest.TestCase):
  
     def testPickling(self):
         """ Make sure we can pickle this sensor """
-        make_sure_pickable( self.raytracer )
+        make_sure_pickable(self.raytracer)
 
-    def testPickling(self):
+    def testPickling3(self):
         """ Make sure we can pickle this sensor twice """
-        r2 = make_sure_pickable( self.raytracer )
-        make_sure_pickable( r2 )
+        r2 = make_sure_pickable(self.raytracer)
+        make_sure_pickable(r2)
     
-    def testPickling(self):
+    def testPickling2(self):
         """ Pickling after map loading """
         self.raytracer.set_map(create_random_world(10))
         make_sure_pickable(self.raytracer)
@@ -59,30 +59,30 @@ class WorldInterpretation(unittest.TestCase):
         """ Check an exception is raised if wrong raytracer exec is passed """
         raytracer = TexturedRaytracer('raytracer_not')
         raytracer.set_map(self.example_world)
-        self.assertRaises( BVException, raytracer.query_circle, center=[0,0], radius=1)
+        self.assertRaises(BVException, raytracer.query_circle, center=[0, 0], radius=1)
 
     def testIntegrity(self):
         """ Make sure that this sensor does not modify the map object """
-        map =  create_random_world(10)
+        map = create_random_world(10)
         map_original = deepcopy(map)
         self.raytracer.set_map(map)
         self.assertEqual(map, map_original)
 
 example_sensor = { 
-    "class": "sensor", 
+    "class": "sensor",
     "directions": [-1.57, -0.78, 0, 0.78, 1.57]
 }
 
 example_world = {
-            "class": "map", 
+            "class": "map",
             "objects": [
                 { 
-                    "class": "polyline", "surface": 0,  
+                    "class": "polyline", "surface": 0,
                     "points": [ [-1, -1], [-1, 1], [1, 1], [1, -1], [-1, -1] ],
-                    "texture":  "lambda x: sign(sin(x))"
+                    "texture":  "lambda x: numpy.sign(numpy.sin(x))"
                 },
                 {
-                     "class": "circle", "surface": 1,  "radius": 10, "center": [0,0],  "texture": 0,
+                     "class": "circle", "surface": 1, "radius": 10, "center": [0, 0], "texture": 0,
                     "solid_inside": 0
                 }
             ]
@@ -94,20 +94,20 @@ class SensorSpec(unittest.TestCase):
         """ Making sure that an exception is thrown if sensor is not specified """
         raytracer = TexturedRaytracer()
         raytracer.set_map(example_world)
-        self.assertRaises(BVException, raytracer.query_sensor, [0,0], 0 )
+        self.assertRaises(BVException, raytracer.query_sensor, [0, 0], 0)
     
     def testSensorSpec1(self):
         """ Making sure that the sensor spec survives the pickling """
         raytracer = TexturedRaytracer()
         raytracer.set_map(example_world)
         raytracer.set_sensor(example_sensor)
-        data1 = raytracer.query_sensor([0,0], 0)
+        data1 = raytracer.query_sensor([0, 0], 0)
         raytracer2 = make_sure_pickable(raytracer)
-        data2 = raytracer2.query_sensor([0,0], 0)
+        data2 = raytracer2.query_sensor([0, 0], 0)
         self.assertEqual(data1['readings'], data2['readings'])
 
     def testQueryCircle(self):
         raytracer = TexturedRaytracer()
-        self.assertRaises(BVException, raytracer.query_circle, center=[0,0], radius=1)    
+        self.assertRaises(BVException, raytracer.query_circle, center=[0, 0], radius=1)    
     
         

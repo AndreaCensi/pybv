@@ -18,7 +18,7 @@ class PolarizedLightSensor(Sensor):
         if num_receptors < 1: 
             raise ValueError('Invalid num_receptors: %s' % num_receptors)
         # Exactly num_receptors uniformly distributed on the 
-        self.directions = linspace(0, 2*pi, num_receptors+1)[0:-1]
+        self.directions = linspace(0, 2 * pi, num_receptors + 1)[0:-1]
 
     def num_sensels(self):
         return len(self.directions)
@@ -30,11 +30,11 @@ class PolarizedLightSensor(Sensor):
         def versor(angle):
             return array([[cos(angle)], [sin(angle)], [0]])
         
-        direction_versor = dot(sensor_pose_world.attitude, versor(0) )
+        direction_versor = dot(sensor_pose_world.attitude, versor(0))
         
         response = ndarray(shape=(len(self.directions),))
         for i, theta in enumerate(self.directions):
-            response[i] =  dot(versor(theta).transpose(), direction_versor )
+            response[i] = dot(versor(theta).transpose(), direction_versor)
 
         return {'sensels': response, 'response': response}
 

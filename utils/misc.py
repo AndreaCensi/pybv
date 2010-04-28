@@ -3,7 +3,7 @@ import numpy, math
 outer = multiply.outer
 
 
-def weighted_average(A,Aweight,B,Bweight=1):
+def weighted_average(A, Aweight, B, Bweight=1):
     """ Computes the weighted average of two quantities A,B. """
     return (A * Aweight + B * Bweight) / (Aweight + Bweight)
 
@@ -39,13 +39,13 @@ def ascolumn(v):
     v = array(v)
     v = v.flatten()
     n = len(v)
-    return v.reshape((n,1))
+    return v.reshape((n, 1))
     
     
 # TODO: move this somewhere else
 def cov2corr(M):
     """ Converts a covariance matrix to a correlation matrix. """
-    if (not isinstance(M, numpy.ndarray)) or (not (len(M.shape) == 2)) or (not(M.shape[0]==M.shape[1])):
+    if (not isinstance(M, numpy.ndarray)) or (not (len(M.shape) == 2)) or (not(M.shape[0] == M.shape[1])):
         raise ValueError('cov2corr expects a square ndarray, got %s' % M)
 
     if numpy.isnan(M).any():
@@ -57,27 +57,27 @@ def cov2corr(M):
         raise ValueError('Expected positive elements for square matrix, got diag = %s' % d)
     
     n = M.shape[0]
-    R = numpy.ndarray((n,n))
+    R = numpy.ndarray((n, n))
     for i in range(n):
         for j in range(n):
-            d = M[i,j] / math.sqrt( M[i,i] * M[j,j])
-            R[i,j] = d
+            d = M[i, j] / math.sqrt(M[i, i] * M[j, j])
+            R[i, j] = d
         
     return R
     
 
 def assert_type(x, t):
     if isinstance(t, list):
-        if not any([isinstance(x,tt) for tt in t]):
-            raise TypeError('Expected %s, got a %s' % (t, type(x)) )
+        if not any([isinstance(x, tt) for tt in t]):
+            raise TypeError('Expected %s, got a %s' % (t, type(x)))
     else:
         if not isinstance(x, t):
-            raise TypeError('Expected a %s, got a %s' % (t, type(x)) )
+            raise TypeError('Expected a %s, got a %s' % (t, type(x)))
     return True
 
 def assert_has_key(d, key):
     if not d.has_key(key):
-        raise ValueError('I expected dictionary has key "%s", found %s' % (key, d.keys()) )
+        raise ValueError('I expected dictionary has key "%s", found %s' % (key, d.keys()))
     return True
 
 def assert_1d_ndarray(x):

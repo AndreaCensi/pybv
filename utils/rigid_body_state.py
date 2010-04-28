@@ -5,12 +5,12 @@ from misc  import aslist, ascolumn
 
 def rotz(theta):
     return array([ 
-            [ cos(theta), -sin(theta), 0], 
-            [ sin(theta), cos(theta), 0], 
-            [0,0,1]] ) 
+            [ cos(theta), -sin(theta), 0],
+            [ sin(theta), cos(theta), 0],
+            [0, 0, 1]]) 
     
 class RigidBodyState:
-    def __init__(self, position = None, attitude = None):
+    def __init__(self, position=None, attitude=None):
         """ Initialize the object.
         
             Position can be:
@@ -29,29 +29,29 @@ class RigidBodyState:
                  self.attitude is a (3,3) vector 
         """
         if position == None:
-            position = zeros((3,1))
+            position = zeros((3, 1))
         if attitude == None:
             attitude = eye(3)
             
-        if not ( isinstance(position, list) or isinstance(position, ndarray) ):
-            raise TypeError('Wrong type %s for position' % type(position) )
+        if not (isinstance(position, list) or isinstance(position, ndarray)):
+            raise TypeError('Wrong type %s for position' % type(position))
         position = ascolumn(position)
-        if not ( 2 <= len(position) <= 3 ):
+        if not (2 <= len(position) <= 3):
             raise ValueError('Wrong value %s for position' % position)
         if len(position) == 2:
-            position = ascolumn([position[0,0],position[1,0],0])
+            position = ascolumn([position[0, 0], position[1, 0], 0])
         
-        if not ( isinstance(attitude, float) or isinstance(attitude, int) or \
-                     isinstance(attitude, ndarray) ):
-            raise TypeError('Wrong type %s for attitude' % type(attitude) )
+        if not (isinstance(attitude, float) or isinstance(attitude, int) or \
+                     isinstance(attitude, ndarray)):
+            raise TypeError('Wrong type %s for attitude' % type(attitude))
         
         if isinstance(attitude, float) or isinstance(attitude, int):
             attitude = rotz(attitude)
         elif isinstance(attitude, ndarray):
             if len(attitude) == 1:
                 attitude = rotz(attitude.flatten()[0])
-            elif not attitude.shape == (3,3):
-                raise ValueError('Bad shape for attitude: %s' % str(attitude.shape) ) 
+            elif not attitude.shape == (3, 3):
+                raise ValueError('Bad shape for attitude: %s' % str(attitude.shape)) 
         # TODO: check that attitude is indeed a rotation matrix
         
         self.position = position 
@@ -59,16 +59,16 @@ class RigidBodyState:
         
     def get_2d_position(self):
         """ Get 2-vector corresponding to x,y components """
-        p2d = zeros((2,1))
-        p2d[0] = self.position[0,0]
-        p2d[1] = self.position[1,0]
+        p2d = zeros((2, 1))
+        p2d[0] = self.position[0, 0]
+        p2d[1] = self.position[1, 0]
         return p2d
         
     def get_2d_orientation(self):
         """ Get angle corresponding to orientation """
-        forward = array([[1],[0],[0]])
-        rotated = dot( self.attitude, forward)
-        angle = atan2( rotated[1,0], rotated[0,0])
+        forward = array([[1], [0], [0]])
+        rotated = dot(self.attitude, forward)
+        angle = atan2(rotated[1, 0], rotated[0, 0])
         return float(angle)
     
         
@@ -88,7 +88,7 @@ class RigidBodyState:
                 sensor_pose_world = vehicle_pose.oplus(sensor_pose)
         """
         if not isinstance(that, RigidBodyState):
-            raise TypeError('Expected RigidBodyState, got %s', type(that) )
+            raise TypeError('Expected RigidBodyState, got %s', type(that))
         position = self.position + dot(self.attitude, that.position)
         attitude = dot(self.attitude, that.attitude)
         return RigidBodyState(position=position, attitude=attitude)
@@ -96,22 +96,22 @@ class RigidBodyState:
     def inverse(self):
         """ Returns the inverse transformation """
         attitude = self.attitude.transpose()
-        position = - dot(attitude, self.position)
+        position = -dot(attitude, self.position)
         return RigidBodyState(position=position, attitude=attitude)
     
     def distance(self, other): 
         if not isinstance(other, RigidBodyState):
-            raise TypeError('Expected RigidBodyState, got %s', type(other) )
+            raise TypeError('Expected RigidBodyState, got %s', type(other))
         """ Returns a tuple containing the distance in (m, rad) between two configurations """
-        T = dot(self.attitude.transpose(), other.attitude ).trace() 
+        T = dot(self.attitude.transpose(), other.attitude).trace() 
         C = (T - 1) / 2
         # make sure that |C| <= 1 (compensate numerical errors), otherwise arccos(1+eps) = nan
         if C > 1: 
             C = 1
         if C < -1:
             C = -1
-        distance_rotation = arccos( C )
-        distance_translation = linalg.norm( self.position - other.position )
+        distance_rotation = arccos(C)
+        distance_translation = linalg.norm(self.position - other.position)
         return (distance_rotation, distance_translation)
     
     def __eq__(self, other):

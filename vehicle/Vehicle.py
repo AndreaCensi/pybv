@@ -125,13 +125,13 @@ class Vehicle:
                         # ignore spurious members in the response
                         # TODO: make this check more strict
                         continue
-                    average = (y1 + y2)/2.0
-                    derivative = (y1 - y2)/dt
+                    average = (y1 + y2) / 2.0
+                    derivative = (y1 - y2) / dt
                     datas1[i].__dict__[obs] = average
-                    datas1[i].__dict__[obs+'_dot'] = derivative
+                    datas1[i].__dict__[obs + '_dot'] = derivative
         # finally for all the sensels
-        average = (data1.sensels + data2.sensels)/2
-        derivative = (data2.sensels - data1.sensels)/dt
+        average = (data1.sensels + data2.sensels) / 2
+        derivative = (data2.sensels - data1.sensels) / dt
         data1.sensels = average
         data1.sensels_dot = derivative 
         return data1

@@ -18,8 +18,8 @@ class TestBasics(unittest.TestCase):
         pose1 = RigidBodyState(attitude=0.1)
         data1 = pls.compute_observations(pose1)
         
-        self.assertTrue( 'response' in data1)
-        self.assertTrue( 'sensels' in data1)
-        self.assertTrue( assert_1d_ndarray(array(data1['sensels'])) )
-        self.assertTrue( assert_1d_ndarray(array(data1['response'])) )
+        self.assertTrue('response' in data1)
+        self.assertTrue('sensels' in data1)
+        self.assertTrue(assert_1d_ndarray(array(data1['sensels'])))
+        self.assertTrue(assert_1d_ndarray(array(data1['response'])))
         

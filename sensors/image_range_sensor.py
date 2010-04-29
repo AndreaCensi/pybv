@@ -6,13 +6,9 @@ class ImageRangeSensor:
     """ This class implements both a rangefinder and a vision sensor
         (much of the code is the same). 
         
-        Vehicle wants to  know which sensor_type a sensor is. To choose whether
-        this acts as a rangefinder or as a vision sensor,
-        pass the necessary parameter to the constructor.
+        Dont' use this class directly in the simulations -- use the two
+        subclasses Optics and Rangefinder
     """
-    
-    RangeFinder = 'rangefinder'
-    Optics = 'optics'
     
     def __init__(self, raytracer='raytracer2', world=None,
                 min_num_aux=1, aux_per_deg=1):
@@ -149,6 +145,17 @@ class Rangefinder(ImageRangeSensor):
         data = self.render(sensor_pose)
         data['sensels'] = data['readings']
         return data
+
+class Nearnessfinder(ImageRangeSensor):
+    """ Same as Rangefinder, but we return nearness instead of ranges
+    as sensels """
+    def sensor_type_string(self):
+        return 'nearnessfinder'
+    
+    def compute_observations(self, sensor_pose):
+        data = self.render(sensor_pose)
+        data['sensels'] = 1.0 / data['readings']
+        return data
     
 class Optics(ImageRangeSensor):
     """ This is a very shallow wrap around ImageRangeSensor """
@@ -161,4 +168,4 @@ class Optics(ImageRangeSensor):
         return data
     
         
-        
+# TODO: add Gradient sensor        

@@ -26,8 +26,9 @@ def random_motion_simulation(
         state = previous_result
         # if we are called again, it means we need more iteration
         if state.current_iteration == state.total_iterations:
-            ratio = 0.5 * (1 + sqrt(5))
-            state.total_iterations = int(ratio * state.total_iterations)   
+            #ratio = 0.5 * (1 + sqrt(5))
+            #state.total_iterations = int(ratio * state.total_iterations)   
+            state.total_iterations += num_iterations
             print "Increasing to %d iterations" % state.total_iterations
     else:
         state = OpenStruct()

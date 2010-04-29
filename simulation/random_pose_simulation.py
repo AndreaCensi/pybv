@@ -2,6 +2,7 @@ from numpy import  sqrt
 from pybv.utils import  OpenStruct
 from pybv.sensors import TexturedRaytracer       
 
+# TODO: make common code?
 
 def random_pose_simulation(
     world, vehicle,
@@ -24,8 +25,9 @@ def random_pose_simulation(
         state = previous_result
         # if we are called again, it means we need more iteration
         if state.current_iteration == state.total_iterations:
-            ratio = 0.5 * (1 + sqrt(5))
-            state.total_iterations = int(ratio * state.total_iterations)     
+            #ratio = 0.5 * (1 + sqrt(5))
+            #state.total_iterations = int(ratio * state.total_iterations)   
+            state.total_iterations += num_iterations     
     else:
         state = OpenStruct()
         state.current_iteration = 0

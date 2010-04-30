@@ -45,7 +45,7 @@ def random_motion_simulation(
         # generate random commands
         commands = random_commands_gen(state.current_iteration, vehicle)
         # get next state
-        dt = 0.1 # TODO make parameter
+        dt = 0.01 # TODO make parameter
         state2 = vehicle.dynamics.evolve_state(state1, commands, dt)
         
         data = vehicle.compute_observations_and_derivatives(state1, state2, dt)

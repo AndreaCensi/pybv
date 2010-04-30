@@ -11,37 +11,37 @@ from pybv.worlds import create_random_world
 class ParsingTest(unittest.TestCase):
     
     map_valid = [{ 
-           'olfaction_sources': [
-                       {'position': [0, 0, 0], 'components': 
-                            { 'food': lambda dist: math.exp(-dist / 3) }  
-                        }
-            ]
+       'olfaction_sources': [
+           {'position': [0, 0, 0], 'components': 
+                { 'food': lambda dist: math.exp(-dist / 3) }  
+            }
+        ]
     }, { 
-           'olfaction_sources': [
-                       {'position': [0, 0, 0], 'components': 
-                            { 'food': 3 }  
-                        }
-            ]
+       'olfaction_sources': [
+           {'position': [0, 0, 0], 'components': 
+                { 'food': 3 }  
+            }
+        ]
     }, { 
-           'olfaction_sources': [
-                       {'position': [0, 0, 0], 'components': 
-                            { 'food': "lambda x: x * 2" }  
-                        }
-            ]
+       'olfaction_sources': [
+           {'position': [0, 0, 0], 'components': 
+                { 'food': "lambda x: x * 2" }  
+            }
+        ]
     }]
     map_invalid = [None, 42, {},
-                { 'olfaction_sources': None },
-                { 'olfaction_sources': 42 },
-                { 'olfaction_sources': [42] },
-                { 'olfaction_sources': [None] },
-                { 'olfaction_sources': [{}] },
-                { 'olfaction_sources': [{'position': None}] },
-                { 'olfaction_sources': [{'position': 42}] },
-                { 'olfaction_sources': [{'position': [0, 0], 'components': None }] },
-                { 'olfaction_sources': [{'position': [0, 0], 'components': [] }] },
-                { 'olfaction_sources': [{'position': [0, 0], 'components': {132: 0} }] },
-                { 'olfaction_sources': [{'position': [0, 0], 'components': {} }] },
-                { 'olfaction_sources': [{'position': [0, 0], 'components': {'food': 'bah' } }] }
+        { 'olfaction_sources': None },
+        { 'olfaction_sources': 42 },
+        { 'olfaction_sources': [42] },
+        { 'olfaction_sources': [None] },
+        { 'olfaction_sources': [{}] },
+        { 'olfaction_sources': [{'position': None}] },
+        { 'olfaction_sources': [{'position': 42}] },
+        { 'olfaction_sources': [{'position': [0, 0], 'components': None }] },
+        { 'olfaction_sources': [{'position': [0, 0], 'components': [] }] },
+        { 'olfaction_sources': [{'position': [0, 0], 'components': {132: 0} }] },
+        { 'olfaction_sources': [{'position': [0, 0], 'components': {} }] },
+        { 'olfaction_sources': [{'position': [0, 0], 'components': {'food': 'bah' } }] }
     ]
     
     def testParsing(self):

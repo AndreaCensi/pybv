@@ -11,7 +11,6 @@ def create_random_world(radius):
          "texture": texture, "solid_inside": 0}
     )
     
-    
     num_lines = 10
     length = radius / 30.0
     

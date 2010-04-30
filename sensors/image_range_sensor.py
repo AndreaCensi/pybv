@@ -154,7 +154,7 @@ class Nearnessfinder(ImageRangeSensor):
     
     def compute_observations(self, sensor_pose):
         data = self.render(sensor_pose)
-        data['sensels'] = 1.0 / data['readings']
+        data['sensels'] = 1.0 / array(data['readings'])
         return data
     
 class Optics(ImageRangeSensor):

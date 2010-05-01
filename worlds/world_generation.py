@@ -4,8 +4,11 @@ def create_random_world(radius):
     objects = []
     
     # create arena
-    texture = 'lambda x: numpy.cos(x)'
-    
+    freqs = [(1, 0.5), (1.231, 0.2), (3.132, 0.2)]
+    s = ' + '.join([ '%f * numpy.cos(%f)' % (freq, amp) 
+                    for (freq, amp) in freqs  ])  
+    texture = 'lambda x: numpy.minimum(1, numpy.maximum( %s, 0 ))' % s
+    assert eval(texture), 'Did not create a good texture string: %s' % texture
     objects.append(
         { "class": "circle", "surface": 0, "radius": radius, "center": [0.0, 0.0],
          "texture": texture, "solid_inside": 0}

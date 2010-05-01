@@ -62,6 +62,7 @@ class Vehicle:
         data = OpenStruct()
         data.sensels = []
         
+        data.all_sensors = [] 
         for sensor_type in self.config.sensor_types.keys():
             setattr(data, sensor_type, [])
         
@@ -81,6 +82,7 @@ class Vehicle:
 
             data_array = getattr(data, sensor.sensor_type_string())
             data_array.append(sensor_data)
+            data.all_sensors.append(sensor_data)
             
             # FIXME Look for NAN
             assert_1d_ndarray(sensor_data.sensels)

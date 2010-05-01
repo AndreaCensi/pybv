@@ -1,5 +1,6 @@
 import unittest
 from copy import deepcopy
+from numpy import isnan, array
 from pybv import BVException
 from pybv.sensors import TexturedRaytracer
 from pybv.utils import make_sure_pickable
@@ -73,6 +74,8 @@ example_sensor = {
     "directions": [-1.57, -0.78, 0, 0.78, 1.57]
 }
 
+empty_world = { "class": "map",
+            "objects": [] }
 example_world = {
             "class": "map",
             "objects": [
@@ -105,6 +108,27 @@ class SensorSpec(unittest.TestCase):
         raytracer2 = make_sure_pickable(raytracer)
         data2 = raytracer2.query_sensor([0, 0], 0)
         self.assertEqual(data1['readings'], data2['readings'])
+
+    def testMapIsReset(self):
+        """ Making sure that the map is overwritten """
+        raytracer = TexturedRaytracer()
+        raytracer.set_sensor(example_sensor)
+        
+        raytracer.set_map(empty_world)
+        data1 = raytracer.query_sensor([0, 0], 0)
+        readings = array(data1['readings'], dtype='float32')
+        self.assertTrue(isnan(readings).all())
+
+        raytracer.set_map(example_world)
+        data1 = raytracer.query_sensor([0, 0], 0)
+        readings = array(data1['readings'], dtype='float32')
+        self.assertTrue(not isnan(readings).any())
+
+        raytracer.set_map(empty_world)
+        data1 = raytracer.query_sensor([0, 0], 0)
+        readings = array(data1['readings'], dtype='float32')
+        self.assertTrue(isnan(readings).all())
+
 
     def testQueryCircle(self):
         raytracer = TexturedRaytracer()

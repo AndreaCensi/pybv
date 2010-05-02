@@ -1,6 +1,6 @@
 ''' functions for plotting the world with a cairo context ''' 
 
-from numpy import pi, linspace, cos, sin, array
+from numpy import pi, linspace, cos, sin
 import numpy
 
 from numpy import array, isnan

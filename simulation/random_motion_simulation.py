@@ -47,8 +47,8 @@ def random_motion_simulation(
         dt = 0.1 # TODO make parameter
         state2 = vehicle.dynamics.evolve_state(state1, commands, dt)
         
-        diff = state2.oplus(state1.inverse())
-        print "diff: %s" % diff
+        #diff = state2.oplus(state1.inverse())
+        #print "diff: %s" % diff
         data = vehicle.compute_observations_and_derivatives(state1, state2, dt)
         data.commands = array(commands)
  

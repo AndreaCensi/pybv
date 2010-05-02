@@ -1,4 +1,4 @@
-from numpy import zeros, eye, dot, array, linalg, deg2rad, arccos, ndarray
+from numpy import zeros, eye, dot, array, linalg, deg2rad, arccos, ndarray, rad2deg
 from math import atan2, sin, cos
 from misc  import aslist, ascolumn
 
@@ -121,5 +121,7 @@ class RigidBodyState:
         return (distance_rotation < tolerance_rotation) and (distance_translation < tolerance_translation)
     
     def __str__(self):
-        return '<RigidBody position=%s orientation=%s' % ((aslist(self.get_2d_position())), (self.get_2d_orientation()))
+        p = self.get_2d_position()
+        r = rad2deg(self.get_2d_orientation())
+        return '<RigidBody pos=[%+.3fm %+.3fm] rot=%.2fdeg>' % (p[0], p[1], r)
         

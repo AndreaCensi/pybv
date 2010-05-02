@@ -4,7 +4,7 @@ from pybv.utils import  OpenStruct
       
 def random_motion_simulation(
     world_gen, vehicle,
-    random_pose_gen, num_iterations, random_commands_gen,
+    random_pose_gen, num_iterations, random_commands_gen, dt,
     processing_class, previous_result=None):
     """
     
@@ -44,7 +44,7 @@ def random_motion_simulation(
         # generate random commands
         commands = random_commands_gen(state.current_iteration, vehicle)
         # get next state
-        dt = 0.1 # TODO make parameter
+        # TODO make parameter
         state2 = vehicle.dynamics.evolve_state(state1, commands, dt)
         
         #diff = state2.oplus(state1.inverse())

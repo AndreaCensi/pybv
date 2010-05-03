@@ -4,13 +4,15 @@ from pybv.utils import RigidBodyState, assert_type, assert_has_key, ascolumn
 # This is necessary to allow arbitrary functions for source strength 
 import math, numpy #@UnusedImport
 from copy import deepcopy
+from pybv.utils.misc import aslist
 
 
 class OlfactionSensor:
-    def __init__(self):
+    def __init__(self, normalize=False):
         self.num_receptors = 0
         self.receptors = []
         self.map = None
+        self.normalize = normalize
         
     def sensor_type_string(self):
         return 'olfaction'
@@ -20,9 +22,11 @@ class OlfactionSensor:
     
     # pickling: we do not want the lambdas
     def __getstate__(self):
-        return {'map': self.map, 'receptors': self.receptors}
+        return {'map': self.map, 'receptors': self.receptors,
+                'normalize': self.normalize }
     
     def __setstate__(self, d):
+        self.normalize = d['normalize']
         self.receptors = d['receptors']
         self.num_receptors = len(self.receptors)
         if d['map'] is not None:
@@ -30,11 +34,11 @@ class OlfactionSensor:
         else:
             self.map = None
     
-    def set_map(self, map):
+    def set_map(self, world):
         # we will modify "map" throughout
-        map = deepcopy(map)
+        map = deepcopy(world)
         # also we make a copy for pickling
-        self.map = deepcopy(map)
+        self.map = deepcopy(world)
 
         self.all_chemicals = set()
         self.sources = []
@@ -63,7 +67,7 @@ class OlfactionSensor:
                 assert_type(value, [int, float, type(lambda x: 0) ]) #@UnusedVariable
                 self.all_chemicals.add(chemical)
             if len(components.keys()) == 0:
-                raise ValueError('Did you pass me a map without sources? %s' % map)
+                raise ValueError('Did you pass me a map without sources? %s' % world)
             
             self.sources.append((position, components))
     
@@ -122,6 +126,11 @@ class OlfactionSensor:
                 if smell.has_key(chemical):
                     total_value += coefficient * smell[chemical]
             response.append(total_value) 
+    
+        if self.normalize:
+            sum_responses = array(response).sum()
+            response = aslist(response / sum_responses) 
+            
     
         return { 'response' : response, 'sensels': response }
         

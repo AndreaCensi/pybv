@@ -1,6 +1,7 @@
 from numpy import  array, isnan
 from pybv import BVException
 from pybv.utils import  OpenStruct
+import numpy
       
 def random_motion_simulation(
     world_gen, vehicle,
@@ -44,17 +45,24 @@ def random_motion_simulation(
         # generate random commands
         commands = random_commands_gen(state.current_iteration, vehicle)
         # get next state
-        # TODO make parameter
         state2 = vehicle.dynamics.evolve_state(state1, commands, dt)
         
-        #diff = state2.oplus(state1.inverse())
-        #print "diff: %s" % diff
         data = vehicle.compute_observations_and_derivatives(state1, state2, dt)
         data.commands = array(commands)
  
         if any(isnan(data.sensels)): 
             raise BVException('Some sensels were NaN. %s' % str(data.sensels))
-                
+#
+#        for i, v in enumerate(data.sensels):
+#            if v < 0.5: 
+#                print "Found sensel %d: range %f surf %s valid %s" % \
+#                    (i, v, data.rangefinder[0].surface[i], \
+#                      data.rangefinder[0].valid[i], \
+#                     ) # data.surface[i])
+#                #print data.rangefinder[0].__dict__.keys() 
+#                print world
+#                break
+#                    
         state.result.process_data(data)
         
         # housekeeping

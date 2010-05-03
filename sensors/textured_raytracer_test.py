@@ -26,7 +26,8 @@ class WorldInterpretation(unittest.TestCase):
         			"texture":  "lambda x: numpy.sign(numpy.sin(x))"
         		},
         		{
-        		 	"class": "circle", "surface": 1, "radius": 10, "center": [0, 0], "texture": 0,
+        		 	"class": "circle", "surface": 1, "radius": 10, "center": [0, 0],
+                     "texture": 0,
         			"solid_inside": 0
         		}
         	]
@@ -60,7 +61,8 @@ class WorldInterpretation(unittest.TestCase):
         """ Check an exception is raised if wrong raytracer exec is passed """
         raytracer = TexturedRaytracer('raytracer_not')
         raytracer.set_map(self.example_world)
-        self.assertRaises(BVException, raytracer.query_circle, center=[0, 0], radius=1)
+        self.assertRaises(BVException,
+                          raytracer.query_circle, center=[0, 0], radius=1)
 
     def testIntegrity(self):
         """ Make sure that this sensor does not modify the map object """
@@ -85,7 +87,8 @@ example_world = {
                     "texture":  "lambda x: numpy.sign(numpy.sin(x))"
                 },
                 {
-                     "class": "circle", "surface": 1, "radius": 10, "center": [0, 0], "texture": 0,
+                     "class": "circle", "surface": 1, "radius": 10, "center": [0, 0],
+                     "texture": 0,
                     "solid_inside": 0
                 }
             ]
@@ -131,7 +134,92 @@ class SensorSpec(unittest.TestCase):
 
 
     def testQueryCircle(self):
+        ''' Raises if map not specified '''
         raytracer = TexturedRaytracer()
-        self.assertRaises(BVException, raytracer.query_circle, center=[0, 0], radius=1)    
+        self.assertRaises(BVException,
+                          raytracer.query_circle, center=[0, 0], radius=1)    
     
+class QueryCircleWithSegment(unittest.TestCase):
+    def setUp(self):
+        example_world = { 
+            "class": "map",
+            "objects": [
+                { 
+                    "class": "polyline", "surface": 0,
+                    "points": [ [0, 0], [1, 0]],
+                    "texture":  "lambda x: sign(sin(x))"
+                }
+            ]
+        }
+        self.raytracer = TexturedRaytracer()
+        self.raytracer.set_map(example_world)
+    
+    # todo, raises if radius < 0
+    def testRaise(self):
+        ''' check raises if invalid parameters '''
+        r = self.raytracer
+        self.assertRaises(ValueError, r.query_circle, [0, 0], -1)
+        self.assertRaises(ValueError, r.query_circle, [0, 0], 0)
+        self.assertRaises(ValueError, r.query_circle, [0, 0], float('nan'))
+        self.assertRaises(ValueError, r.query_circle, [None, 0], 1)
+        self.assertRaises(ValueError, r.query_circle, [float('nan'), 0], 1)
+        self.assertRaises(ValueError, r.query_circle, None, 1)
+        self.assertRaises(ValueError, r.query_circle, 'ciao', 1)
+        
+    def testIntersection(self):
+        ''' Simple intersections tests '''
+        surf = 0
+        r = self.raytracer
+        eps = 0.0001
+        self.assertEqual((True, surf), r.query_circle([0, 0], 1))
+        self.assertEqual((True, surf), r.query_circle([-1, 0], 1 + eps))
+        self.assertEqual((False, None), r.query_circle([-1, 0], 1 - eps))
+        self.assertEqual((True, surf), r.query_circle([2, 0], 1 + eps))
+        self.assertEqual((False, None), r.query_circle([2, 0], 1 - eps))
+        self.assertEqual((True, surf), r.query_circle([0.5, 0.5], 0.5 + eps))
+        self.assertEqual((False, None), r.query_circle([0.5, 0.5], 0.5 - eps))
+    
+
+eps = 0.0001 
+        
+class QueryCircleWithHollowCircle(unittest.TestCase):
+    def setup(self, solid_inside):
+        example_world = { 
+            "class": "map",
+            "objects": [
+                {  
+                    "class": "circle", "surface": 0, "radius": 1,
+                    "center": [0, 0],
+                    "solid_inside": solid_inside,
+                    "texture":  "lambda x: sign(sin(x))"
+                }
+            ]
+        }
+        raytracer = TexturedRaytracer()
+        raytracer.set_map(example_world)
+        return raytracer
+        
+    def testIntersection1(self):
+        ''' Checking from inside, hollow '''
+        r = self.setup(solid_inside=0)
+        self.assertEqual((True, 0), r.query_circle([0, 0], 1 + eps))
+        self.assertEqual((False, None), r.query_circle([0, 0], 1 - eps))
+    
+    def testIntersection2(self):
+        ''' Checking from inside, solid '''
+        r = self.setup(solid_inside=1)
+        self.assertEqual((True, 0), r.query_circle([0, 0], 1 + eps))
+        self.assertEqual((True, 0), r.query_circle([0, 0], 1 - eps))
+        
+    def testIntersection3(self):
+        ''' Checking from outside, hollow '''
+        r = self. setup(solid_inside=0)
+        self.assertEqual((True, 0), r.query_circle([-2, 0], 1 + eps))
+        self.assertEqual((False, None), r.query_circle([-2, 0], 1 - eps))
+
+    def testIntersection4(self):
+        ''' Checking from outside, solid '''
+        r = self.setup(solid_inside=1)
+        self.assertEqual((True, 0), r.query_circle([-2, 0], 1 + eps))
+        self.assertEqual((False, None), r.query_circle([-2, 0], 1 - eps))
         

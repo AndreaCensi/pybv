@@ -9,6 +9,7 @@ from pybv.utils import aslist, asscalar, assert_type, assert_has_key
 from pybv import BVException
 
 import numpy # used for evaluating functions @UnusedImport
+from numpy import array
 
 class TexturedRaytracer:
     def __init__(self, raytracer='raytracer2'):
@@ -27,7 +28,6 @@ class TexturedRaytracer:
             if e.errno == errno.ENOENT:
                 raise BVException('Could not open connection to raytracer ("%s"). Reason: %s.' % (raytracer, e.strerror))
             raise e
-
         
     def write_to_connection(self, object):
         if self.p is None:
@@ -43,8 +43,6 @@ class TexturedRaytracer:
         self.p.stdin.write('\n') 
         self.p.stdin.flush()
         
-        
-
     def __del__(self):
         if self.p is not None:
             self.p.stdin.close()
@@ -150,25 +148,38 @@ class TexturedRaytracer:
         self.sensor_desc = sensor_desc
                 
     def query_circle(self, center, radius):
+        """ Returns tuple (hit, surface_id) """
+        if radius is None or center is None:
+            raise ValueError('Invalid parameters %s, %s', (center, radius))
+        radius = asscalar(radius)
+        centera = array(center, dtype='float32')
+        if numpy.any(numpy.isnan(centera)) or len(centera) != 2:
+            raise ValueError('Invalid parameter center: %s ' % center)
+        if not radius > 0:
+            raise ValueError('radius must be > 0 (got %s) ' % radius)
+        
+        center = aslist(center)
+        
         self.make_sure_raytracer_configured()
 
         if self.map is None:
             raise BVException('query_circle called before map was defined.')
         
-        center = aslist(center)
-        radius = asscalar(radius)
-        """ Returns tuple (hit, surface_id) """
         query_object = {"class": "query_circle",
             "center": [ center[0], center[1] ],
             "radius": radius}    
+         
         self.write_to_connection(query_object)
         answer = self.child_stream.read_next()
         if answer is None:
                 raise BVException, "Could not communicate with child"
         assert(answer['class'] == "query_circle_response")
         
-        hit = answer['intersects']
-        surface = answer['surface']
+        hit = answer['intersects'] == 1
+        if hit:
+            surface = answer['surface']
+        else:
+            surface = None
         
         return hit, surface    
     

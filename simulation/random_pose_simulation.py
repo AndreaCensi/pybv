@@ -1,4 +1,3 @@
-
 from pybv.utils import  OpenStruct        
 
 # TODO: make common code?

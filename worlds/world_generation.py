@@ -51,7 +51,8 @@ def create_random_world(radius):
         diff = array([cos(theta) * length, sin(theta) * length])
         p2 = p1 + diff
         texture = generate_texture()
-        object = { "class": "polyline", "surface": x + 10,
+        # XXX add check in raytracer
+        object = { "class": "polyline", "surface": x + 2000,
                          "points": [list(p1), list(p2)], "texture": texture}
         objects.append(object)
 
@@ -64,7 +65,7 @@ def create_random_world(radius):
         circle_radius = random_radius()
         texture = generate_texture()
       #  texture = "lambda s: numpy.mod(s,8)/8"
-        objects.append({ "class": "circle", "surface": 0,
+        objects.append({ "class": "circle", "surface": x + 1000,
                         "radius": float(circle_radius),
                         "center": list(center),
          "texture": texture, "solid_inside": 0}

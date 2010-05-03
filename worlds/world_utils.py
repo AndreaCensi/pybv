@@ -2,6 +2,7 @@ from pybv.utils import RigidBodyState
 from numpy import random
 from numpy.linalg import norm
 from math import pi
+from pybv import BVException
 
 def get_safe_pose(raytracer, world_radius, safe_zone, num_tries=100):
     """ Returns RigidBodyState None if num_tries tries fail """
@@ -19,4 +20,5 @@ def get_safe_pose(raytracer, world_radius, safe_zone, num_tries=100):
         
         return RigidBodyState(position, orientation)
         
-    return None
+    raise BVException('Could not find a pose in %d tries' % num_tries)
+    #return None

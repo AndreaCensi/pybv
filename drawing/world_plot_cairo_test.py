@@ -10,6 +10,8 @@ from pybv.sensors.textured_raytracer import TexturedRaytracer
 from pybv.sensors.image_range_sensor import Rangefinder
 import sys
 
+safe_zone = 1
+
 def simple_drawing(world, vehicle, pose, data):
     width, height = 6000, 6000
     # surface = cairo.ImageSurface (cairo.FORMAT_ARGB32, width, height)
@@ -28,8 +30,19 @@ def simple_drawing(world, vehicle, pose, data):
     #ctx.set_source_rgb(0, 1, 0)
     #ctx.stroke()
     ctx.clip() 
+    
     draw_world(ctx, world)
+    
+    p = pose.get_2d_position()
+    
+    ctx.save()
+    ctx.arc(p[0], p[1], safe_zone, 0, 2 * pi)
+    ctx.set_source_rgba(1, 0, 0, 0.5)
+    ctx.fill()
+    ctx.restore()
+    
     draw_vehicle(ctx, vehicle, pose)
+    
     for i, sensor in enumerate(vehicle.config.sensors):
         mountpoint = vehicle.sensor2mountpoint[sensor]
         sensor_pose = pose.oplus(mountpoint)
@@ -50,7 +63,8 @@ if __name__ == '__main__':
     world = create_random_world(radius)
     rt = TexturedRaytracer()
     rt.set_map(world)
-    pose = get_safe_pose(rt, world_radius=radius, safe_zone=0.5)
+    
+    pose = get_safe_pose(rt, world_radius=radius, safe_zone=safe_zone)
     vehicle = Vehicle()
     
     sensor = Rangefinder()

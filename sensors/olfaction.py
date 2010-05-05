@@ -28,10 +28,13 @@ class OlfactionSensor:
     # pickling: we do not want the lambdas
     def __getstate__(self):
         return {'map': self.map, 'receptors': self.receptors,
-                'normalize': self.normalize }
+                'normalize_sum': self.normalize_sum,
+                'normalize_mean': self.normalize_mean,
+                 }
     
     def __setstate__(self, d):
-        self.normalize = d['normalize']
+        self.normalize_mean = d['normalize_mean']
+        self.normalize_sum = d['normalize_sum']
         self.receptors = d['receptors']
         self.num_receptors = len(self.receptors)
         if d['map'] is not None:
@@ -60,7 +63,8 @@ class OlfactionSensor:
             position = source['position']                
             assert_type(position, list)
             if not len(position) == 3:
-                raise ValueError('I expect position with 3 elements, got %s' % position)
+                raise ValueError('I expect position with 3 elements, got %s' % 
+                                 position)
             position = array(position)
             components = source['components']
             assert_type(components, dict)
@@ -69,10 +73,12 @@ class OlfactionSensor:
                 if isinstance(value, str):
                     value = eval(value)
                     components[chemical] = value
-                assert_type(value, [int, float, type(lambda x: 0) ]) #@UnusedVariable
+                assert_type(value,
+                            [int, float, type(lambda x: 0) ]) #@UnusedVariable
                 self.all_chemicals.add(chemical)
             if len(components.keys()) == 0:
-                raise ValueError('Did you pass me a map without sources? %s' % world)
+                raise ValueError('Did you pass me a map without sources? %s' % 
+                                 world)
             
             self.sources.append((position, components))
     
@@ -89,7 +95,8 @@ class OlfactionSensor:
         assert_type(sensitivity, dict)
         for key, value in sensitivity.items():
             assert_type(key, str)
-            assert_type(value, [int, float, type(lambda x:0) ]) #@UnusedVariable
+            assert_type(value,
+                        [int, float, type(lambda x:0) ]) #@UnusedVariable
     
         self.receptors.append((pose, sensitivity))
         self.num_receptors += 1
@@ -105,7 +112,8 @@ class OlfactionSensor:
         def evaluate_effect(effect, distance):
             if isinstance(effect, float) or isinstance(effect, int):
                 return effect
-            elif isinstance(effect, type(lambda x:0)): # XXX what is a better way to write this? @UnusedVariable
+            elif isinstance(effect, type(lambda x:0)): 
+                # XXX what is a better way to write this? @UnusedVariable
                 return effect(distance)
         
         smell = {}
@@ -113,7 +121,8 @@ class OlfactionSensor:
             smell[chemical] = 0
         
         for source_position, components in self.sources:
-            distance = linalg.norm(ascolumn(position) - ascolumn(source_position))
+            distance = linalg.norm(ascolumn(position) - 
+                                   ascolumn(source_position))
             for chemical, effect_function in components.items():
                 effect = evaluate_effect(effect_function, distance)
                 smell[chemical] += effect

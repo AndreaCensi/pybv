@@ -15,7 +15,7 @@ def generate_texture(scale=1):
     #print texture
     return texture
 
-def create_random_world(radius):
+def create_random_world(radius, num_lines=10, num_circles=5):
     objects = []
     
     def random_point():
@@ -38,8 +38,6 @@ def create_random_world(radius):
              }
         )
         
-    num_lines = 10
-    #num_lines = 0
     
     average_length = radius / 3.0
     
@@ -56,8 +54,6 @@ def create_random_world(radius):
                          "points": [list(p1), list(p2)], "texture": texture}
         objects.append(object)
 
-    num_circles = 5
-    #num_circles = 0
     
     random_radius = lambda : 2 + 2 * numpy.random.rand(1)
     for x in range(num_circles):

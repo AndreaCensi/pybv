@@ -1,10 +1,13 @@
+
 from numpy import array, linalg
+
 from pybv.utils import RigidBodyState, assert_type, assert_has_key, ascolumn
 
 # This is necessary to allow arbitrary functions for source strength 
 import math, numpy #@UnusedImport
 from copy import deepcopy
 from pybv.utils.misc import aslist
+
 
 
 class OlfactionSensor:

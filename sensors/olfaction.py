@@ -11,11 +11,13 @@ from pybv.utils.misc import aslist
 
 
 class OlfactionSensor:
-    def __init__(self, normalize=False):
+    def __init__(self, normalize_sum=False, normalize_mean=False):
         self.num_receptors = 0
         self.receptors = []
         self.map = None
-        self.normalize = normalize
+        self.normalize_sum = normalize_sum
+        self.normalize_mean = normalize_mean
+        
         
     def sensor_type_string(self):
         return 'olfaction'
@@ -130,12 +132,15 @@ class OlfactionSensor:
                     total_value += coefficient * smell[chemical]
             response.append(total_value) 
     
-        if self.normalize:
-            sum_responses = array(response).sum()
-            response = aslist(response / sum_responses) 
-            
+        response = array(response)
+        
+        if self.normalize_mean:
+            response -= response.mean() 
+        
+        if self.normalize_sum:
+            response = response / response.sum() 
     
-        return { 'response' : response, 'sensels': response }
+        return { 'response' : aslist(response), 'sensels': aslist(response) }
         
         
     

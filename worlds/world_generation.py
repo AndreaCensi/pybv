@@ -92,6 +92,7 @@ def create_random_world(radius, num_lines=10, num_circles=5):
         position.append(1)
         scale = numpy.random.rand(1) * 1
         dist_func = "lambda dist: math.exp(- dist / %f ) " % scale
+        #dist_func = "lambda dist: numpy.minimum(1, 1.0/((%f*dist)**2)  ) " % scale
         olfaction_sources.append({  "position": position, 'components':
                                    { 'food': dist_func } })
         

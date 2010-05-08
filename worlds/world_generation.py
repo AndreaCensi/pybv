@@ -20,7 +20,7 @@ def generate_texture(scale=1):
 def generate_poisson_texture(length):
     cell_size = 0.01
     intensity = 5.0
-    sigma = (1.0 / intensity) * 2
+    sigma = (1.0 / intensity) * 3
     seed = 0
     params = PoissonTexParams(seed, length, cell_size, sigma, intensity)
     texture = generate_poisson_tex(params)

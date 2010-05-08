@@ -29,16 +29,20 @@ def random_motion_simulation(
         state.result = processing_class(vehicle.config)
         state.vehicle = vehicle
         
-    save_every = 10
+    save_every = 50
+    generate_world_every = 50
+    world = None
     while state.current_iteration < state.total_iterations:
-        
         # sample a random world
-        world = world_gen()
-        # give the map to the pose generator
-        random_pose_gen.set_map(world)
+        if world is None or  \
+            state.current_iteration % generate_world_every == 0:
+            world = world_gen()
+            # give the map to the pose generator
+            random_pose_gen.set_map(world)
+            # sets the map for all sensors
+            vehicle.set_map(world)
+    
         state1 = random_pose_gen.generate_pose()
-        # sets the map for all sensors
-        vehicle.set_map(world)
         if state1 is None:
             raise BVException('Could not generate a random pose.')
 

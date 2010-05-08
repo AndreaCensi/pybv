@@ -19,8 +19,10 @@ def draw_polyline(ctx, object):
     
     ctx.stroke() 
     
-    texture = eval(object['texture'])
-
+    texture = object['texture']
+    if isinstance(texture, str):
+        texture = eval(texture) 
+    
     current_coord = 0
     for i in range(len(points) - 1):
         interval = 0.1
@@ -45,7 +47,13 @@ def draw_circle(ctx, object):
     ctx.arc(center[0], center[1], radius, 0, 2 * pi)
     ctx.stroke()
     
-    texture = eval(object['texture'])
+    # TODO: put this logic somewhere else
+    texture = object['texture']
+    if isinstance(texture, str):
+        texture = eval(texture) 
+         
+    
+    
     
     interval = 0.1
     perimeter = 2 * pi * radius

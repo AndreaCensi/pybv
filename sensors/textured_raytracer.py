@@ -16,7 +16,12 @@ class TexturedRaytracer:
         self.raytracer = raytracer
         self.p = None
         self.surface2texture = {}
+        # This is a copy of the map we received
         self.map = None
+        # This is a copy of map, with texture removed, used to send
+        # to the C process. The idea is that this is JSON serializable,
+        # while map is not
+        self.map_purified = None
         self.sensor_desc = None
 
     def init_connection(self, raytracer):
@@ -80,21 +85,22 @@ class TexturedRaytracer:
             raise BVException('Expected map_object["objects"]; available keys are %s' % map_object.keys())
             
         # get a copy (because later we remove 'texture')
-        map_object = deepcopy(map_object)
+        self.map_purified = deepcopy(map_object)
+        # we also save a copy for calling us again after serialization
+        self.map = deepcopy(map_object)
 
-        self.map = map_object
-
-        assert_has_key(map_object, 'objects')
-        objects = map_object['objects']
+        assert_has_key(self.map_purified, 'objects')
+        objects = self.map_purified['objects']
         assert_type(objects, list)
         for object in objects:
             assert_type(object, dict)
             if object.has_key('texture'):
                 texture = object.get('texture')
-                # del object['texture']
+                del object['texture']
             else:
                 # FIXME make this configurable
-                raise ValueError('texture not provided for object %s' % object)
+                raise ValueError('texture not provided for object %s. Map was %s' \
+                                  % (object, self.map))
 #                texture = lambda x: 0.5
             if isinstance(texture, str):
                 texture = eval(texture) 
@@ -103,11 +109,11 @@ class TexturedRaytracer:
             self.surface2texture[surface] = texture
         
 #        sys.stderr.write("Textures: %s\n" % self.surface2texture)
-#        print map_object
-        
+#        print map_object    
+    
     def make_sure_raytracer_configured(self):
-        if self.map:
-            self.write_to_connection(self.map)
+        if self.map_purified:
+            self.write_to_connection(self.map_purified)
         if self.sensor_desc:
             self.write_to_connection(self.sensor_desc)
     

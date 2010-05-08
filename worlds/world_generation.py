@@ -1,5 +1,7 @@
 import numpy
 from numpy import pi, array, sin, cos
+from pybv.worlds.texture_generation import PoissonTexParams, \
+    generate_poisson_tex
 
 def generate_texture(scale=1):
     # create arena
@@ -15,13 +17,23 @@ def generate_texture(scale=1):
     #print texture
     return texture
 
+def generate_poisson_texture(length):
+    cell_size = 0.01
+    intensity = 5.0
+    sigma = (1.0 / intensity) * 2
+    seed = 0
+    params = PoissonTexParams(seed, length, cell_size, sigma, intensity)
+    texture = generate_poisson_tex(params)
+    return texture
+    
+
 def create_random_world(radius, num_lines=10, num_circles=5):
     objects = []
     
     def random_point():
         return (numpy.random.rand(2) - 0.5) * 2 * radius 
     
-    texture = generate_texture()
+    # texture = generate_texture()
     #objects.append(
     #    { "class": "circle", "surface": 0, "radius": radius, "center": [0.0, 0.0],
     #     "texture": texture, "solid_inside": 0}
@@ -29,6 +41,7 @@ def create_random_world(radius, num_lines=10, num_circles=5):
     
     #texture = "lambda s:  numpy.mod(s,10)/10"
     w = radius - 0.1
+    texture = generate_poisson_texture(length=w * 2 * 4)
     if 1:
         objects.append(
             { 
@@ -48,7 +61,8 @@ def create_random_world(radius, num_lines=10, num_circles=5):
         
         diff = array([cos(theta) * length, sin(theta) * length])
         p2 = p1 + diff
-        texture = generate_texture()
+        #texture = generate_texture()
+        texture = generate_poisson_texture(length=length)
         # XXX add check in raytracer
         object = { "class": "polyline", "surface": x + 2000,
                          "points": [list(p1), list(p2)], "texture": texture}
@@ -59,7 +73,8 @@ def create_random_world(radius, num_lines=10, num_circles=5):
     for x in range(num_circles):
         center = random_point()
         circle_radius = random_radius()
-        texture = generate_texture()
+        # texture = generate_texture()
+        texture = generate_poisson_texture(length=2 * pi * circle_radius)
       #  texture = "lambda s: numpy.mod(s,8)/8"
         objects.append({ "class": "circle", "surface": x + 1000,
                         "radius": float(circle_radius),

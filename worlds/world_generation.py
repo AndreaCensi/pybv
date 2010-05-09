@@ -20,7 +20,7 @@ def generate_texture(scale=1):
 def generate_poisson_texture(length):
     cell_size = 0.01
     intensity = 5.0
-    sigma = (1.0 / intensity) * 3
+    sigma = (1.0 / intensity) * 5
     seed = 0
     params = PoissonTexParams(seed, length, cell_size, sigma, intensity)
     texture = generate_poisson_tex(params)
@@ -75,7 +75,7 @@ def create_random_world(radius, num_lines=10, num_circles=5):
         circle_radius = random_radius()
         # texture = generate_texture()
         texture = generate_poisson_texture(length=2 * pi * circle_radius)
-      #  texture = "lambda s: numpy.mod(s,8)/8"
+        #  texture = "lambda s: numpy.mod(s,8)/8"
         objects.append({ "class": "circle", "surface": x + 1000,
                         "radius": float(circle_radius),
                         "center": list(center),

@@ -147,7 +147,9 @@ class OlfactionSensor:
             response -= response.mean() 
         
         if self.normalize_sum:
-            response = response / response.sum() 
+            sum = response.sum()
+            if sum > 0.0001:
+                response = response / sum  
     
         return { 'response' : aslist(response), 'sensels': aslist(response) }
         

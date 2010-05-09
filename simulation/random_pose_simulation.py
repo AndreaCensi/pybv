@@ -1,4 +1,5 @@
 from pybv.utils import  OpenStruct        
+from pybv.utils.numpy_utils import assert_reasonable_value
 
 # TODO: make common code?
 
@@ -45,6 +46,8 @@ def random_pose_simulation(
         state1 = random_pose_gen.generate_pose()
         
         data = vehicle.compute_observations(state1)
+        assert_reasonable_value(data.sensels)
+        
         state.result.process_data(data)
 
         if state.current_iteration % save_every == 0:

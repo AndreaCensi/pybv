@@ -1,6 +1,7 @@
 from numpy import array, ndarray
 from pybv import BVException
 from pybv.utils import OpenStruct, RigidBodyState, assert_1d_ndarray
+from pybv.utils.numpy_utils import assert_reasonable_value
 
 class Vehicle:
     def __init__(self):
@@ -84,7 +85,7 @@ class Vehicle:
             data_array.append(sensor_data)
             data.all_sensors.append(sensor_data)
             
-            # FIXME Look for NAN
+            assert_reasonable_value(sensor_data.sensels)
             assert_1d_ndarray(sensor_data.sensels)
             data.sensels.extend(list(sensor_data.sensels))
 

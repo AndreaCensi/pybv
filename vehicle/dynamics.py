@@ -59,8 +59,8 @@ class OmnidirectionalKinematics(Dynamics):
         vy = commands.vy
         
         # FIXME: simple Euler for now; change later
-        c = cos(theta)
-        s = sin(theta)
+        c = cos(theta + commands.omega * dt / 2)
+        s = sin(theta + commands.omega * dt / 2)
         
         x1 = x + (vx * c + vy * (-s)) * dt
         y1 = y + (vx * s + vy * c) * dt

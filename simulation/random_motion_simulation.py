@@ -1,7 +1,8 @@
-from numpy import  array, isnan
+from numpy import  array
 from pybv import BVException
 from pybv.utils import  OpenStruct
 import numpy
+from pybv.utils.numpy_utils import  assert_reasonable_value
       
 def random_motion_simulation(
     world_gen, vehicle,
@@ -54,9 +55,11 @@ def random_motion_simulation(
         data = vehicle.compute_observations_and_derivatives(state1, state2, dt)
         data.commands = array(commands)
  
-        if any(isnan(data.sensels)): 
-            raise BVException('Some sensels were NaN. %s' % str(data.sensels))
-#
+ 
+        assert_reasonable_value(data.sensels)
+        assert_reasonable_value(data.sensels_dot)
+        
+        #
 #        for i, v in enumerate(data.sensels):
 #            if v < 0.5: 
 #                print "Found sensel %d: range %f surf %s valid %s" % \

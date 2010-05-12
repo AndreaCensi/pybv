@@ -4,8 +4,10 @@ class Texture:
     def __init__(self, buffer, cell_size):
         self.buffer = buffer
         self.cell_size = cell_size
+        
     def __call__(self, curvilinear):
         return self.sample(curvilinear)
+    
     def __eq__(self, other):
         return self.cell_size == other.cell_size and \
             self.buffer.shape == other.buffer.shape and \

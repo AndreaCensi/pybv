@@ -5,7 +5,10 @@ class gt:
     def __init__(self, n):
         self.n = n
     def __eq__(self, other):
-        return other > self.n 
+        return other > self.n
+    
+    def __str__(self):
+        return '>%s' % self.n 
 
 class square_shape:
     def __eq__(self, other):

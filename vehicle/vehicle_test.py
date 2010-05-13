@@ -1,5 +1,6 @@
-from pybv.vehicle import *
 import unittest
+from pybv.vehicle.dynamics import OmnidirectionalKinematics
+from pybv.vehicle import Vehicle
 
 class VehicleConstructors(unittest.TestCase):
     
@@ -20,11 +21,7 @@ class VehicleConstructors(unittest.TestCase):
         """ Testing that we define .config and its members """
         v = Vehicle()
         self.assert_(v.config is not None)
-        self.assert_(v.config.sensors is not None)
-   #      self.assert_(v.config.optics is not None)
-   #     self.assert_(len(v.config.optics) == 0)
-   #     self.assert_(v.config.rangefinder is not None)
-   #     self.assert_(len(v.config.rangefinder) == 0)
+        self.assert_(v.config.sensors is not None) 
         self.assert_(v.config.num_sensels == 0)
         self.assert_(v.config.num_commands == 0)
         

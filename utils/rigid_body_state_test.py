@@ -3,6 +3,7 @@ from pybv.utils import RigidBodyState
 import unittest
 from numpy import random, pi, array, ndarray
 from numpy.testing import *
+import numpy
 
 class CompositionTests(unittest.TestCase):
     
@@ -30,6 +31,12 @@ class CompositionTests(unittest.TestCase):
         self.assertTrue(isinstance(RigidBodyState(position=[0, 0]).position, ndarray))
         self.assertEqual(RigidBodyState(position=[0, 0]).position.shape, (3, 1))
         self.assertEqual(RigidBodyState(attitude=0).attitude.shape, (3, 3))
+
+    def test_values(self):
+        ''' Testing initialization with numpy scalar types '''
+        RigidBodyState(position=[0, 0, 0], attitude=0)
+        RigidBodyState(position=[0, 0, 0], attitude=numpy.float32(0))
+        RigidBodyState(position=[0, 0, 0], attitude=numpy.float64(0))
 
     def testInit2(self):
         """ attitude can be initialized with 1d array """

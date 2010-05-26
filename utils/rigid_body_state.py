@@ -1,6 +1,7 @@
 from numpy import zeros, eye, dot, array, linalg, deg2rad, arccos, ndarray, rad2deg
 from math import atan2, sin, cos
 from misc  import aslist, ascolumn
+import numpy
 
 
 def rotz(theta):
@@ -41,12 +42,16 @@ class RigidBodyState:
         if len(position) == 2:
             position = ascolumn([position[0, 0], position[1, 0], 0])
         
-        if not (isinstance(attitude, float) or isinstance(attitude, int) or \
-                     isinstance(attitude, ndarray)):
+        # XXX: make this more general
+        scalar_types = [float, int, numpy.float32, numpy.float64]
+        ok_types = scalar_types + [numpy.ndarray]
+        
+        if not type(attitude) in ok_types:
             raise TypeError('Wrong type %s for attitude' % type(attitude))
         
-        if isinstance(attitude, float) or isinstance(attitude, int):
-            attitude = rotz(attitude)
+        # XXX: make this more general
+        if type(attitude) in scalar_types:
+            attitude = rotz(float(attitude))
         elif isinstance(attitude, ndarray):
             if len(attitude) == 1:
                 attitude = rotz(attitude.flatten()[0])

@@ -1,6 +1,6 @@
 from numpy import zeros, eye, dot, array, linalg, deg2rad, arccos, ndarray, rad2deg
 from math import atan2, sin, cos
-from misc  import aslist, ascolumn
+from misc  import  ascolumn
 import numpy
 
 
@@ -36,11 +36,11 @@ class RigidBodyState:
             
         if not (isinstance(position, list) or isinstance(position, ndarray)):
             raise TypeError('Wrong type %s for position' % type(position))
-        position = ascolumn(position)
+        position = array(position).reshape((3, 1))
         if not (2 <= len(position) <= 3):
             raise ValueError('Wrong value %s for position' % position)
         if len(position) == 2:
-            position = ascolumn([position[0, 0], position[1, 0], 0])
+            position = array([position[0, 0], position[1, 0], 0]).reshape((3, 1))
         
         # XXX: make this more general
         scalar_types = [float, int, numpy.float32, numpy.float64]

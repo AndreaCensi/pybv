@@ -36,11 +36,13 @@ class RigidBodyState:
             
         if not (isinstance(position, list) or isinstance(position, ndarray)):
             raise TypeError('Wrong type %s for position' % type(position))
-        position = array(position).reshape((3, 1))
         if not (2 <= len(position) <= 3):
             raise ValueError('Wrong value %s for position' % position)
         if len(position) == 2:
-            position = array([position[0, 0], position[1, 0], 0]).reshape((3, 1))
+            position = array(position).reshape(2)
+            position = array([position[0], position[1], 0]).reshape((3, 1))
+        else:
+            position = array(position).reshape((3, 1))
         
         # XXX: make this more general
         scalar_types = [float, int, numpy.float32, numpy.float64]

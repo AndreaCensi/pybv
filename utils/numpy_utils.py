@@ -18,8 +18,6 @@ def require_shape(expected_shape, v):
     if not expected_shape == v.shape:
         raise ValueError('Expecting shape %s, got %s' % 
                          (expected_shape, v.shape))  
-    
-
 
 def assert_reasonable_value(a):
     reasonable = not isnan(a).any() and not isinf(a).any()

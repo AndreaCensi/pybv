@@ -11,6 +11,11 @@ from pybv.utils.misc import aslist
 
 
 class OlfactionSensor:
+    ''' Represents both an olfaction sensor and the map. 
+    
+    
+        self.receptor is an array of tuples (pose, sensitivity)
+    '''
     def __init__(self, normalize_sum=False, normalize_mean=False):
         self.num_receptors = 0
         self.receptors = []

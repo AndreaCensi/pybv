@@ -139,5 +139,3 @@ class Vehicle:
         data1.sensels_dot = derivative 
         return data1
         
-        
-    

@@ -16,6 +16,9 @@ def random_motion_simulation(
     random_commands_gen:  lambda iteration, vehicle -> castable to float list
     processing_class
     """
+    
+    # Use random seed
+    numpy.random.seed()
          
     if previous_result is not None:
         state = previous_result
@@ -31,7 +34,7 @@ def random_motion_simulation(
         state.vehicle = vehicle
         
     save_every = 50
-    generate_world_every = 50
+    generate_world_every = 5
     world = None
     while state.current_iteration < state.total_iterations:
         # sample a random world
@@ -61,7 +64,7 @@ def random_motion_simulation(
         
         #
 #        for i, v in enumerate(data.sensels):
-#            if v < 0.5: 
+#            if v < 0.5:
 #                print "Found sensel %d: range %f surf %s valid %s" % \
 #                    (i, v, data.rangefinder[0].surface[i], \
 #                      data.rangefinder[0].valid[i], \

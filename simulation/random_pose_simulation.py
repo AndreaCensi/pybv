@@ -1,5 +1,6 @@
 from pybv.utils import  OpenStruct        
 from pybv.utils.numpy_utils import assert_reasonable_value
+import numpy
 
 # TODO: make common code?
 
@@ -14,6 +15,9 @@ def random_pose_simulation(
     random_pose_gen:  XXX lambda -> RigidBodyState
     processing_class
     """
+    
+    # Use random seed
+    numpy.random.seed()     
         
     if previous_result is not None:
         state = previous_result

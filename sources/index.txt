@@ -1,0 +1,27 @@
+
+Pybv 
+=====
+
+This is a Python library I wrote for simulating planar "vehicles" for some research about bootstrapping.
+See http://purl.org/censi/2010/boot for details.
+
+There is not much documentation yet, but if you really want, you can find what you want in here.
+
+
+See :ref:`api`
+
+Install
+-------
+
+Development happens on github: http://github.com/AndreaCensi/pybv
+
+The quick install is:
+
+$ easy_install -U pybv
+
+
+.. raw:: html
+   :file: download.html
+
+
+

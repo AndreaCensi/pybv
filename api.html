@@ -172,8 +172,71 @@ Y.Remarkbox.render();
       <div class="content">
         
         
-  <div class="section" id="module-pybv">
-<span id="api-documentation"></span><span id="api"></span><h1>API documentation<a class="headerlink" href="#module-pybv" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pybv.sensors">
+<span id="api-documentation"></span><span id="api"></span><h1>API documentation<a class="headerlink" href="#module-pybv.sensors" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the implementations of the various sensors.</p>
+<span class="target" id="module-pybv.vehicle"></span><p>This module contains the definition of the Vehicle objects and its dynamics.</p>
+<dl class="class">
+<dt id="pybv.vehicle.Vehicle">
+<em class="property">class </em><tt class="descclassname">pybv.vehicle.</tt><tt class="descname">Vehicle</tt><a class="headerlink" href="#pybv.vehicle.Vehicle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pybv.vehicle.Vehicle.add_sensor">
+<tt class="descname">add_sensor</tt><big>(</big><em>sensor</em>, <em>mountpoint=None</em><big>)</big><a class="headerlink" href="#pybv.vehicle.Vehicle.add_sensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pybv.vehicle.Vehicle.compute_observations">
+<tt class="descname">compute_observations</tt><big>(</big><em>vehicle_state=None</em><big>)</big><a class="headerlink" href="#pybv.vehicle.Vehicle.compute_observations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the sensor observations at a certain state.</p>
+<p>OK, you might think this function is kind of mysterious
+because of all the introspection we use. However, a little
+black magic here helps in making the client interface
+clear and intuitive.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pybv.vehicle.Vehicle.compute_observations_and_derivatives">
+<tt class="descname">compute_observations_and_derivatives</tt><big>(</big><em>state1</em>, <em>state2</em>, <em>dt</em><big>)</big><a class="headerlink" href="#pybv.vehicle.Vehicle.compute_observations_and_derivatives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the sensor observations and their derivatives, 
+at the two states state1 and state2.</p>
+<p>This function calls, in turn, <tt class="docutils literal"><span class="pre">compute_observations()</span></tt>
+and computes the variation of the observations from state1 to state2.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>state1 (RigidBodyState):  first state  
+state2 (RigidBodyState):  second state  
+dt     (float):           time elapsed</dd>
+<dt>Returns:</dt>
+<dd>OpenStruct. The same structure returned by <tt class="docutils literal"><span class="pre">compute_observations()</span></tt>
+but with some members added (<tt class="docutils literal"><span class="pre">luminance_dot</span></tt>, <tt class="docutils literal"><span class="pre">readings_dot</span></tt>, 
+<tt class="docutils literal"><span class="pre">sensels_dot</span></tt>).</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pybv.vehicle.Vehicle.set_controller">
+<tt class="descname">set_controller</tt><big>(</big><em>controller</em><big>)</big><a class="headerlink" href="#pybv.vehicle.Vehicle.set_controller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pybv.vehicle.Vehicle.set_dynamics">
+<tt class="descname">set_dynamics</tt><big>(</big><em>dynamics</em><big>)</big><a class="headerlink" href="#pybv.vehicle.Vehicle.set_dynamics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pybv.vehicle.Vehicle.set_map">
+<tt class="descname">set_map</tt><big>(</big><em>map_object</em><big>)</big><a class="headerlink" href="#pybv.vehicle.Vehicle.set_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the map object for all sensors</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pybv.vehicle.Vehicle.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pybv.vehicle.Vehicle.set_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pybv.worlds"></span><span class="target" id="module-pybv.drawing"></span><p>This module contains the routines for drawing.</p>
 </div>
 
 

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pybv.sensors.olfaction_test</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pybv-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="pybv-module.html">Package&nbsp;pybv</a> ::
+        <a href="pybv.sensors-module.html">Package&nbsp;sensors</a> ::
+        Module&nbsp;olfaction_test
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="pybv.sensors.olfaction_test-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="pybv.sensors.olfaction_test-module.html">Module pybv.sensors.olfaction_test</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">unittest</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">math</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">copy</tt> <tt class="py-keyword">import</tt> <tt class="py-name">deepcopy</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package pybv=pybv-module.html"><a title="pybv" class="py-name" href="#" onclick="return doclink('link-0', 'pybv', 'link-0');">pybv</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package pybv.sensors=pybv.sensors-module.html"><a title="pybv.sensors" class="py-name" href="#" onclick="return doclink('link-1', 'sensors', 'link-1');">sensors</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class pybv.sensors.olfaction.OlfactionSensor=pybv.sensors.olfaction.OlfactionSensor-class.html"><a title="pybv.sensors.olfaction.OlfactionSensor" class="py-name" href="#" onclick="return doclink('link-2', 'OlfactionSensor', 'link-2');">OlfactionSensor</a></tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name"><a title="pybv" class="py-name" href="#" onclick="return doclink('link-3', 'pybv', 'link-0');">pybv</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Package pybv.utils=pybv.utils-module.html"><a title="pybv.utils" class="py-name" href="#" onclick="return doclink('link-4', 'utils', 'link-4');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class pybv.utils.rigid_body_state.RigidBodyState=pybv.utils.rigid_body_state.RigidBodyState-class.html"><a title="pybv.utils.rigid_body_state.RigidBodyState" class="py-name" href="#" onclick="return doclink('link-5', 'RigidBodyState', 'link-5');">RigidBodyState</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Function pybv.utils.misc.make_sure_pickable()=pybv.utils.misc-module.html#make_sure_pickable"><a title="pybv.utils.misc.make_sure_pickable" class="py-name" href="#" onclick="return doclink('link-6', 'make_sure_pickable', 'link-6');">make_sure_pickable</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-7" class="py-name"><a title="pybv" class="py-name" href="#" onclick="return doclink('link-7', 'pybv', 'link-0');">pybv</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Package pybv.worlds=pybv.worlds-module.html"><a title="pybv.worlds" class="py-name" href="#" onclick="return doclink('link-8', 'worlds', 'link-8');">worlds</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Function pybv.worlds.world_generation.create_random_world()=pybv.worlds.world_generation-module.html#create_random_world"><a title="pybv.worlds.world_generation.create_random_world" class="py-name" href="#" onclick="return doclink('link-9', 'create_random_world', 'link-9');">create_random_world</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="ParsingTest"></a><div id="ParsingTest-def"><a name="L11"></a><tt class="py-lineno">11</tt> <a class="py-toggle" href="#" id="ParsingTest-toggle" onclick="return toggle('ParsingTest');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html">ParsingTest</a><tt class="py-op">(</tt><tt class="py-base-class">unittest</tt><tt class="py-op">.</tt><tt class="py-base-class">TestCase</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="ParsingTest-expanded"><a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">     </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt id="link-10" class="py-name" targets="Variable pybv.sensors.olfaction_test.ParsingTest.map_valid=pybv.sensors.olfaction_test.ParsingTest-class.html#map_valid"><a title="pybv.sensors.olfaction_test.ParsingTest.map_valid" class="py-name" href="#" onclick="return doclink('link-10', 'map_valid', 'link-10');">map_valid</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt>  </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">       <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">           <tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt>  </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">                <tt class="py-op">{</tt> <tt class="py-string">'food'</tt><tt class="py-op">:</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">dist</tt><tt class="py-op">:</tt> <tt class="py-name">math</tt><tt class="py-op">.</tt><tt class="py-name">exp</tt><tt class="py-op">(</tt><tt class="py-op">-</tt><tt class="py-name">dist</tt> <tt class="py-op">/</tt> <tt class="py-number">3</tt><tt class="py-op">)</tt> <tt class="py-op">}</tt>   </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt class="py-op">]</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt>  </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">       <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">           <tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt>  </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">                <tt class="py-op">{</tt> <tt class="py-string">'food'</tt><tt class="py-op">:</tt> <tt class="py-number">3</tt> <tt class="py-op">}</tt>   </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-op">]</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt>  </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">       <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">           <tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt>  </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">                <tt class="py-op">{</tt> <tt class="py-string">'food'</tt><tt class="py-op">:</tt> <tt class="py-string">"lambda x: x * 2"</tt> <tt class="py-op">}</tt>   </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-op">]</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-op">}</tt><tt class="py-op">]</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt id="link-11" class="py-name" targets="Variable pybv.sensors.olfaction_test.ParsingTest.map_invalid=pybv.sensors.olfaction_test.ParsingTest-class.html#map_invalid"><a title="pybv.sensors.olfaction_test.ParsingTest.map_invalid" class="py-name" href="#" onclick="return doclink('link-11', 'map_invalid', 'link-11');">map_invalid</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-number">42</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-name">None</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-number">42</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">42</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-name">None</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-number">42</tt><tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt> <tt class="py-name">None</tt> <tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-number">132</tt><tt class="py-op">:</tt> <tt class="py-number">0</tt><tt class="py-op">}</tt> <tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> <tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-op">{</tt> <tt class="py-string">'olfaction_sources'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-op">{</tt><tt class="py-string">'position'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'components'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt><tt class="py-string">'food'</tt><tt class="py-op">:</tt> <tt class="py-string">'bah'</tt> <tt class="py-op">}</tt> <tt class="py-op">}</tt><tt class="py-op">]</tt> <tt class="py-op">}</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">    <tt class="py-op">]</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">     </tt>
+<a name="ParsingTest.testParsing"></a><div id="ParsingTest.testParsing-def"><a name="L47"></a><tt class="py-lineno">47</tt> <a class="py-toggle" href="#" id="ParsingTest.testParsing-toggle" onclick="return toggle('ParsingTest.testParsing');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html#testParsing">testParsing</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest.testParsing-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ParsingTest.testParsing-expanded"><a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">        <tt class="py-docstring">""" Trying to parse a simple map """</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">map</tt> <tt class="py-keyword">in</tt> <tt id="link-12" class="py-name" targets="Class pybv.sensors.olfaction_test.ParsingTest=pybv.sensors.olfaction_test.ParsingTest-class.html"><a title="pybv.sensors.olfaction_test.ParsingTest" class="py-name" href="#" onclick="return doclink('link-12', 'ParsingTest', 'link-12');">ParsingTest</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest.map_valid" class="py-name" href="#" onclick="return doclink('link-13', 'map_valid', 'link-10');">map_valid</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">            <tt class="py-name">os</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method pybv.sensors.olfaction_test.ParsingTest.createSimpleOlfactionSensor()=pybv.sensors.olfaction_test.ParsingTest-class.html#createSimpleOlfactionSensor"><a title="pybv.sensors.olfaction_test.ParsingTest.createSimpleOlfactionSensor" class="py-name" href="#" onclick="return doclink('link-14', 'createSimpleOlfactionSensor', 'link-14');">createSimpleOlfactionSensor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">            <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method pybv.sensors.image_range_sensor.ImageRangeSensor.set_map()=pybv.sensors.image_range_sensor.ImageRangeSensor-class.html#set_map,Method pybv.sensors.olfaction.OlfactionSensor.set_map()=pybv.sensors.olfaction.OlfactionSensor-class.html#set_map,Method pybv.sensors.polarized_light_sensor.PolarizedLightSensor.set_map()=pybv.sensors.polarized_light_sensor.PolarizedLightSensor-class.html#set_map,Method pybv.sensors.sensor_interface.Sensor.set_map()=pybv.sensors.sensor_interface.Sensor-class.html#set_map,Method pybv.sensors.textured_raytracer.TexturedRaytracer.set_map()=pybv.sensors.textured_raytracer.TexturedRaytracer-class.html#set_map,Method pybv.vehicle.Vehicle'.Vehicle.set_map()=pybv.vehicle.Vehicle%27.Vehicle-class.html#set_map"><a title="pybv.sensors.image_range_sensor.ImageRangeSensor.set_map
+pybv.sensors.olfaction.OlfactionSensor.set_map
+pybv.sensors.polarized_light_sensor.PolarizedLightSensor.set_map
+pybv.sensors.sensor_interface.Sensor.set_map
+pybv.sensors.textured_raytracer.TexturedRaytracer.set_map
+pybv.vehicle.Vehicle'.Vehicle.set_map" class="py-name" href="#" onclick="return doclink('link-15', 'set_map', 'link-15');">set_map</a></tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">            <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method pybv.sensors.olfaction.OlfactionSensor.add_receptor()=pybv.sensors.olfaction.OlfactionSensor-class.html#add_receptor"><a title="pybv.sensors.olfaction.OlfactionSensor.add_receptor" class="py-name" href="#" onclick="return doclink('link-16', 'add_receptor', 'link-16');">add_receptor</a></tt><tt class="py-op">(</tt><tt class="py-name">pose</tt><tt class="py-op">=</tt><tt id="link-17" class="py-name"><a title="pybv.utils.rigid_body_state.RigidBodyState" class="py-name" href="#" onclick="return doclink('link-17', 'RigidBodyState', 'link-5');">RigidBodyState</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">sensitivity</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-string">'food'</tt><tt class="py-op">:</tt> <tt class="py-number">1</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">            <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method pybv.sensors.image_range_sensor.Nearnessfinder.compute_observations()=pybv.sensors.image_range_sensor.Nearnessfinder-class.html#compute_observations,Method pybv.sensors.image_range_sensor.Optics.compute_observations()=pybv.sensors.image_range_sensor.Optics-class.html#compute_observations,Method pybv.sensors.image_range_sensor.Rangefinder.compute_observations()=pybv.sensors.image_range_sensor.Rangefinder-class.html#compute_observations,Method pybv.sensors.olfaction.OlfactionSensor.compute_observations()=pybv.sensors.olfaction.OlfactionSensor-class.html#compute_observations,Method pybv.sensors.polarized_light_sensor.PolarizedLightSensor.compute_observations()=pybv.sensors.polarized_light_sensor.PolarizedLightSensor-class.html#compute_observations,Method pybv.sensors.sensor_interface.Sensor.compute_observations()=pybv.sensors.sensor_interface.Sensor-class.html#compute_observations,Method pybv.vehicle.Vehicle'.Vehicle.compute_observations()=pybv.vehicle.Vehicle%27.Vehicle-class.html#compute_observations"><a title="pybv.sensors.image_range_sensor.Nearnessfinder.compute_observations
+pybv.sensors.image_range_sensor.Optics.compute_observations
+pybv.sensors.image_range_sensor.Rangefinder.compute_observations
+pybv.sensors.olfaction.OlfactionSensor.compute_observations
+pybv.sensors.polarized_light_sensor.PolarizedLightSensor.compute_observations
+pybv.sensors.sensor_interface.Sensor.compute_observations
+pybv.vehicle.Vehicle'.Vehicle.compute_observations" class="py-name" href="#" onclick="return doclink('link-18', 'compute_observations', 'link-18');">compute_observations</a></tt><tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="pybv.utils.rigid_body_state.RigidBodyState" class="py-name" href="#" onclick="return doclink('link-19', 'RigidBodyState', 'link-5');">RigidBodyState</a></tt><tt class="py-op">(</tt><tt class="py-name">position</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-number">10</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertTrue</tt><tt class="py-op">(</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">         </tt>
+<a name="ParsingTest.testParsingInvalid"></a><div id="ParsingTest.testParsingInvalid-def"><a name="L56"></a><tt class="py-lineno">56</tt> <a class="py-toggle" href="#" id="ParsingTest.testParsingInvalid-toggle" onclick="return toggle('ParsingTest.testParsingInvalid');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html#testParsingInvalid">testParsingInvalid</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest.testParsingInvalid-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ParsingTest.testParsingInvalid-expanded"><a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt class="py-docstring">""" Recognizing format errors """</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">map</tt> <tt class="py-keyword">in</tt> <tt id="link-20" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest" class="py-name" href="#" onclick="return doclink('link-20', 'ParsingTest', 'link-12');">ParsingTest</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest.map_invalid" class="py-name" href="#" onclick="return doclink('link-21', 'map_invalid', 'link-11');">map_invalid</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">            <tt class="py-name">os</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest.createSimpleOlfactionSensor" class="py-name" href="#" onclick="return doclink('link-22', 'createSimpleOlfactionSensor', 'link-14');">createSimpleOlfactionSensor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-name">map</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method pybv.utils.numpy_utils.gt.__str__()=pybv.utils.numpy_utils.gt-class.html#__str__,Method pybv.utils.openstruct.OpenStruct.__str__()=pybv.utils.openstruct.OpenStruct-class.html#__str__,Method pybv.utils.rigid_body_state.RigidBodyState.__str__()=pybv.utils.rigid_body_state.RigidBodyState-class.html#__str__"><a title="pybv.utils.numpy_utils.gt.__str__
+pybv.utils.openstruct.OpenStruct.__str__
+pybv.utils.rigid_body_state.RigidBodyState.__str__" class="py-name" href="#" onclick="return doclink('link-23', '__str__', 'link-23');">__str__</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertRaises</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">TypeError</tt><tt class="py-op">,</tt> <tt class="py-name">ValueError</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="pybv.sensors.image_range_sensor.ImageRangeSensor.set_map
+pybv.sensors.olfaction.OlfactionSensor.set_map
+pybv.sensors.polarized_light_sensor.PolarizedLightSensor.set_map
+pybv.sensors.sensor_interface.Sensor.set_map
+pybv.sensors.textured_raytracer.TexturedRaytracer.set_map
+pybv.vehicle.Vehicle'.Vehicle.set_map" class="py-name" href="#" onclick="return doclink('link-24', 'set_map', 'link-15');">set_map</a></tt><tt class="py-op">,</tt> <tt class="py-name">map</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">         </tt>
+<a name="ParsingTest.testRandomGeneration"></a><div id="ParsingTest.testRandomGeneration-def"><a name="L63"></a><tt class="py-lineno">63</tt> <a class="py-toggle" href="#" id="ParsingTest.testRandomGeneration-toggle" onclick="return toggle('ParsingTest.testRandomGeneration');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html#testRandomGeneration">testRandomGeneration</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest.testRandomGeneration-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ParsingTest.testRandomGeneration-expanded"><a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-docstring">""" Test if we can interpret a map from create_random_world() """</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">        <tt class="py-name">world</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="pybv.worlds.world_generation.create_random_world" class="py-name" href="#" onclick="return doclink('link-25', 'create_random_world', 'link-9');">create_random_world</a></tt><tt class="py-op">(</tt><tt class="py-number">10</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">        <tt class="py-name">os</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest.createSimpleOlfactionSensor" class="py-name" href="#" onclick="return doclink('link-26', 'createSimpleOlfactionSensor', 'link-14');">createSimpleOlfactionSensor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="pybv.sensors.image_range_sensor.ImageRangeSensor.set_map
+pybv.sensors.olfaction.OlfactionSensor.set_map
+pybv.sensors.polarized_light_sensor.PolarizedLightSensor.set_map
+pybv.sensors.sensor_interface.Sensor.set_map
+pybv.sensors.textured_raytracer.TexturedRaytracer.set_map
+pybv.vehicle.Vehicle'.Vehicle.set_map" class="py-name" href="#" onclick="return doclink('link-27', 'set_map', 'link-15');">set_map</a></tt><tt class="py-op">(</tt><tt class="py-name">world</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="pybv.sensors.image_range_sensor.Nearnessfinder.compute_observations
+pybv.sensors.image_range_sensor.Optics.compute_observations
+pybv.sensors.image_range_sensor.Rangefinder.compute_observations
+pybv.sensors.olfaction.OlfactionSensor.compute_observations
+pybv.sensors.polarized_light_sensor.PolarizedLightSensor.compute_observations
+pybv.sensors.sensor_interface.Sensor.compute_observations
+pybv.vehicle.Vehicle'.Vehicle.compute_observations" class="py-name" href="#" onclick="return doclink('link-28', 'compute_observations', 'link-18');">compute_observations</a></tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="pybv.utils.rigid_body_state.RigidBodyState" class="py-name" href="#" onclick="return doclink('link-29', 'RigidBodyState', 'link-5');">RigidBodyState</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">            </tt>
+<a name="ParsingTest.createSimpleOlfactionSensor"></a><div id="ParsingTest.createSimpleOlfactionSensor-def"><a name="L70"></a><tt class="py-lineno">70</tt> <a class="py-toggle" href="#" id="ParsingTest.createSimpleOlfactionSensor-toggle" onclick="return toggle('ParsingTest.createSimpleOlfactionSensor');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html#createSimpleOlfactionSensor">createSimpleOlfactionSensor</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest.createSimpleOlfactionSensor-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ParsingTest.createSimpleOlfactionSensor-expanded"><a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">        <tt class="py-name">os</tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="pybv.sensors.olfaction.OlfactionSensor" class="py-name" href="#" onclick="return doclink('link-30', 'OlfactionSensor', 'link-2');">OlfactionSensor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="pybv.sensors.olfaction.OlfactionSensor.add_receptor" class="py-name" href="#" onclick="return doclink('link-31', 'add_receptor', 'link-16');">add_receptor</a></tt><tt class="py-op">(</tt><tt id="link-32" class="py-name"><a title="pybv.utils.rigid_body_state.RigidBodyState" class="py-name" href="#" onclick="return doclink('link-32', 'RigidBodyState', 'link-5');">RigidBodyState</a></tt><tt class="py-op">(</tt><tt class="py-name">position</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-number">0.3</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt> <tt class="py-string">'food'</tt><tt class="py-op">:</tt> <tt class="py-number">1</tt> <tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">os</tt> </tt>
+</div><a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">         </tt>
+<a name="ParsingTest.testPickling"></a><div id="ParsingTest.testPickling-def"><a name="L75"></a><tt class="py-lineno">75</tt> <a class="py-toggle" href="#" id="ParsingTest.testPickling-toggle" onclick="return toggle('ParsingTest.testPickling');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html#testPickling">testPickling</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest.testPickling-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ParsingTest.testPickling-expanded"><a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">        <tt class="py-docstring">""" Make sure we can pickle this sensor """</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">        <tt class="py-name">ob</tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name"><a title="pybv.utils.misc.make_sure_pickable" class="py-name" href="#" onclick="return doclink('link-33', 'make_sure_pickable', 'link-6');">make_sure_pickable</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest.createSimpleOlfactionSensor" class="py-name" href="#" onclick="return doclink('link-34', 'createSimpleOlfactionSensor', 'link-14');">createSimpleOlfactionSensor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line">        <tt id="link-35" class="py-name"><a title="pybv.utils.misc.make_sure_pickable" class="py-name" href="#" onclick="return doclink('link-35', 'make_sure_pickable', 'link-6');">make_sure_pickable</a></tt><tt class="py-op">(</tt><tt class="py-name">ob</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line">         </tt>
+<a name="ParsingTest.testPickling2"></a><div id="ParsingTest.testPickling2-def"><a name="L80"></a><tt class="py-lineno">80</tt> <a class="py-toggle" href="#" id="ParsingTest.testPickling2-toggle" onclick="return toggle('ParsingTest.testPickling2');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html#testPickling2">testPickling2</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest.testPickling2-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ParsingTest.testPickling2-expanded"><a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line">        <tt class="py-docstring">""" Pickling after map loading """</tt> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line">        <tt class="py-name">os</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest.createSimpleOlfactionSensor" class="py-name" href="#" onclick="return doclink('link-36', 'createSimpleOlfactionSensor', 'link-14');">createSimpleOlfactionSensor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>  </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="pybv.sensors.image_range_sensor.ImageRangeSensor.set_map
+pybv.sensors.olfaction.OlfactionSensor.set_map
+pybv.sensors.polarized_light_sensor.PolarizedLightSensor.set_map
+pybv.sensors.sensor_interface.Sensor.set_map
+pybv.sensors.textured_raytracer.TexturedRaytracer.set_map
+pybv.vehicle.Vehicle'.Vehicle.set_map" class="py-name" href="#" onclick="return doclink('link-37', 'set_map', 'link-15');">set_map</a></tt><tt class="py-op">(</tt><tt id="link-38" class="py-name"><a title="pybv.worlds.world_generation.create_random_world" class="py-name" href="#" onclick="return doclink('link-38', 'create_random_world', 'link-9');">create_random_world</a></tt><tt class="py-op">(</tt><tt class="py-number">10</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno">84</tt>  <tt class="py-line">        <tt class="py-name">os2</tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="pybv.utils.misc.make_sure_pickable" class="py-name" href="#" onclick="return doclink('link-39', 'make_sure_pickable', 'link-6');">make_sure_pickable</a></tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno">85</tt>  <tt class="py-line">        <tt id="link-40" class="py-name"><a title="pybv.utils.misc.make_sure_pickable" class="py-name" href="#" onclick="return doclink('link-40', 'make_sure_pickable', 'link-6');">make_sure_pickable</a></tt><tt class="py-op">(</tt><tt class="py-name">os2</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L86"></a><tt class="py-lineno">86</tt>  <tt class="py-line">         </tt>
+<a name="L87"></a><tt class="py-lineno">87</tt>  <tt class="py-line">     </tt>
+<a name="ParsingTest.testIntegrity"></a><div id="ParsingTest.testIntegrity-def"><a name="L88"></a><tt class="py-lineno">88</tt> <a class="py-toggle" href="#" id="ParsingTest.testIntegrity-toggle" onclick="return toggle('ParsingTest.testIntegrity');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="pybv.sensors.olfaction_test.ParsingTest-class.html#testIntegrity">testIntegrity</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParsingTest.testIntegrity-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ParsingTest.testIntegrity-expanded"><a name="L89"></a><tt class="py-lineno">89</tt>  <tt class="py-line">        <tt class="py-docstring">""" Make sure that this sensor does not modify the map object """</tt> </tt>
+<a name="L90"></a><tt class="py-lineno">90</tt>  <tt class="py-line">        <tt class="py-name">os</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="pybv.sensors.olfaction_test.ParsingTest.createSimpleOlfactionSensor" class="py-name" href="#" onclick="return doclink('link-41', 'createSimpleOlfactionSensor', 'link-14');">createSimpleOlfactionSensor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno">91</tt>  <tt class="py-line">        <tt class="py-name">map</tt> <tt class="py-op">=</tt> <tt id="link-42" class="py-name"><a title="pybv.worlds.world_generation.create_random_world" class="py-name" href="#" onclick="return doclink('link-42', 'create_random_world', 'link-9');">create_random_world</a></tt><tt class="py-op">(</tt><tt class="py-number">10</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno">92</tt>  <tt class="py-line">        <tt class="py-name">map_original</tt> <tt class="py-op">=</tt> <tt class="py-name">deepcopy</tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno">93</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="pybv.sensors.image_range_sensor.ImageRangeSensor.set_map
+pybv.sensors.olfaction.OlfactionSensor.set_map
+pybv.sensors.polarized_light_sensor.PolarizedLightSensor.set_map
+pybv.sensors.sensor_interface.Sensor.set_map
+pybv.sensors.textured_raytracer.TexturedRaytracer.set_map
+pybv.vehicle.Vehicle'.Vehicle.set_map" class="py-name" href="#" onclick="return doclink('link-43', 'set_map', 'link-15');">set_map</a></tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno">94</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-name">map</tt><tt class="py-op">,</tt> <tt class="py-name">map_original</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L95"></a><tt class="py-lineno">95</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pybv-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Sep 16 16:00:31 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

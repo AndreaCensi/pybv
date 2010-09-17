@@ -34,7 +34,7 @@ pybv.drawing.world_plot_cairo_test.get_safe_pose	pybv.worlds.world_utils-module.
 pybv.drawing.world_plot_cairo_test.simple_drawing	pybv.drawing.world_plot_cairo_test-module.html#simple_drawing
 pybv.drawing.world_plot_cairo_test.draw_optics	pybv.drawing.world_plot_cairo-module.html#draw_optics
 pybv.sensors	pybv.sensors-module.html
-pybv.sensors.array	pybv.sensors.olfaction-module.html#array
+pybv.sensors.array	pybv.drawing.world_plot_cairo-module.html#array
 pybv.sensors.__package__	pybv.sensors-module.html#__package__
 pybv.sensors.aslist	pybv.utils.misc-module.html#aslist
 pybv.sensors.ascolumn	pybv.utils.misc-module.html#ascolumn
@@ -68,6 +68,7 @@ pybv.sensors.polarized_light_sensor_test.__package__	pybv.sensors.polarized_ligh
 pybv.sensors.sensor_interface	pybv.sensors.sensor_interface-module.html
 pybv.sensors.sensor_interface.__package__	pybv.sensors.sensor_interface-module.html#__package__
 pybv.sensors.textured_raytracer	pybv.sensors.textured_raytracer-module.html
+pybv.sensors.textured_raytracer.__warningregistry__	pybv.sensors.textured_raytracer-module.html#__warningregistry__
 pybv.sensors.textured_raytracer.asscalar	pybv.utils.misc-module.html#asscalar
 pybv.sensors.textured_raytracer.assert_type	pybv.utils.misc-module.html#assert_type
 pybv.sensors.textured_raytracer.__package__	pybv.sensors.textured_raytracer-module.html#__package__
@@ -92,7 +93,7 @@ pybv.simulation.random_pose_simulation'.__package__	pybv.simulation.random_pose_
 pybv.utils	pybv.utils-module.html
 pybv.utils.cov2corr	pybv.utils.misc-module.html#cov2corr
 pybv.utils.make_sure_json_encodable	pybv.utils.misc-module.html#make_sure_json_encodable
-pybv.utils.array	pybv.sensors.olfaction-module.html#array
+pybv.utils.array	pybv.drawing.world_plot_cairo-module.html#array
 pybv.utils.outer	pybv.utils-module.html#outer
 pybv.utils.__package__	pybv.utils-module.html#__package__
 pybv.utils.assert_1d_ndarray	pybv.utils.misc-module.html#assert_1d_ndarray
@@ -151,7 +152,7 @@ pybv.worlds.__package__	pybv.worlds-module.html#__package__
 pybv.worlds.generate_poisson_tex	pybv.worlds.texture_generation-module.html#generate_poisson_tex
 pybv.worlds.get_safe_pose	pybv.worlds.world_utils-module.html#get_safe_pose
 pybv.worlds.generate_texture	pybv.worlds.world_generation-module.html#generate_texture
-pybv.worlds.array	pybv.sensors.olfaction-module.html#array
+pybv.worlds.array	pybv.drawing.world_plot_cairo-module.html#array
 pybv.worlds.texture	pybv.worlds.texture-module.html
 pybv.worlds.texture.__package__	pybv.worlds.texture-module.html#__package__
 pybv.worlds.texture_generation	pybv.worlds.texture_generation-module.html

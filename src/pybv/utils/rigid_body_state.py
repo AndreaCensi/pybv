@@ -10,6 +10,9 @@ def rotz(theta):
             [ sin(theta), cos(theta), 0],
             [0, 0, 1]]) 
     
+    
+
+    
 class RigidBodyState:
     def __init__(self, position=None, attitude=None):
         """ Initialize the object.

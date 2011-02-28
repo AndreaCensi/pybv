@@ -1,6 +1,8 @@
 from numpy import ceil, rad2deg, linspace, array
 from textured_raytracer import TexturedRaytracer
 from pybv import BVException
+from contracts.main import contract
+from geometry import *
 
 class ImageRangeSensor:
     """ This class implements both a rangefinder and a vision sensor
@@ -34,6 +36,7 @@ class ImageRangeSensor:
     def num_sensels(self):
         return self.num_photoreceptors
     
+  #  @contract(object_state='SE2')
     def render(self, object_state):
         self.make_sure_compiled()
         position = object_state.get_2d_position()

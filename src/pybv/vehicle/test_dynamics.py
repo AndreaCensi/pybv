@@ -1,7 +1,9 @@
 import unittest
 from pybv.vehicle import *
-from numpy import array, deg2rad
+from numpy import deg2rad
 import numpy
+
+from geometry import SE2, assert_allclose, SE2_from_translation_angle
 
 def equal(a, b):
     return numpy.linalg.norm(array(a).flatten() - array(b).flatten()) <= 1e-7
@@ -13,8 +15,7 @@ class OmniTest(unittest.TestCase):
         
         ok = OmnidirectionalKinematics(
             max_linear_velocity=1, max_angular_velocity=1)
-        
-        zero = RigidBodyState()
+         
         dt = 0.1
         
         M = 1  # max
@@ -41,13 +42,17 @@ class OmniTest(unittest.TestCase):
         ]
         
         for initial, commands, final in tests:
-            position, attitude = initial
-            start_state = RigidBodyState(position, attitude)
+            position, rotation = initial
+            position_f, rotation_f = final
+            
+            start_state = SE2_from_translation_angle(array(position), rotation)
+            expected = SE2_from_translation_angle(array(position_f), rotation_f)
             
             actual = ok.evolve_state(start_state, commands, dt)  
             
-            msg = "Transition  %s ->{%s}-> %s , received %s %s " % (initial, commands, final, actual.get_2d_position().flatten(), actual.get_2d_orientation())
-            self.assertTrue(equal(actual.get_2d_position(), final[0]), msg)
-            self.assertTrue(equal(actual.get_2d_orientation(), final[1]), msg)
+            msg = ("Transition  %s ->{%s}-> %s , received %s " % 
+                (initial, commands, final, SE2.friendly(actual))) 
+            
+            assert_allclose(expected, actual, err_msg=msg, atol=1e-7)
             
         

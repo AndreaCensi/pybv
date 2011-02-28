@@ -1,5 +1,7 @@
 from pybv.utils import RigidBodyState, aslist, OpenStruct
 from numpy import cos, sin
+from geometry.manifolds import SE2
+from geometry.poses import se2_from_linear_angular
 
 class Command:
     def __init__(self, id, desc, min, max, rest):
@@ -21,7 +23,6 @@ class Dynamics:
         
             commands: array of [-1,1] floats 
         """
-        assert(isinstance(start_state, RigidBodyState))
         inputs = aslist(inputs)
         expected_num_commands = len(self.commands)
         if not (len(inputs) == expected_num_commands):
@@ -48,29 +49,24 @@ class OmnidirectionalKinematics(Dynamics):
     def __init__(self, max_linear_velocity=1, max_angular_velocity=1):
         Dynamics.__init__(self)
         
-        self.add_command(Command(id='vx', desc='linear velocity (x)', min= -max_linear_velocity, max= +max_linear_velocity, rest=0))
-        self.add_command(Command(id='vy', desc='linear velocity (y)', min= -max_linear_velocity, max= +max_linear_velocity, rest=0))
-        self.add_command(Command(id='omega', desc='angular velocity', min= -max_angular_velocity, max= +max_angular_velocity, rest=0))
+        self.add_command(Command(id='vx', desc='linear velocity (x)',
+                                 min= -max_linear_velocity,
+                                 max= +max_linear_velocity,
+                                 rest=0))
+        self.add_command(Command(id='vy', desc='linear velocity (y)',
+                                 min= -max_linear_velocity,
+                                 max= +max_linear_velocity,
+                                 rest=0))
+        self.add_command(Command(id='omega', desc='angular velocity',
+                                 min= -max_angular_velocity,
+                                 max= +max_angular_velocity,
+                                 rest=0))
         
-    def integrate(self, start_state, commands, dt):
-        x, y = start_state.get_2d_position()
-        theta = start_state.get_2d_orientation()
-        vx = commands.vx
-        vy = commands.vy
-        
-        # FIXME: simple Euler for now; change later
-        
-        # This is correct; trying the other one.
-        # c = cos(theta + commands.omega * dt / 2)
-        # s = sin(theta + commands.omega * dt / 2)
-        c = cos(theta)
-        s = sin(theta)
-        
-        x1 = x + (vx * c + vy * (-s)) * dt
-        y1 = y + (vx * s + vy * c) * dt
-        theta1 = theta + commands.omega * dt
-        
-        return RigidBodyState(position=[x1, y1], attitude=theta1)
+    def integrate(self, start, commands, dt):
+        velocity = se2_from_linear_angular([commands.vx, commands.vy], commands.omega)
+        delta = velocity * dt 
+        return SE2.multiply(start, SE2.expmap(SE2.unity(), delta))
+    
         
         
         

@@ -3,7 +3,7 @@ from pybv.vehicle import *
 from numpy import deg2rad
 import numpy
 
-from geometry import SE2, assert_allclose, SE2_from_translation_angle
+from geometry import assert_allclose, SE2_from_translation_angle
 
 def equal(a, b):
     return numpy.linalg.norm(array(a).flatten() - array(b).flatten()) <= 1e-7
